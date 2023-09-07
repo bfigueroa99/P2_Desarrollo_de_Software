@@ -11,7 +11,7 @@ import SignPage from './components/SignPage/SignPage';
 import StartPage from './components/StartPage/StartPage';
 import PreguntasPage from './components/PreguntasPage/PreguntasPage';
 import Footer from './components/Footer/Footer';
-
+import PreguntasAltPage from './components/PreguntasAltPage/PreguntasAltPage';
 function App() {
   return (
     <Router>
@@ -19,7 +19,9 @@ function App() {
         {/* Agrega el componente NavBar aquí */}
         <NavBar />
 
-        {/* Define las rutas de tu aplicación dentro de un elemento Routes */}
+        {/* Define las rutas de tu aplicación dentro de un elemento Routes */
+        /* <Route path="/courses/:courseId/start" element={<StartPage />} />
+          <Route path="/courses/:courseId/start/questions" element={<PreguntasPage />} />*/}
         <Routes>
           <Route path="/" element={<HomePage />} /> {/* Agrega la ruta a la página de inicio */}
           <Route path="/account" element={<AccountPage />} />
@@ -28,8 +30,9 @@ function App() {
           <Route path="/courses" element={<CoursesPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignPage />} />
-          <Route path="/courses/:courseId/start" element={<StartPage />} />
-          <Route path="/courses/:courseId/start/questions" element={<PreguntasPage />} />
+          <Route path="/start" element={<StartPage />} />
+          <Route path="/questions" element={<PreguntasPage />} />
+          <Route path="/questionsAlt" element={<PreguntasAltPage />} />
         </Routes>
         <Footer />
       </div>

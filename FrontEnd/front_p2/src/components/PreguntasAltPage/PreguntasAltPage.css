@@ -1,0 +1,58 @@
+/* Estilos para la página de preguntas y respuestas alternativas */
+.questions-alt-page {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .question-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 50px;
+    max-width: 700px;
+    margin: 0 auto; /* Centra la carta horizontalmente */
+  }
+  
+  h2 {
+    font-size: 24px;
+    margin-bottom: 150px;
+  }
+  
+  .answer-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .answer-field {
+    width: 80%;
+    padding: 20px;
+    font-size: 18px;
+    border: 1px solid #007BFF;
+    border-radius: 5px;
+  }
+  
+  .hint-button {
+    background-color: transparent;
+    border: none;
+    color: #007BFF;
+    font-size: 16px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .hint-button:hover {
+    color: #0056b3;
+  }
+  
+  .hint-popup {
+    display: block;
+    background-color: rgba(0, 123, 255, 0.2);
+    color: #007BFF;
+    font-size: 14px;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+  }
+  

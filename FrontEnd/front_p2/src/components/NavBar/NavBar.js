@@ -33,6 +33,16 @@ function NavBar() {
             Login
           </NavLink>
         </li>
+        <li className="nav-item">
+          <NavLink to="/questions" className="nav-link" activeClassName="active">
+            Preguntas
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to="/start" className="nav-link" activeClassName="active">
+            start
+          </NavLink>
+        </li>
       </ul>
     </nav>
   );

@@ -1,0 +1,66 @@
+/* Estilos para la página de preguntas y respuestas */
+.questions-page {
+  text-align: center;
+  padding: 20px;
+}
+
+.question-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto; /* Centra la carta horizontalmente */
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.answer-options {
+  list-style-type: none;
+  padding: 0;
+}
+
+.answer-button {
+  display: block;
+  width: 100%;
+  background-color: #007BFF;
+  color: #fff;
+  font-size: 18px;
+  padding: 10px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.answer-button:hover {
+  background-color: #0056b3;
+}
+
+.hint-button {
+  background-color: transparent;
+  border: none;
+  color: #007BFF;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.hint-button:hover {
+  color: #0056b3;
+}
+
+.hint-popup {
+  display: block;
+  background-color: rgba(0, 123, 255, 0.2);
+  color: #007BFF;
+  font-size: 14px;
+  padding: 5px;
+  margin-top: 5px;
+  border-radius: 5px;
+}
