@@ -23,6 +23,16 @@ function NavBar() {
             Account
           </NavLink>
         </li>
+        <li className="nav-item">
+          <NavLink to="/signup" className="nav-link" activeClassName="active">
+            SignUp
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to="/login" className="nav-link" activeClassName="active">
+            Login
+          </NavLink>
+        </li>
       </ul>
     </nav>
   );

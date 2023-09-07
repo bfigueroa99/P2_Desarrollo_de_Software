@@ -1,11 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
+import './LoginPage.css';
 
 function LoginPage() {
-  // Implementa la lógica de la página de inicio de sesión aquí
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleLogin = () => {
+    // Aquí puedes agregar la lógica de inicio de sesión
+    // Verificar el correo electrónico y la contraseña, y manejar errores
+  };
+
   return (
-    <div>
-      <h1>Login Page</h1>
-      {/* Agrega tus componentes, formularios y lógica aquí */}
+    <div className="login-page">
+      <h1>Iniciar Sesión</h1>
+      <div className="form-container">
+        <div className="form-group">
+          <label>Correo Electrónico</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label>Contraseña</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        {error && <p className="error">{error}</p>}
+        <button className="login-button" onClick={handleLogin}>
+          Iniciar Sesión
+        </button>
+        <p>
+          ¿No tienes una cuenta? <a href="#">Regístrate aquí</a>
+        </p>
+      </div>
     </div>
   );
 }
