@@ -51,6 +51,11 @@ function NavBar() {
             </li>
             {/* Rutas permitidas solo para usuarios autenticados */}
             <li className="nav-item">
+              <NavLink to="/account" className="nav-link" activeClassName="active">
+                Account
+              </NavLink>
+            </li>
+            <li className="nav-item">
               <NavLink to="/start" className="nav-link" activeClassName="active">
                 Start
               </NavLink>
