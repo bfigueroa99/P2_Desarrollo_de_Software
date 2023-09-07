@@ -1,7 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router,Routes, Route } from 'react-router-dom';
-import NavBar from './components/NavBar/NavBar'; // Importa el componente NavBar
-import HomePage from './components/HomePage/HomePage'; // Importa el componente HomePage
+import { Routes, Route } from 'react-router-dom';
+import NavBar from './components/NavBar/NavBar';
+import HomePage from './components/HomePage/HomePage';
 import AccountPage from './components/AccountPage/AccountPage';
 import AboutUsPage from './components/AboutUsPage/AboutUsPage';
 import HelpPage from './components/HelpPage/HelpPage';
@@ -12,34 +12,26 @@ import StartPage from './components/StartPage/StartPage';
 import PreguntasPage from './components/PreguntasPage/PreguntasPage';
 import Footer from './components/Footer/Footer';
 import PreguntasAltPage from './components/PreguntasAltPage/PreguntasAltPage';
+
 function App() {
   return (
-    <Router>
-      <div>
-        {/* Agrega el componente NavBar aquí */}
-        <NavBar />
-
-        {/* Define las rutas de tu aplicación dentro de un elemento Routes */
-        /* <Route path="/courses/:courseId/start" element={<StartPage />} />
-          <Route path="/courses/:courseId/start/questions" element={<PreguntasPage />} />*/}
-        <Routes>
-          <Route path="/" element={<HomePage />} /> {/* Agrega la ruta a la página de inicio */}
-          <Route path="/account" element={<AccountPage />} />
-          <Route path="/about" element={<AboutUsPage />} />
-          <Route path="/help" element={<HelpPage />} />
-          <Route path="/courses" element={<CoursesPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignPage />} />
-          <Route path="/start" element={<StartPage />} />
-          <Route path="/questions" element={<PreguntasPage />} />
-          <Route path="/questionsAlt" element={<PreguntasAltPage />} />
-        </Routes>
-        <Footer />
-      </div>
-    </Router>
+    <div>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/account" element={<AccountPage />} />
+        <Route path="/about" element={<AboutUsPage />} />
+        <Route path="/help" element={<HelpPage />} />
+        <Route path="/courses" element={<CoursesPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignPage />} />
+        <Route path="/start" element={<StartPage />} />
+        <Route path="/questions" element={<PreguntasPage />} />
+        <Route path="/questionsAlt" element={<PreguntasAltPage />} />
+      </Routes>
+      <Footer />
+    </div>
   );
 }
 
 export default App;
-
-

@@ -1,15 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './LoginPage.css';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebase';
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    // Aquí puedes agregar la lógica de inicio de sesión
-    // Verificar el correo electrónico y la contraseña, y manejar errores
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        // El usuario está autenticado, redirige a la página principal u otra página
+        navigate('/');
+      }
+      // Si no hay usuario autenticado, no se hace nada
+    });
+
+    // Limpia el observador cuando el componente se desmonta
+    return () => unsubscribe();
+  }, [navigate]);
+
+  const handleLogin = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log("logeado con éxito");
+      // El usuario será redirigido automáticamente después del inicio de sesión
+    } catch (error) {
+      console.log("logeado sin éxito");
+      setError(error.message);
+    }
   };
+
 
   return (
     <div className="login-page">
