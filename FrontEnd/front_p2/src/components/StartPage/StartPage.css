@@ -1,0 +1,40 @@
+/* Estilos para la página de inicio del curso (StartPage) */
+.start-page {
+    text-align: center;
+    padding:0px;
+    display: flex;
+    flex-direction: column; /* Añade dirección de columna para colocar el texto debajo del card */
+    align-items: center;
+    justify-content: center;
+    height: 80vh; /* Centra verticalmente y ocupa el 100% del alto de la ventana */
+  }
+  
+  .start-card {
+    width: 400px; /* Aumenta el ancho del card */
+    height: 400px; /* Aumenta el alto del card */
+    background-color: #007BFF;
+    color: #fff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .start-card h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .start-card:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Estilos para el texto "Comienza el Curso" */
+  h1 {
+    font-size: 32px;
+    margin-top: 20px; /* Espacio entre el card y el texto */
+  }
+  

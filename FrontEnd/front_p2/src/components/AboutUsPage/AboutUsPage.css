@@ -1,0 +1,38 @@
+/* Estilos para la página "Sobre Nosotros" */
+.about-us {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .about-us-title {
+    font-size: 28px;
+    margin-bottom: 50px;
+  }
+  
+  /* Estilos para las tarjetas (cards) */
+  .card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    padding: 40px;
+    max-width: 600px;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .card-text {
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Estilo para el texto adicional */
+  .about-us-text {
+    font-size: 18px;
+    margin-top: 20px;
+  }
+  

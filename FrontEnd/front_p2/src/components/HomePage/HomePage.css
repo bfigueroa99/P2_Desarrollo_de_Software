@@ -1,0 +1,89 @@
+/* Estilos para la página de inicio */
+.home-page {
+    text-align: center;
+    padding: 20px;
+    position: relative; /* Agrega posición relativa al contenedor principal */
+  }
+  
+  /* Estilo para el encabezado con imagen de fondo */
+  .home-header {
+    position: relative; /* Agrega posición relativa */
+    height: 80vh; /* Establece la altura al 100% del viewport */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff; /* Cambia el color del texto para que sea legible en el fondo */
+    
+  }
+  
+  /* Estilo para la imagen de fondo borrosa */
+  .home-header::before {
+    content: "";
+    background-image: url('/public/images/termoclass_title.jpeg'); /* Ruta de la imagen borrosa */
+    filter: blur(6px); /* Aplica un efecto de desenfoque a la imagen */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Coloca la imagen detrás del contenido principal */
+  }
+  
+  .header-content {
+    text-align: center;
+  }
+  
+  /* Resto de los estilos permanecen igual */
+  
+
+  
+  
+  .title {
+    font-size: 36px;
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+  
+  .subtitle {
+    font-size: 18px;
+    color: #948e8e;
+  }
+  
+  .section-title {
+    font-size: 24px;
+    color: #333;
+    margin-top: 20px;
+  }
+  
+  .course-overview ul {
+    list-style-type: disc;
+    margin-left: 20px;
+  }
+  
+  .get-started {
+    margin-top: 30px;
+  }
+  
+  .cta-text {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .start-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .start-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05); /* Efecto de escala al pasar el mouse sobre el botón */
+  }
+  
+  
