@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
 import './LoginPage.css';
-import { signInWithEmailAndPassword } from 'firebase/auth'; // Importa la función de inicio de sesión de Firebase
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase';
+import { useNavigate } from 'react-router-dom'; // Importa useHistory
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  const navigate = useNavigate(); // Obtiene el objeto de historial
+
   const handleLogin = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password); // Inicio de sesión con Firebase
-      console.log("logeado con exito")
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log("logeado con éxito")
+      navigate('/'); // Redirige al usuario a la página de inicio ("/")
     } catch (error) {
-      console.log("logeado sin exito")
+      console.log("logeado sin éxito")
       setError(error.message);
     }
   };
+
 
   return (
     <div className="login-page">
