@@ -10,7 +10,7 @@ import LoginPage from './components/LoginPage/LoginPage';
 import SignPage from './components/SignPage/SignPage';
 import StartPage from './components/StartPage/StartPage';
 import PreguntasPage from './components/PreguntasPage/PreguntasPage';
-
+import Footer from './components/Footer/Footer';
 
 function App() {
   return (
@@ -31,6 +31,7 @@ function App() {
           <Route path="/courses/:courseId/start" element={<StartPage />} />
           <Route path="/courses/:courseId/start/questions" element={<PreguntasPage />} />
         </Routes>
+        <Footer />
       </div>
     </Router>
   );

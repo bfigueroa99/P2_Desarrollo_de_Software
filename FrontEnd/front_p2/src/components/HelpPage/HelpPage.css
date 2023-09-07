@@ -1,0 +1,43 @@
+/* Estilos para la página de ayuda */
+.help {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .help-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  
+  /* Estilos para las tarjetas (cards) */
+  .card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 600px;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .card-text {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  /* Estilo para el texto de ayuda adicional */
+  .help-text {
+    font-size: 18px;
+    margin-top: 20px;
+  }
+  
