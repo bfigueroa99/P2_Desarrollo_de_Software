@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import './LoginPage.css';
+import { signInWithEmailAndPassword } from 'firebase/auth'; // Importa la función de inicio de sesión de Firebase
+import { auth } from '../../firebase';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = () => {
-    // Aquí puedes agregar la lógica de inicio de sesión
-    // Verificar el correo electrónico y la contraseña, y manejar errores
+  const handleLogin = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password); // Inicio de sesión con Firebase
+      console.log("logeado con exito")
+    } catch (error) {
+      console.log("logeado sin exito")
+      setError(error.message);
+    }
   };
 
   return (

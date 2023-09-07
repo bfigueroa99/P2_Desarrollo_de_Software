@@ -12,6 +12,7 @@ import StartPage from './components/StartPage/StartPage';
 import PreguntasPage from './components/PreguntasPage/PreguntasPage';
 import Footer from './components/Footer/Footer';
 import PreguntasAltPage from './components/PreguntasAltPage/PreguntasAltPage';
+import { AuthProvider } from './auth/AuthProvider';
 function App() {
   return (
     <Router>
