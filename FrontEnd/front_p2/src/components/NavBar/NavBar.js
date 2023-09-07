@@ -5,7 +5,7 @@ function NavBar() {
   return (
     <nav className="navbar">
       <Link to="/" className="navbar-brand">
-        App Name
+        TermoClass
       </Link>
       <ul className="navbar-nav">
         <li className="nav-item">
