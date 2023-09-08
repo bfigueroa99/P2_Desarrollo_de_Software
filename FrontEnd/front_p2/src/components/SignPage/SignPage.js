@@ -1,19 +1,31 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './SignPage.css';
-import { createUserWithEmailAndPassword } from 'firebase/auth'; // Importa la función de registro de Firebase
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'; // Importa la función de registro de Firebase
 import { auth } from '../../firebase';
-
+import { useNavigate } from 'react-router-dom';
 function SignPage() {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [errors, setErrors] = useState({});
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault(); // Evita que el formulario se envíe automáticamente
 
     try {
-      await createUserWithEmailAndPassword(auth, formData.email, formData.password); // Registro con Firebase
-      console.log('Creacion de usuario exitosa!')
+      // Crea una cuenta de usuario en Firebase con correo y contraseña
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
+
+      // Actualiza el perfil del usuario con el nombre
+      await updateProfile(userCredential.user, {
+        displayName: formData.name,
+      });
+
+      console.log('Creación de usuario exitosa!');
+      navigate('/');
     } catch (error) {
       setErrors({ ...errors, general: error.message });
     }

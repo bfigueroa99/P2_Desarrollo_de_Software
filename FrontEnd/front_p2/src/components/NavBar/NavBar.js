@@ -21,6 +21,15 @@ function NavBar() {
       <Link to="/" className="navbar-brand">
         TermoClass
       </Link>
+      <li className="nav-item">
+              <NavLink
+                to="/account"
+                className="nav-link"
+                activeClassName="active"
+              >
+                {'Usuario'} {/* Mostrar nombre o 'Usuario' si no hay nombre */} {/* Muestra el nombre del usuario */}
+              </NavLink>
+            </li>
       <ul className="navbar-nav">
         <li className="nav-item">
           <NavLink to="/about" className="nav-link" activeClassName="active">
@@ -35,15 +44,7 @@ function NavBar() {
         {user ? (
           // Si el usuario ha iniciado sesión, muestra su nombre y un botón de cierre de sesión
           <>
-            <li className="nav-item">
-              <NavLink
-                to="/account"
-                className="nav-link"
-                activeClassName="active"
-              >
-                {user.displayName} {/* Muestra el nombre del usuario */}
-              </NavLink>
-            </li>
+            
             <li className="nav-item">
               <button className="nav-link" onClick={signOutUser}>
                 Cerrar sesión {/* Botón de cierre de sesión */}
