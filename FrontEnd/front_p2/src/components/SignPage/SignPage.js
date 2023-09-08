@@ -16,7 +16,8 @@ function SignPage() {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.email,
-        formData.password
+        formData.password 
+        
       );
 
       // Actualiza el perfil del usuario con el nombre
