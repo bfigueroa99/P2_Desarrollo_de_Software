@@ -27,6 +27,7 @@ function LoginPage() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log("logeado con éxito");
+      
       // El usuario será redirigido automáticamente después del inicio de sesión
     } catch (error) {
       console.log("logeado sin éxito");
@@ -60,7 +61,7 @@ function LoginPage() {
           Iniciar Sesión
         </button>
         <p>
-          ¿No tienes una cuenta? <a href="#">Regístrate aquí</a>
+          ¿No tienes una cuenta? <a href="/signup">Regístrate aquí</a>
         </p>
       </div>
     </div>
