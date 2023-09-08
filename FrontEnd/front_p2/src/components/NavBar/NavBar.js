@@ -3,16 +3,18 @@ import { Link, NavLink, Outlet, Navigate } from 'react-router-dom';
 import './NavBar.css';
 import { useAuth } from '../../auth/AuthProvider'; // Importa tu contexto de autenticación aquí
 import { getAuth, signOut } from 'firebase/auth'; // Importa el método de cierre de sesión de Firebase
-
+import { useNavigate } from 'react-router-dom';
 function NavBar() {
   const { user } = useAuth(); // Suponiendo que tu contexto de autenticación proporciona el usuario
   const auth = getAuth(); // Obtén el objeto de autenticación de Firebase
-
+  const navigate = useNavigate();
   const signOutUser = async () => {
     try {
       await signOut(auth); // Cierra la sesión del usuario utilizando Firebase Authentication
+      navigate('/');
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
+      
     }
   };
 
@@ -22,14 +24,10 @@ function NavBar() {
         TermoClass
       </Link>
       <li className="nav-item">
-              <NavLink
-                to="/account"
-                className="nav-link"
-                activeClassName="active"
-              >
-                {'Usuario'} {/* Mostrar nombre o 'Usuario' si no hay nombre */} {/* Muestra el nombre del usuario */}
-              </NavLink>
-            </li>
+        <span className="nav-link">
+          {user ? user.displayName : 'Usuario no loggeado'} {/* Muestra el nombre o 'Usuario' si no hay nombre */}
+        </span>
+      </li>
       <ul className="navbar-nav">
         <li className="nav-item">
           <NavLink to="/about" className="nav-link" activeClassName="active">
@@ -48,6 +46,7 @@ function NavBar() {
             <li className="nav-item">
               <button className="nav-link" onClick={signOutUser}>
                 Cerrar sesión {/* Botón de cierre de sesión */}
+                
               </button>
             </li>
             {/* Rutas permitidas solo para usuarios autenticados */}

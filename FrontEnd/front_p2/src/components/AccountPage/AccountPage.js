@@ -1,15 +1,12 @@
 import React from 'react';
 import './AccountPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useAuth } from '../../auth/AuthProvider'; // Importa tu contexto de autenticación aquí
 
 function AccountPage() {
-  // Simulación de datos de usuario y progreso del curso
-  const user = {
-    name: 'Nombre del Usuario',
-    email: 'usuario@example.com',
-    profilePicture: <FontAwesomeIcon icon=" fa-regular fa-user"size="4x"/>,
-  };
+  const { user } = useAuth(); // Obtén el usuario actual del contexto de autenticación
 
+  // Simulación de datos de progreso del curso
   const courseProgress = [
     { unit: 'Unidad 1', progress: 80 },
     { unit: 'Unidad 2', progress: 60 },
@@ -22,10 +19,21 @@ function AccountPage() {
     <div className="account-page">
       <h1 className="account-title">Mi Cuenta</h1>
       <div className="user-profile">
-        <img src={user.profilePicture} alt="Foto de perfil" className="profile-picture" />
+        {/* Mostrar la imagen local */}
+        <img src="/images/userBlank.png" alt="Foto de perfil" className="profile-picture" />
         <div className="user-info">
-          <h2 className="user-name">{user.name}</h2>
-          <p className="user-email">{user.email}</p>
+          {/* Verificar si user está definido antes de acceder a sus propiedades */}
+          {user ? (
+            <>
+              <h2 className="user-name">{user.displayName}</h2>
+              <p className="user-email">{user.email}</p>
+            </>
+          ) : (
+            <>
+              <h2 className="user-name">Usuario no autenticado</h2>
+              <p className="user-email">N/A</p>
+            </>
+          )}
         </div>
       </div>
 
