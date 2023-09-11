@@ -16,6 +16,9 @@ class Pregunta(models.Model):
     nivel_dificultad = models.CharField(max_length=20, choices=NIVELES_DIFICULTAD)
     enunciado = models.TextField()
     respuesta = models.CharField(max_length=255, null=True, blank=True)  # Respuesta para preguntas de alternativas
+    alternativa2 = models.CharField(max_length=255, null=True, blank=True)
+    alternativa3 = models.CharField(max_length=255, null=True, blank=True)
+    alternativa4 = models.CharField(max_length=255, null=True, blank=True)
     imagen = models.ImageField(upload_to='imagenes/', null=True, blank=True)  # Para ejercicios con imágenes
     hint = models.TextField(null=True, blank=True)  # Campo para agregar hints
 
