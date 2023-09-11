@@ -17,6 +17,7 @@ class Pregunta(models.Model):
     enunciado = models.TextField()
     respuesta = models.CharField(max_length=255, null=True, blank=True)  # Respuesta para preguntas de alternativas
     imagen = models.ImageField(upload_to='imagenes/', null=True, blank=True)  # Para ejercicios con imágenes
+    hint = models.TextField(null=True, blank=True)  # Campo para agregar hints
 
     def __str__(self):
         return self.enunciado
