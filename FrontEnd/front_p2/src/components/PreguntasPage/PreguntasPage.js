@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './PreguntasPage.css';
 
 function PreguntasPage() {
   const [showHint, setShowHint] = useState(false);
+  const [question, setQuestion] = useState(null);
+
+  useEffect(() => {
+    // Realizar la solicitud HTTP para obtener una pregunta al azar
+    fetch('http://localhost:8000/api/get_random_question/')
+      .then((response) => response.json())
+      .then((data) => setQuestion(data))
+
+      .catch((error) => console.error('Error al obtener la pregunta:', error));
+  }, []);
 
   const handleHintClick = () => {
     setShowHint(true);
@@ -11,26 +21,46 @@ function PreguntasPage() {
   return (
     <div className="questions-page">
       <h1>Preguntas y Respuestas</h1>
-      <div className="question-card">
-        <h2>Pregunta 1</h2>
-        <p>¿Cuál es la respuesta correcta a esta pregunta?</p>
-        <ul className="answer-options">
-          <li><button className="answer-button">A. Opción 1</button></li>
-          <li><button className="answer-button">B. Opción 2</button></li>
-          <li><button className="answer-button">C. Opción 3</button></li>
-          <li><button className="answer-button">D. Opción 4</button></li>
-          <li><button className="answer-button">E. Opción 5</button></li>
-        </ul>
-        <button className="hint-button" onClick={handleHintClick}>
-          Hint
-          {showHint && (
-            <span className="hint-popup">Hint: Esta es una pista útil para responder la pregunta.</span>
+      
+      {question ? (
+        <div className="question-card">
+          <h2>Pregunta {question.id}</h2>
+          
+          <p>{question.enunciado}</p>
+          {question.tipo === 'alternativas' ? (
+            // Renderizar opciones de respuesta para preguntas de alternativas
+            <ul className="answer-options">
+              <li>
+                <button className="answer-button">A. {question.respuesta}</button>
+                
+              </li>
+              <li>
+                <button className="answer-button">B. {question.alternativa2}</button>
+              </li>
+              <li>
+                <button className="answer-button">C. {question.alternativa3}</button>
+              </li>
+              <li>
+                <button className="answer-button">D. {question.alternativa4}</button>
+              </li>
+            </ul>
+          ) : (
+            // Renderizar entrada de respuesta para preguntas de desarrollo
+            <div className="answer-input">
+              <input type="text" placeholder="Escribe tu respuesta" className="answer-field" />
+            </div>
           )}
-        </button>
-      </div>
+          <button className="hint-button" onClick={handleHintClick}>
+            Hint
+            {showHint && <span className="hint-popup">{question.hint}</span>}
+          </button>
+        </div>
+      ) : (
+        // Mostrar un mensaje de carga mientras se obtiene la pregunta
+        <p>Cargando pregunta...</p>
+      )}
     </div>
   );
 }
 
 export default PreguntasPage;
-
