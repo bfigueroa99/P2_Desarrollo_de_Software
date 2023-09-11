@@ -15,28 +15,37 @@ class DetallePregunta(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PreguntaSerializer
 # views.py
 # views.py
+from random import shuffle
 from django.http import JsonResponse
 from .models import Pregunta
 
 def get_random_question(request):
-    # Obtiene una pregunta al azar de la base de datos
-    random_question = Pregunta.objects.order_by('?').first()
+    # Obtén todas las preguntas de la base de datos
+    preguntas = list(Pregunta.objects.all())
     
-    # Convierte la pregunta en un diccionario serializable
-    data = {
-        'id': random_question.id,
-        'tema': random_question.tema,
-        'tipo': random_question.tipo,
-        'nivel_dificultad': random_question.nivel_dificultad,
-        'enunciado': random_question.enunciado,
-        'respuesta': random_question.respuesta,
-        'alternativa2': random_question.alternativa2,
-        'alternativa3': random_question.alternativa3,
-        'alternativa4': random_question.alternativa4,
-        'hint': random_question.hint,
-    }
+    # Baraja aleatoriamente las preguntas para obtener un orden aleatorio
+    shuffle(preguntas)
+    
+    # Convierte las preguntas en una lista de diccionarios serializables
+    data = []
+    for pregunta in preguntas:
+        pregunta_data = {
+            'id': pregunta.id,
+            'tema': pregunta.tema,
+            'tipo': pregunta.tipo,
+            'nivel_dificultad': pregunta.nivel_dificultad,
+            'enunciado': pregunta.enunciado,
+            'respuesta': pregunta.respuesta,
+            'alternativa1': pregunta.alternativa1,
+            'alternativa2': pregunta.alternativa2,
+            'alternativa3': pregunta.alternativa3,
+            'alternativa4': pregunta.alternativa4,
+            'hint': pregunta.hint,
+        }
+        data.append(pregunta_data)
+    
+    return JsonResponse(data, safe=False)
 
-    return JsonResponse(data)
 class PreguntaAleatoria(APIView):
     def get(self, request):
         # Obtén una pregunta aleatoria de la base de datos
