@@ -3,61 +3,130 @@ import './PreguntasPage.css';
 
 function PreguntasPage() {
   const [showHint, setShowHint] = useState(false);
-  const [question, setQuestion] = useState(null);
+  const [preguntas, setPreguntas] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [respuestaUsuario, setRespuestaUsuario] = useState('');
+  const [mensajeError, setMensajeError] = useState('');
+  const [juegoFinalizado, setJuegoFinalizado] = useState(false); // Nuevo estado
 
   useEffect(() => {
-    // Realizar la solicitud HTTP para obtener una pregunta al azar
+    // Realizar la solicitud HTTP para obtener la lista de preguntas al azar
     fetch('http://localhost:8000/api/get_random_question/')
       .then((response) => response.json())
-      .then((data) => setQuestion(data))
-
-      .catch((error) => console.error('Error al obtener la pregunta:', error));
+      .then((data) => setPreguntas(data))
+      .catch((error) => console.error('Error al obtener las preguntas:', error));
   }, []);
 
   const handleHintClick = () => {
     setShowHint(true);
   };
 
+  const handleRespuestaChange = (e) => {
+    setRespuestaUsuario(e.target.value);
+  };
+
+  const handleVerificarRespuesta = () => {
+    if (currentQuestionIndex < preguntas.length) {
+      const question = preguntas[currentQuestionIndex];
+
+      if (question.tipo === 'alternativas') {
+        // Verificar respuesta para preguntas de alternativas
+        if (respuestaUsuario === question.respuesta) {
+          // Respuesta correcta: avanza a la siguiente pregunta
+          setCurrentQuestionIndex(currentQuestionIndex + 1);
+          setRespuestaUsuario('');
+          setShowHint(false);
+          setMensajeError('');
+        } else {
+          // Respuesta incorrecta: mostrar mensaje de error
+          setMensajeError('Respuesta incorrecta. Inténtalo de nuevo.');
+        }
+      } else {
+        // Verificar respuesta para preguntas de desarrollo
+        if (respuestaUsuario === question.respuesta) {
+          // Respuesta correcta: avanza automáticamente a la siguiente pregunta
+          setCurrentQuestionIndex(currentQuestionIndex + 1);
+          setRespuestaUsuario('');
+          setShowHint(false);
+          setMensajeError('');
+        } else {
+          // Respuesta incorrecta: mostrar mensaje de error
+          setMensajeError('Respuesta incorrecta. Inténtalo de nuevo.');
+        }
+      }
+
+      // Comprobar si se han respondido todas las preguntas
+      if (currentQuestionIndex === preguntas.length - 1) {
+        setJuegoFinalizado(true);
+      }
+    }
+  };
+
+  const handleSeleccionarAlternativa = (alternativa) => {
+    if (currentQuestionIndex < preguntas.length) {
+      const question = preguntas[currentQuestionIndex];
+
+      if (alternativa === question.respuesta) {
+        // Respuesta correcta: avanza a la siguiente pregunta
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setRespuestaUsuario('');
+        setShowHint(false);
+        setMensajeError('');
+
+        // Comprobar si se han respondido todas las preguntas
+        if (currentQuestionIndex === preguntas.length - 1) {
+          setJuegoFinalizado(true);
+        }
+      } else {
+        // Respuesta incorrecta: mostrar mensaje de error
+        setMensajeError('Respuesta incorrecta. Inténtalo de nuevo.');
+      }
+    }
+  };
+
   return (
     <div className="questions-page">
       <h1>Preguntas y Respuestas</h1>
       
-      {question ? (
+      {juegoFinalizado ? ( // Mostrar mensaje de juego finalizado
+        <p>Juego finalizado, has respondido todo.</p>
+      ) : preguntas.length > 0 ? (
         <div className="question-card">
-          <h2>Pregunta {question.id}</h2>
+          <h2>Pregunta {preguntas[currentQuestionIndex].id}</h2>
           
-          <p>{question.enunciado}</p>
-          {question.tipo === 'alternativas' ? (
+          <p>{preguntas[currentQuestionIndex].enunciado}</p>
+          {preguntas[currentQuestionIndex].tipo === 'alternativas' ? (
             // Renderizar opciones de respuesta para preguntas de alternativas
-            <ul className="answer-options">
-              <li>
-                <button className="answer-button">A. {question.respuesta}</button>
-                
-              </li>
-              <li>
-                <button className="answer-button">B. {question.alternativa2}</button>
-              </li>
-              <li>
-                <button className="answer-button">C. {question.alternativa3}</button>
-              </li>
-              <li>
-                <button className="answer-button">D. {question.alternativa4}</button>
-              </li>
-            </ul>
+            <div className="answer-options">
+              <button className="answer-button" onClick={() => handleSeleccionarAlternativa('1')}>1. {preguntas[currentQuestionIndex].alternativa1}</button>
+              <button className="answer-button" onClick={() => handleSeleccionarAlternativa('2')}>2. {preguntas[currentQuestionIndex].alternativa2}</button>
+              <button className="answer-button" onClick={() => handleSeleccionarAlternativa('3')}>3. {preguntas[currentQuestionIndex].alternativa3}</button>
+              <button className="answer-button" onClick={() => handleSeleccionarAlternativa('4')}>4. {preguntas[currentQuestionIndex].alternativa4}</button>
+            </div>
           ) : (
             // Renderizar entrada de respuesta para preguntas de desarrollo
             <div className="answer-input">
-              <input type="text" placeholder="Escribe tu respuesta" className="answer-field" />
+              <input
+                type="text"
+                placeholder="Escribe tu respuesta"
+                className="answer-field"
+                value={respuestaUsuario}
+                onChange={handleRespuestaChange}
+              />
+              <button className="answer-button" onClick={handleVerificarRespuesta}>
+                Verificar Respuesta
+              </button>
             </div>
           )}
           <button className="hint-button" onClick={handleHintClick}>
             Hint
-            {showHint && <span className="hint-popup">{question.hint}</span>}
+            {showHint && <span className="hint-popup">{preguntas[currentQuestionIndex].hint}</span>}
           </button>
+          {mensajeError && <p className="error-message">{mensajeError}</p>}
         </div>
       ) : (
-        // Mostrar un mensaje de carga mientras se obtiene la pregunta
-        <p>Cargando pregunta...</p>
+        // Mostrar un mensaje de carga mientras se obtienen las preguntas
+        <p>Cargando preguntas..</p>
       )}
     </div>
   );
