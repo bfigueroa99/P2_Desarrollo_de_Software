@@ -71,15 +71,7 @@ function HomePage() {
         </ul>
       </motion.div>
 
-      <motion.div
-        className="get-started"
-        initial="initial"
-        animate="animate"
-        variants={buttonVariants}
-      >
-        <p className="cta-text">¡Prepárate para sumergirte en el emocionante mundo de la termodinámica! ¿Estás listo para empezar?</p>
-        <button className="start-button">Comenzar el Curso</button>
-      </motion.div>
+      
     </div>
   );
 }
