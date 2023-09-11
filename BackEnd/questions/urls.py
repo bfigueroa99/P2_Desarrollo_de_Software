@@ -5,4 +5,5 @@ urlpatterns = [
     path('preguntas/', views.ListaPreguntas.as_view(), name='lista_preguntas'),
     path('preguntas/<int:pk>/', views.DetallePregunta.as_view(), name='detalle_pregunta'),
     path('preguntas/aleatoria/', views.PreguntaAleatoria.as_view(), name='pregunta_aleatoria'),
+    path('rellenar/', views.RellenarBaseDeDatos.as_view(), name='rellenar_base_de_datos'),
 ]
