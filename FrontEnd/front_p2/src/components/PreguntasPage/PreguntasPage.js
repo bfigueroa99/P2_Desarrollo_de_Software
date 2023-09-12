@@ -43,15 +43,24 @@ function PreguntasPage() {
         }
       } else {
         // Verificar respuesta para preguntas de desarrollo
-        if (respuestaUsuario === question.respuesta) {
-          // Respuesta correcta: avanza automáticamente a la siguiente pregunta
-          setCurrentQuestionIndex(currentQuestionIndex + 1);
-          setRespuestaUsuario('');
-          setShowHint(false);
-          setMensajeError('');
+        const respuestaNumerica = parseFloat(respuestaUsuario);
+        const respuestaEsperadaNumerica = parseFloat(question.respuesta);
+        
+        if (!isNaN(respuestaNumerica) && !isNaN(respuestaEsperadaNumerica)) {
+          // Verificar si las partes enteras coinciden
+          if (Math.floor(respuestaNumerica) === Math.floor(respuestaEsperadaNumerica)) {
+            // Respuesta correcta: avanza automáticamente a la siguiente pregunta
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+            setRespuestaUsuario('');
+            setShowHint(false);
+            setMensajeError('');
+          } else {
+            // Respuesta incorrecta: mostrar mensaje de error
+            setMensajeError('Respuesta incorrecta. Inténtalo de nuevo.');
+          }
         } else {
-          // Respuesta incorrecta: mostrar mensaje de error
-          setMensajeError('Respuesta incorrecta. Inténtalo de nuevo.');
+          // La respuesta del usuario o la respuesta esperada no son números válidos
+          setMensajeError('Por favor, ingresa una respuesta numérica válida.');
         }
       }
 
