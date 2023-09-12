@@ -8,8 +8,10 @@ function PreguntasPage() {
   const [respuestaUsuario, setRespuestaUsuario] = useState('');
   const [mensajeError, setMensajeError] = useState('');
   const [juegoFinalizado, setJuegoFinalizado] = useState(false);
-  const [respuestasCorrectas, setRespuestasCorrectas] = useState(0); // Nuevo estado para respuestas correctas
-  const [respuestasIncorrectas, setRespuestasIncorrectas] = useState(0); // Nuevo estado para respuestas incorrectas
+  const [respuestasCorrectas, setRespuestasCorrectas] = useState(0);
+  const [respuestasIncorrectas, setRespuestasIncorrectas] = useState(0);
+  const [preguntasIncorrectas, setPreguntasIncorrectas] = useState([]); // Nueva lista para preguntas incorrectas
+  const [segundaOportunidad, setSegundaOportunidad] = useState(false); // Nuevo estado para controlar la segunda oportunidad
 
   useEffect(() => {
     // Realizar la solicitud HTTP para obtener la lista de preguntas al azar
@@ -41,15 +43,19 @@ function PreguntasPage() {
           setMensajeError('');
           setRespuestasCorrectas(respuestasCorrectas + 1);
         } else {
-          // Respuesta incorrecta: mostrar mensaje de error y aumenta el contador de respuestas incorrectas
-          setMensajeError('Respuesta incorrecta. Inténtalo de nuevo.');
+          // Respuesta incorrecta en la primera oportunidad: agrega la pregunta a la lista de preguntas incorrectas
+          setPreguntasIncorrectas([...preguntasIncorrectas, question]);
+          setCurrentQuestionIndex(currentQuestionIndex + 1);
+          setRespuestaUsuario('');
+          setShowHint(false);
+          setMensajeError('');
           setRespuestasIncorrectas(respuestasIncorrectas + 1);
         }
       } else {
         // Verificar respuesta para preguntas de desarrollo
         const respuestaNumerica = parseFloat(respuestaUsuario);
         const respuestaEsperadaNumerica = parseFloat(question.respuesta);
-        
+
         if (!isNaN(respuestaNumerica) && !isNaN(respuestaEsperadaNumerica)) {
           // Verificar si las partes enteras coinciden
           if (Math.floor(respuestaNumerica) === Math.floor(respuestaEsperadaNumerica)) {
@@ -60,8 +66,12 @@ function PreguntasPage() {
             setMensajeError('');
             setRespuestasCorrectas(respuestasCorrectas + 1);
           } else {
-            // Respuesta incorrecta: mostrar mensaje de error y aumenta el contador de respuestas incorrectas
-            setMensajeError('Respuesta incorrecta. Inténtalo de nuevo.');
+            // Respuesta incorrecta en la primera oportunidad: agrega la pregunta a la lista de preguntas incorrectas
+            setPreguntasIncorrectas([...preguntasIncorrectas, question]);
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+            setRespuestaUsuario('');
+            setShowHint(false);
+            setMensajeError('');
             setRespuestasIncorrectas(respuestasIncorrectas + 1);
           }
         } else {
@@ -73,7 +83,17 @@ function PreguntasPage() {
 
       // Comprobar si se han respondido todas las preguntas
       if (currentQuestionIndex === preguntas.length - 1) {
-        setJuegoFinalizado(true);
+        if (segundaOportunidad || preguntasIncorrectas.length === 0) {
+          setJuegoFinalizado(true);
+        } else {
+          setSegundaOportunidad(true);
+          setCurrentQuestionIndex(0);
+          setRespuestaUsuario('');
+          setShowHint(false);
+          setMensajeError('');
+          setPreguntas(preguntasIncorrectas); // Cargar preguntas incorrectas para la segunda oportunidad
+          setPreguntasIncorrectas([]); // Limpiar la lista de preguntas incorrectas
+        }
       }
     }
   };
@@ -92,11 +112,25 @@ function PreguntasPage() {
 
         // Comprobar si se han respondido todas las preguntas
         if (currentQuestionIndex === preguntas.length - 1) {
-          setJuegoFinalizado(true);
+          if (segundaOportunidad || preguntasIncorrectas.length === 0) {
+            setJuegoFinalizado(true);
+          } else {
+            setSegundaOportunidad(true);
+            setCurrentQuestionIndex(0);
+            setRespuestaUsuario('');
+            setShowHint(false);
+            setMensajeError('');
+            setPreguntas(preguntasIncorrectas); // Cargar preguntas incorrectas para la segunda oportunidad
+            setPreguntasIncorrectas([]); // Limpiar la lista de preguntas incorrectas
+          }
         }
       } else {
-        // Respuesta incorrecta: mostrar mensaje de error y aumenta el contador de respuestas incorrectas
-        setMensajeError('Respuesta incorrecta. Inténtalo de nuevo.');
+        // Respuesta incorrecta en la primera oportunidad: agrega la pregunta a la lista de preguntas incorrectas
+        setPreguntasIncorrectas([...preguntasIncorrectas, question]);
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setRespuestaUsuario('');
+        setShowHint(false);
+        setMensajeError('');
         setRespuestasIncorrectas(respuestasIncorrectas + 1);
       }
     }
@@ -106,11 +140,11 @@ function PreguntasPage() {
     <div className="questions-page">
       <h1>Preguntas y Respuestas</h1>
       
-      {juegoFinalizado ? ( // Mostrar mensaje de juego finalizado y estadísticas de respuestas
+      {juegoFinalizado ? ( // Aqui deberia ir conteo print final de correctas incorrectas Mostrar mensaje de juego finalizado y estadísticas de respuestas
         <div>
           <p>Juego finalizado, has respondido todo.</p>
-          <p>Respuestas correctas: {respuestasCorrectas}</p>
-          <p>Respuestas incorrectas: {respuestasIncorrectas}</p>
+          <p></p>
+          <p></p>
         </div>
       ) : preguntas.length > 0 ? (
         <div className="question-card">
