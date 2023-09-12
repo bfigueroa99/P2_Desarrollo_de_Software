@@ -7,7 +7,9 @@ function PreguntasPage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [respuestaUsuario, setRespuestaUsuario] = useState('');
   const [mensajeError, setMensajeError] = useState('');
-  const [juegoFinalizado, setJuegoFinalizado] = useState(false); // Nuevo estado
+  const [juegoFinalizado, setJuegoFinalizado] = useState(false);
+  const [respuestasCorrectas, setRespuestasCorrectas] = useState(0); // Nuevo estado para respuestas correctas
+  const [respuestasIncorrectas, setRespuestasIncorrectas] = useState(0); // Nuevo estado para respuestas incorrectas
 
   useEffect(() => {
     // Realizar la solicitud HTTP para obtener la lista de preguntas al azar
@@ -32,14 +34,16 @@ function PreguntasPage() {
       if (question.tipo === 'alternativas') {
         // Verificar respuesta para preguntas de alternativas
         if (respuestaUsuario === question.respuesta) {
-          // Respuesta correcta: avanza a la siguiente pregunta
+          // Respuesta correcta: avanza a la siguiente pregunta y aumenta el contador de respuestas correctas
           setCurrentQuestionIndex(currentQuestionIndex + 1);
           setRespuestaUsuario('');
           setShowHint(false);
           setMensajeError('');
+          setRespuestasCorrectas(respuestasCorrectas + 1);
         } else {
-          // Respuesta incorrecta: mostrar mensaje de error
+          // Respuesta incorrecta: mostrar mensaje de error y aumenta el contador de respuestas incorrectas
           setMensajeError('Respuesta incorrecta. Inténtalo de nuevo.');
+          setRespuestasIncorrectas(respuestasIncorrectas + 1);
         }
       } else {
         // Verificar respuesta para preguntas de desarrollo
@@ -49,18 +53,21 @@ function PreguntasPage() {
         if (!isNaN(respuestaNumerica) && !isNaN(respuestaEsperadaNumerica)) {
           // Verificar si las partes enteras coinciden
           if (Math.floor(respuestaNumerica) === Math.floor(respuestaEsperadaNumerica)) {
-            // Respuesta correcta: avanza automáticamente a la siguiente pregunta
+            // Respuesta correcta: avanza automáticamente a la siguiente pregunta y aumenta el contador de respuestas correctas
             setCurrentQuestionIndex(currentQuestionIndex + 1);
             setRespuestaUsuario('');
             setShowHint(false);
             setMensajeError('');
+            setRespuestasCorrectas(respuestasCorrectas + 1);
           } else {
-            // Respuesta incorrecta: mostrar mensaje de error
+            // Respuesta incorrecta: mostrar mensaje de error y aumenta el contador de respuestas incorrectas
             setMensajeError('Respuesta incorrecta. Inténtalo de nuevo.');
+            setRespuestasIncorrectas(respuestasIncorrectas + 1);
           }
         } else {
           // La respuesta del usuario o la respuesta esperada no son números válidos
           setMensajeError('Por favor, ingresa una respuesta numérica válida.');
+          setRespuestasIncorrectas(respuestasIncorrectas + 1);
         }
       }
 
@@ -76,19 +83,21 @@ function PreguntasPage() {
       const question = preguntas[currentQuestionIndex];
 
       if (alternativa === question.respuesta) {
-        // Respuesta correcta: avanza a la siguiente pregunta
+        // Respuesta correcta: avanza a la siguiente pregunta y aumenta el contador de respuestas correctas
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         setRespuestaUsuario('');
         setShowHint(false);
         setMensajeError('');
+        setRespuestasCorrectas(respuestasCorrectas + 1);
 
         // Comprobar si se han respondido todas las preguntas
         if (currentQuestionIndex === preguntas.length - 1) {
           setJuegoFinalizado(true);
         }
       } else {
-        // Respuesta incorrecta: mostrar mensaje de error
+        // Respuesta incorrecta: mostrar mensaje de error y aumenta el contador de respuestas incorrectas
         setMensajeError('Respuesta incorrecta. Inténtalo de nuevo.');
+        setRespuestasIncorrectas(respuestasIncorrectas + 1);
       }
     }
   };
@@ -97,8 +106,12 @@ function PreguntasPage() {
     <div className="questions-page">
       <h1>Preguntas y Respuestas</h1>
       
-      {juegoFinalizado ? ( // Mostrar mensaje de juego finalizado
-        <p>Juego finalizado, has respondido todo.</p>
+      {juegoFinalizado ? ( // Mostrar mensaje de juego finalizado y estadísticas de respuestas
+        <div>
+          <p>Juego finalizado, has respondido todo.</p>
+          <p>Respuestas correctas: {respuestasCorrectas}</p>
+          <p>Respuestas incorrectas: {respuestasIncorrectas}</p>
+        </div>
       ) : preguntas.length > 0 ? (
         <div className="question-card">
           <h2>Pregunta {preguntas[currentQuestionIndex].id}</h2>
