@@ -1,22 +1,22 @@
 import svgwrite
 import random
 
-def generar_pregunta_calculo_fraccion_de_mezcla():
+def generar_pregunta_fraccion_de_mezcla_agua():
     # Ruta simple para el archivo SVG
     ruta_archivo_svg = 'Question/SVG_tmp/tmp.svg'
 
     # Crea un lienzo SVG con un tamaño ligeramente mayor
     dwg = svgwrite.Drawing(ruta_archivo_svg, profile='tiny', size=('600px', '200px'))
 
-    # Volumen de agua (200 ml) y volumen de jugo de naranja (300 ml)
-    volumen_agua_ml = 200
-    volumen_jugo_ml = 300
+    # Genera valores aleatorios para las cantidades de agua y jugo de naranja en mililitros
+    cantidad_agua_ml = random.uniform(100, 500)
+    cantidad_jugo_naranja_ml = random.uniform(100, 500)
 
-    # Calcula la fracción que corresponde al agua
-    fraccion_agua = volumen_agua_ml / (volumen_agua_ml + volumen_jugo_ml)
+    # Calcula la fracción correspondiente al agua en la mezcla
+    fraccion_agua = cantidad_agua_ml / (cantidad_agua_ml + cantidad_jugo_naranja_ml)
 
     # Enunciado de la pregunta
-    enunciado = f"Tienes una mezcla de {volumen_agua_ml} ml de agua y {volumen_jugo_ml} ml de jugo de naranja. ¿Cuál es la fracción \nde la mezcla que corresponde al agua?"
+    enunciado = f"Tienes una mezcla de {cantidad_agua_ml:.2f} ml de agua y {cantidad_jugo_naranja_ml:.2f} ml de jugo de naranja. ¿Cuál es la fracción de la mezcla que corresponde al agua?"
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
@@ -39,4 +39,4 @@ def generar_pregunta_calculo_fraccion_de_mezcla():
     return respuesta
 
 # Llama a la función y guarda la respuesta
-respuesta = generar_pregunta_calculo_fraccion_de_mezcla()
+respuesta = generar_pregunta_fraccion_de_mezcla_agua()
