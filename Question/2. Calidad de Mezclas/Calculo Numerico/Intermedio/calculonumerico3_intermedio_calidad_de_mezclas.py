@@ -1,21 +1,22 @@
 import svgwrite
 import random
 
-def generar_pregunta_cantidad_de_jugo_de_uva_en_mezcla():
+def generar_pregunta_proporcion_mezcla_harina_azucar():
     # Ruta simple para el archivo SVG
     ruta_archivo_svg = 'Question/SVG_tmp/tmp.svg'
 
     # Crea un lienzo SVG con un tamaño ligeramente mayor
     dwg = svgwrite.Drawing(ruta_archivo_svg, profile='tiny', size=('600px', '200px'))
 
-    # Genera valores aleatorios para el volumen total de la mezcla en mililitros (entre 100 ml y 1000 ml)
-    volumen_mezcla_ml = random.uniform(100, 1000)
+    # Genera un valor aleatorio para la cantidad total de la mezcla en gramos
+    cantidad_total_gramos = random.uniform(100, 500)
 
-    # Calcula la cantidad de jugo de uva en la mezcla, considerando que es 40% de la mezcla
-    cantidad_jugo_uva_ml = 0.4 * volumen_mezcla_ml
+    # Calcula la cantidad de harina y azúcar en la mezcla en una proporción de 3:2
+    cantidad_harina_gramos = (3 / 5) * cantidad_total_gramos
+    cantidad_azucar_gramos = (2 / 5) * cantidad_total_gramos
 
     # Enunciado de la pregunta
-    enunciado = f"Tienes una mezcla de 60% de jugo de manzana y 40% de jugo de uva. Si tienes {volumen_mezcla_ml:.2f}\n ml de esta mezcla, ¿cuántos ml de jugo de uva contiene?"
+    enunciado = f"Tienes {cantidad_total_gramos:.2f} gramos de una mezcla de harina y azúcar en una proporción de 3:2. \n¿Cuántos gramos de harina y cuántos gramos de azúcar tienes en la mezcla?"
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
@@ -26,8 +27,8 @@ def generar_pregunta_cantidad_de_jugo_de_uva_en_mezcla():
         dwg.add(dwg.text(linea, insert=(20, y_pos), fill='black', font_size='14px', text_anchor='start'))
         y_pos += espacio_entre_lineas
 
-    # Calcula la respuesta
-    respuesta = f"Respuesta: {cantidad_jugo_uva_ml:.2f} ml"
+    # Calcula y formatea la respuesta
+    respuesta = f"Respuesta: Tienes {cantidad_harina_gramos:.2f} gramos de harina y {cantidad_azucar_gramos:.2f} gramos de azúcar en la mezcla."
 
     # No agrega la respuesta como texto
 
@@ -38,4 +39,4 @@ def generar_pregunta_cantidad_de_jugo_de_uva_en_mezcla():
     return respuesta
 
 # Llama a la función y guarda la respuesta
-respuesta = generar_pregunta_cantidad_de_jugo_de_uva_en_mezcla()
+respuesta = generar_pregunta_proporcion_mezcla_harina_azucar()
