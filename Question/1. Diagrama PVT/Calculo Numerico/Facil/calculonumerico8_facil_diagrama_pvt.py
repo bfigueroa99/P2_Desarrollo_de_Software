@@ -3,7 +3,7 @@ import random
 
 def generar_pregunta_calculo_numerico_volumen_gases_ideales():
     # Especifica la ruta completa del archivo SVG junto con su nombre de archivo.
-    ruta_archivo_svg = 'Question/SVG_tmp/calculonumerico8_facil_diagrama_pvt.svg'
+    ruta_archivo_svg = 'Question/SVG_tmp/tmp.svg'
 
     # Crea un lienzo SVG con la ruta del archivo
     dwg = svgwrite.Drawing(ruta_archivo_svg, profile='tiny', size=('600px', '200px'))

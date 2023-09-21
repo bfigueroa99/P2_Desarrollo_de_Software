@@ -1,29 +1,28 @@
 import svgwrite
 import random
 
-def generar_pregunta_calculo_numerico_nuevo_volumen():
+def generar_pregunta_calculo_numerico_cantidad_moles():
     # Ruta simple para el archivo SVG
     ruta_archivo_svg = 'Question/SVG_tmp/tmp.svg'
 
     # Crea un lienzo SVG con un tamaño ligeramente mayor
     dwg = svgwrite.Drawing(ruta_archivo_svg, profile='tiny', size=('600px', '200px'))
 
-    # Genera valores aleatorios para el volumen inicial (entre 5 y 20 litros) y la temperatura (entre 200 y 400 Kelvin)
-    volumen_inicial_litros = random.uniform(5, 20)
+    # Genera valores aleatorios para la temperatura (entre 200 y 400 Kelvin) y el volumen (entre 10 y 30 litros)
     temperatura_kelvin = random.uniform(200, 400)
+    volumen_litros = random.uniform(10, 30)
 
-    # Genera un valor aleatorio para la nueva presión (entre 2 y 8 atmósferas)
-    nueva_presion_atm = random.uniform(2, 8)
+    # Genera un valor aleatorio para la nueva presión (1 atmósfera)
+    nueva_presion_atm = 1
 
     # Constante de los gases
     constante_de_los_gases = 0.0821  # Constante de los gases en (L * atm) / (mol * K)
 
-    # Calcula el nuevo volumen usando la ecuación de los gases ideales: V2 = (n * R * T2) / P2
-    # Suponemos una cantidad de sustancia de 1 mol (n = 1)
-    nuevo_volumen_litros = (constante_de_los_gases * temperatura_kelvin) / nueva_presion_atm
+    # Calcula la cantidad de moles usando la ley de los gases ideales: n = (P * V) / (R * T)
+    cantidad_moles = (nueva_presion_atm * volumen_litros) / (constante_de_los_gases * temperatura_kelvin)
 
     # Enunciado de la pregunta
-    enunciado = f"Un gas ideal ocupa un volumen de {volumen_inicial_litros:.2f} litros a una temperatura de {temperatura_kelvin:.2f} K. Si se co-\nmprime a una presión de {nueva_presion_atm:.2f} atmósferas, ¿cuál será su nuevo volumen?"
+    enunciado = f"Tienes un gas a una temperatura de {temperatura_kelvin:.2f} K y un volumen de {volumen_litros:.2f} litros. Si su presi-\nón se reduce a {nueva_presion_atm:.2f} atmósfera, ¿cuántos moles de gas hay en el recipiente si cumple \ncon la ley de los gases ideales?"
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
@@ -35,7 +34,7 @@ def generar_pregunta_calculo_numerico_nuevo_volumen():
         y_pos += espacio_entre_lineas
 
     # Calcula la respuesta
-    respuesta = f"Respuesta: {nuevo_volumen_litros:.2f} litros"
+    respuesta = f"Respuesta: {cantidad_moles:.2f} moles"
 
     # No agrega la respuesta como texto
 
@@ -46,4 +45,4 @@ def generar_pregunta_calculo_numerico_nuevo_volumen():
     return respuesta
 
 # Llama a la función y guarda la respuesta
-generar_pregunta_calculo_numerico_nuevo_volumen()
+respuesta = generar_pregunta_calculo_numerico_cantidad_moles()
