@@ -1,21 +1,23 @@
 import svgwrite
 import random
 
-def generar_pregunta_calculo_numerico_nueva_temperatura():
+def generar_pregunta_calculo_numerico_nueva_presion_duplicar_volumen():
     # Ruta simple para el archivo SVG
     ruta_archivo_svg = 'Question/SVG_tmp/tmp.svg'
 
     # Crea un lienzo SVG con un tamaño ligeramente mayor
     dwg = svgwrite.Drawing(ruta_archivo_svg, profile='tiny', size=('600px', '200px'))
 
-    # Genera valores aleatorios para la temperatura (entre 300 y 500 Kelvin)
-    temperatura_actual = random.uniform(300, 500)
+    # Genera valores aleatorios para la temperatura (entre 300 y 500 Kelvin) y la presión (entre 1 y 3 atmósferas)
+    temperatura_kelvin = random.uniform(300, 500)
+    presion_atm = random.uniform(1, 3)
 
-    # Calcula la nueva temperatura después de reducir el volumen a la mitad a presión constante
-    nueva_temperatura = temperatura_actual / 2
+    # Calcula la nueva presión usando la ley de los gases ideales: P1 * V1 = P2 * V2
+    # Suponemos que el volumen inicial es V y el volumen duplicado es 2V
+    nueva_presion_atm = presion_atm / 2
 
     # Enunciado de la pregunta
-    enunciado = f"Un recipiente contiene 3 moles de gas a una temperatura de {temperatura_actual:.2f} K. Si el volumen del\n recipiente se reduce a la mitad mientras la presión se mantiene constante, ¿cuál será la\n nueva temperatura del gas?"
+    enunciado = f"Un gas ideal se encuentra a una temperatura de {temperatura_kelvin:.2f} K y una presión de {presion_atm:.2f} atmós-\nferas. Si su volumen se duplica mientras la temperatura se mantiene constante, ¿cuál\n será la nueva presión del gas?"
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
@@ -27,7 +29,7 @@ def generar_pregunta_calculo_numerico_nueva_temperatura():
         y_pos += espacio_entre_lineas
 
     # Calcula la respuesta
-    respuesta = f"Respuesta: {nueva_temperatura:.2f} K"
+    respuesta = f"Respuesta: {nueva_presion_atm:.2f} atmósferas"
 
     # No agrega la respuesta como texto
 
@@ -38,4 +40,4 @@ def generar_pregunta_calculo_numerico_nueva_temperatura():
     return respuesta
 
 # Llama a la función y guarda la respuesta
-generar_pregunta_calculo_numerico_nueva_temperatura()
+respuesta = generar_pregunta_calculo_numerico_nueva_presion_duplicar_volumen()

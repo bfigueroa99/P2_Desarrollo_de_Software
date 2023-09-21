@@ -1,29 +1,26 @@
 import svgwrite
 import random
 
-def generar_pregunta_calculo_numerico_nuevo_volumen():
+def generar_pregunta_calculo_numerico_presion():
     # Ruta simple para el archivo SVG
     ruta_archivo_svg = 'Question/SVG_tmp/tmp.svg'
 
     # Crea un lienzo SVG con un tamaño ligeramente mayor
     dwg = svgwrite.Drawing(ruta_archivo_svg, profile='tiny', size=('600px', '200px'))
 
-    # Genera valores aleatorios para el volumen inicial (entre 5 y 20 litros) y la temperatura (entre 200 y 400 Kelvin)
-    volumen_inicial_litros = random.uniform(5, 20)
-    temperatura_kelvin = random.uniform(200, 400)
-
-    # Genera un valor aleatorio para la nueva presión (entre 2 y 8 atmósferas)
-    nueva_presion_atm = random.uniform(2, 8)
+    # Genera valores aleatorios para la cantidad de moles (entre 1 y 5 moles), la temperatura (entre 300 y 400 Kelvin) y el volumen (entre 5 y 15 litros)
+    moles = random.uniform(1, 5)
+    temperatura_kelvin = random.uniform(300, 400)
+    volumen_litros = random.uniform(5, 15)
 
     # Constante de los gases
     constante_de_los_gases = 0.0821  # Constante de los gases en (L * atm) / (mol * K)
 
-    # Calcula el nuevo volumen usando la ecuación de los gases ideales: V2 = (n * R * T2) / P2
-    # Suponemos una cantidad de sustancia de 1 mol (n = 1)
-    nuevo_volumen_litros = (constante_de_los_gases * temperatura_kelvin) / nueva_presion_atm
+    # Calcula la presión usando la ley de los gases ideales: P = (n * R * T) / V
+    presion_atm = (moles * constante_de_los_gases * temperatura_kelvin) / volumen_litros
 
     # Enunciado de la pregunta
-    enunciado = f"Un gas ideal ocupa un volumen de {volumen_inicial_litros:.2f} litros a una temperatura de {temperatura_kelvin:.2f} K. Si se co-\nmprime a una presión de {nueva_presion_atm:.2f} atmósferas, ¿cuál será su nuevo volumen?"
+    enunciado = f"Si tienes {moles:.2f} moles de gas a una temperatura de {temperatura_kelvin:.2f} K y un volumen de {volumen_litros:.2f} litros,\n ¿cuál sería la presión del gas si cumple con la ley de los gases ideales?"
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
@@ -35,7 +32,7 @@ def generar_pregunta_calculo_numerico_nuevo_volumen():
         y_pos += espacio_entre_lineas
 
     # Calcula la respuesta
-    respuesta = f"Respuesta: {nuevo_volumen_litros:.2f} litros"
+    respuesta = f"Respuesta: {presion_atm:.2f} atmósferas"
 
     # No agrega la respuesta como texto
 
@@ -46,4 +43,4 @@ def generar_pregunta_calculo_numerico_nuevo_volumen():
     return respuesta
 
 # Llama a la función y guarda la respuesta
-generar_pregunta_calculo_numerico_nuevo_volumen()
+respuesta = generar_pregunta_calculo_numerico_presion()
