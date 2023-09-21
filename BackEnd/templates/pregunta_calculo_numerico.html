@@ -1,0 +1,23 @@
+<!-- pregunta_calculo_numerico.html -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pregunta de Cálculo Numérico</title>
+</head>
+<body>
+    <h1>Pregunta de Cálculo Numérico</h1>
+    <p>Aquí se muestra la pregunta y el gráfico SVG:</p>
+
+    <!-- Utiliza la etiqueta HTML <img> para mostrar el SVG -->
+    <img src="{% url 'pregunta_calculo_numerico' pregunta_id=pregunta.id %}" alt="Gráfico">
+
+    <!-- Agrega cualquier otra información de la pregunta que desees mostrar -->
+    <p>{{ pregunta.texto }}</p>
+    <p>Valor: {{ pregunta.valor }}</p>
+
+    <!-- Puedes agregar más detalles de la pregunta aquí -->
+</body>
+</html>
