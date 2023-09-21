@@ -16,7 +16,7 @@ def generar_pregunta_fraccion_de_mezcla_agua():
     fraccion_agua = cantidad_agua_ml / (cantidad_agua_ml + cantidad_jugo_naranja_ml)
 
     # Enunciado de la pregunta
-    enunciado = f"Tienes una mezcla de {cantidad_agua_ml:.2f} ml de agua y {cantidad_jugo_naranja_ml:.2f} ml de jugo de naranja. ¿Cuál es la fracción de la mezcla que corresponde al agua?"
+    enunciado = f"Tienes una mezcla de {cantidad_agua_ml:.2f} ml de agua y {cantidad_jugo_naranja_ml:.2f} ml de jugo de naranja. ¿Cuál es la fr-\nacción de la mezcla que corresponde al agua?"
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
