@@ -22,7 +22,7 @@ def generar_pregunta_calculo_numerico_stp():
 
     # Respuesta de la pregunta
     respuesta = f"Respuesta: {volumen_litros_stp:.2f} litros"
-
+    
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
     espacio_entre_lineas = 18
