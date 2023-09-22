@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Pregunta
 
 class PreguntaSerializer(serializers.ModelSerializer):
+    imagen_svg = serializers.ImageField(required=False)  # Asegúrate de que se permita cargar la imagen
     class Meta:
         model = Pregunta
         fields = '__all__'
