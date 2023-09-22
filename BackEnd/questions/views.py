@@ -13,11 +13,20 @@ class ListaPreguntas(generics.ListCreateAPIView):
 class DetallePregunta(generics.RetrieveUpdateDestroyAPIView):
     queryset = Pregunta.objects.all()
     serializer_class = PreguntaSerializer
-# views.py
-# views.py
-from random import shuffle
-from django.http import JsonResponse
-from .models import Pregunta
+
+    def perform_create(self, serializer):
+        imagen_svg = self.request.data.get('imagen_svg', None)
+        if imagen_svg:
+            serializer.save(imagen_svg=imagen_svg)
+        else:
+            serializer.save()
+
+    def perform_update(self, serializer):
+        imagen_svg = self.request.data.get('imagen_svg', None)
+        if imagen_svg:
+            serializer.save(imagen_svg=imagen_svg)
+        else:
+            serializer.save()
 
 def get_random_question(request):
     # Obtén todas las preguntas de la base de datos
