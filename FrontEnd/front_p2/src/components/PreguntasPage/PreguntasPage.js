@@ -42,6 +42,7 @@ function PreguntasPage() {
           setShowHint(false);
           setMensajeError('');
           setRespuestasCorrectas(respuestasCorrectas + 1);
+          
         } else {
           // Respuesta incorrecta en la primera oportunidad: agrega la pregunta a la lista de preguntas incorrectas
           setPreguntasIncorrectas([...preguntasIncorrectas, question]);
