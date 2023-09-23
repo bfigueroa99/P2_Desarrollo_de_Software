@@ -34,6 +34,21 @@ class Pregunta(models.Model):
     hint = models.TextField(null=True, blank=True)  # Campo para agregar hints
     imagen_svg = models.FileField(upload_to='preguntas_svg/', blank=True, null=True)
     
+    
 
     def __str__(self):
         return self.enunciado
+
+class Respuesta(models.Model):
+    pregunta_relacionada = models.ForeignKey(Pregunta, on_delete=models.CASCADE, related_name='respuestas')
+    respuesta_estudiante = models.CharField(max_length=255)
+    hint_utilizado = models.BooleanField(default=False)
+    respondida_correctamente = models.BooleanField(default=False)
+    # Otros campos que puedas necesitar, como el estudiante que respondió, la fecha y hora, etc.
+
+    def __str__(self):
+        return f'Respuesta a la pregunta {self.pregunta_id} por el estudiante {self.estudiante_id}'
+    
+
+
+

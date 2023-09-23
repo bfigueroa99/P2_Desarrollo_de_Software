@@ -3,8 +3,10 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics, status
-from .models import Pregunta
-from .serializers import PreguntaSerializer
+from .models import Pregunta, Respuesta
+from .serializers import PreguntaSerializer, RespuestaSerializer
+from sympy import simplify
+
 
 class ListaPreguntas(generics.ListCreateAPIView):
     queryset = Pregunta.objects.all()
@@ -78,3 +80,22 @@ class RellenarBaseDeDatos(APIView):
             return Response({"message": "Preguntas agregadas con éxito"}, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+class RegistrarRespuesta(APIView):
+    def post(self, request):
+        # Obtén los datos de la respuesta del estudiante desde la solicitud
+        datos_respuesta = request.data
+
+        # Serializa los datos de la respuesta utilizando el serializador RespuestaSerializer
+        serializer = RespuestaSerializer(data=datos_respuesta)
+
+        if serializer.is_valid():
+            # Si los datos son válidos, guarda la respuesta en la base de datos
+            serializer.save()
+            return Response({"mensaje": "Respuesta registrada con éxito"}, status=status.HTTP_201_CREATED)
+        else:
+            # Si los datos no son válidos, devuelve un mensaje de error
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
