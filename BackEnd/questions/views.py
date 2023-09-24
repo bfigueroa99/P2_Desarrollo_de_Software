@@ -93,16 +93,16 @@ def select_next_question(request):
         nivel_dificultad = 'alta'
 
     # Lista de preguntas disponibles
-    preguntas_disponibles = Pregunta.objects.all()#.exclude(id__in = [p.get('pregunta_relacionada') for p in preguntas_respondidas])
+    preguntas_disponibles = Pregunta.objects.all().exclude(id__in = [p.get('pregunta_relacionada') for p in preguntas_respondidas])
 
-    if not count_alternativas == 5:
+    if count_alternativas != 5:
         # Filtra preguntas de tipo "alternativas" del mismo tema y nivel de dificultad
         preguntas = preguntas_disponibles.filter(
             tema=preguntas_respondidas[-1]['tema'],
             nivel_dificultad=nivel_dificultad,
             tipo='alternativas'
         )
-    elif not count_calculonumerico == 2:
+    if count_calculonumerico != 2:
         # Filtra preguntas de tipo "calculonumerico" del mismo tema
         preguntas = preguntas_disponibles.filter(
             tema=preguntas_respondidas[-1]['tema'],
