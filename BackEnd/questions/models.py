@@ -46,6 +46,7 @@ class Respuesta(models.Model):
     hint_utilizado = models.BooleanField(default=False)
     respondida_correctamente = models.BooleanField(default=False)
     fecha_hora_respuesta = models.DateTimeField(auto_now_add=True)
+    tipo_pregunta = models.CharField(max_length=20)  # Agrega un campo para el tipo de pregunta
     
     def __str__(self):
         return f'Respuesta #{self.id} a la pregunta {self.pregunta_relacionada_id} por el estudiante {self.estudiante_id}'
