@@ -21,7 +21,7 @@ def generar_pregunta_masa_total_mezcla_azucar_harina():
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
     espacio_entre_lineas = 18
-    y_pos = 50
+    y_pos = 50 
 
     for linea in lineas_enunciado:
         dwg.add(dwg.text(linea, insert=(20, y_pos), fill='black', font_size='14px', text_anchor='start'))
@@ -36,7 +36,7 @@ def generar_pregunta_masa_total_mezcla_azucar_harina():
     dwg.save()
 
     # Retorna la respuesta
-    return respuesta
+    return masa_azucar_gramos, masa_harina_gramos, respuesta
 
 # Llama a la función y guarda la respuesta
-respuesta = generar_pregunta_masa_total_mezcla_azucar_harina()
+masa_azucar_gramos, masa_harina_gramos, respuesta = generar_pregunta_masa_total_mezcla_azucar_harina()
