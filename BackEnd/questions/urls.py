@@ -11,4 +11,5 @@ urlpatterns = [
     path('respuestas/', views.ListaRespuestas.as_view(), name='lista_respuestas'),
     path('eliminar-todas-las-respuestas/', views.EliminarTodasLasRespuestas.as_view(), name='eliminar_todas_las_respuestas'),
     path('siguiente_pregunta/', views.SiguientePregunta.as_view(), name='siguiente_pregunta'),
+    path('seleccionar_primera_pregunta/', views.SeleccionarPrimeraPregunta.as_view(), name='seleccionar_primera_pregunta'),
 ]

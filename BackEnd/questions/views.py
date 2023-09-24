@@ -137,7 +137,35 @@ def select_next_question(request):
     else:
         return ("No hay preguntas disponibles")
 
+class SeleccionarPrimeraPregunta(APIView):
+    def post(self, request):
+        # Obtén el nivel del estudiante y el tema del cuerpo de la solicitud
+        nivel_estudiante = request.data.get('nivel_estudiante', None)
+        tema = request.data.get('tema', None)
 
+        if nivel_estudiante is None or tema is None:
+            return Response({"mensaje": "Nivel del estudiante y tema son campos requeridos"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Filtra las preguntas disponibles basadas en el nivel del estudiante y el tema
+        preguntas_disponibles = Pregunta.objects.filter(
+            nivel_dificultad__lte=nivel_estudiante,
+            tema=tema
+        )
+
+        if not preguntas_disponibles.exists():
+            return Response({"mensaje": "No hay preguntas disponibles para este nivel y tema"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Baraja aleatoriamente las preguntas
+        preguntas = list(preguntas_disponibles)
+        random.shuffle(preguntas)
+
+        # Obtén la primera pregunta
+        primera_pregunta = preguntas[0]
+
+        # Serializa la pregunta y envía la respuesta
+        serializer = PreguntaSerializer(primera_pregunta)
+        return Response(serializer.data)
+    
 class SiguientePregunta(APIView):
     def post(self, request):
         # Obtén las preguntas respondidas del cuerpo de la solicitud
