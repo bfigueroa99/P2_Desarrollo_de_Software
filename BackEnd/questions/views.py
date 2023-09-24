@@ -1,4 +1,5 @@
 import random
+from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -36,11 +37,24 @@ def get_random_question(request):
     
     return JsonResponse(data, safe=False)
 
-def select_next_question(preguntas_respondidas, nivel_alumno=5):
+from django.http import JsonResponse
+from random import shuffle
+from .models import Pregunta
+
+def select_next_question(request):
+    # Obtén las preguntas respondidas del cuerpo de la solicitud
+    preguntas_respondidas = request.data.get('preguntas_respondidas', [])
+
+    # Obtén el nivel del alumno (puedes pasarlo en el cuerpo de la solicitud)
+    nivel_alumno = request.data.get('nivel_alumno', 5)
+
+    # Umbral y variables de racha
     umbral_racha_buenas = 2
     umbral_racha_mala = 2
     racha_buena = 0
     racha_mala = 0
+
+    # Contadores
     cb_tmp = 0
     cm_tmp = 0
     count_hint = 0
@@ -48,20 +62,17 @@ def select_next_question(preguntas_respondidas, nivel_alumno=5):
     count_calculonumerico = 0
 
     for p in preguntas_respondidas:
-        if p['correcta']:
+        if p['respondida_correctamente']:
             cb_tmp += 1
             cm_tmp = 0
             if cb_tmp >= umbral_racha_buenas:
                 racha_buena += 1
-            else:
-                racha_buena = 0
         else:
             cm_tmp += 1
             cb_tmp = 0
             if cm_tmp >= umbral_racha_mala:
                 racha_mala += 1
-            else:
-                racha_mala = 0
+
         if p['uso_hint']:
             count_hint += 1
 
@@ -71,10 +82,9 @@ def select_next_question(preguntas_respondidas, nivel_alumno=5):
         if p['tipo_pregunta'] == 'calculonumerico':
             count_calculonumerico += 1
 
-
     puntaje = ((nivel_alumno * 0.6) + (racha_buena * 0.4) - (count_hint * 0.1) - (racha_mala * 0.3))
 
-    # 1 2 3| 4 5 6 7 | 8 9 10
+    # Calcula el nivel de dificultad
     if puntaje <= 3:
         nivel_dificultad = 'baja'
     elif 3 < puntaje <= 7:
@@ -82,28 +92,34 @@ def select_next_question(preguntas_respondidas, nivel_alumno=5):
     else:
         nivel_dificultad = 'alta'
 
+    # Lista de preguntas disponibles
+    preguntas_disponibles = Pregunta.objects.all()#.exclude(id__in = [p.get('pregunta_relacionada') for p in preguntas_respondidas])
+
     if not count_alternativas == 5:
-        # Obtén preguntas del mismo tema y nivel de dificultad
-        preguntas = Pregunta.objects.filter(
+        # Filtra preguntas de tipo "alternativas" del mismo tema y nivel de dificultad
+        preguntas = preguntas_disponibles.filter(
             tema=preguntas_respondidas[-1]['tema'],
             nivel_dificultad=nivel_dificultad,
-            tipo='alternativas'  # Filtra por preguntas de tipo "alternativas"
-            )
-
-    
-    if not count_calculonumerico == 2:
-        preguntas = Pregunta.objects.filter(tema=preguntas_respondidas[-1]['tema'], tipo='calulonumerico')
-
-
+            tipo='alternativas'
+        )
+    elif not count_calculonumerico == 2:
+        # Filtra preguntas de tipo "calculonumerico" del mismo tema
+        preguntas = preguntas_disponibles.filter(
+            tema=preguntas_respondidas[-1]['tema'],
+            tipo='calculonumerico'
+        )
     else:
-        return("se acabaron las preguntas")
+        return JsonResponse({"mensaje": "Ya se respondieron todas las preguntas"})
 
-    # Baraja aleatoriamente las preguntas para obtener un orden aleatorio
+    # Baraja aleatoriamente las preguntas
     preguntas = list(preguntas)
-    random.shuffle(preguntas)
+    shuffle(preguntas)
+
+    print(preguntas)
 
     # Elige la siguiente pregunta (puede ser la primera que coincida)
-    for pregunta in preguntas:
+    if preguntas:
+        pregunta = preguntas[0]
         pregunta_data = {
             'id': pregunta.id,
             'tema': pregunta.tema,
@@ -114,11 +130,12 @@ def select_next_question(preguntas_respondidas, nivel_alumno=5):
             'alternativa1': pregunta.alternativa1,
             'alternativa2': pregunta.alternativa2,
             'alternativa3': pregunta.alternativa3,
-            'alternativa4': pregunta.alternativa4,
+            'alternativa4': pregunta.alternativa4,  
             'hint': pregunta.hint,
         }
-
         return pregunta_data
+    else:
+        return ("No hay preguntas disponibles")
 
 
 class SiguientePregunta(APIView):
@@ -130,7 +147,7 @@ class SiguientePregunta(APIView):
         nivel_alumno = request.data.get('nivel_alumno', 5)
 
         # Llama a la función para seleccionar la siguiente pregunta
-        siguiente_pregunta = select_next_question(preguntas_respondidas, nivel_alumno)
+        siguiente_pregunta = select_next_question(request)
 
         return Response(siguiente_pregunta)
 
