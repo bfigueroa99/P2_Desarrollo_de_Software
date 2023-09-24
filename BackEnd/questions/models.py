@@ -41,13 +41,14 @@ class Pregunta(models.Model):
 
 class Respuesta(models.Model):
     pregunta_relacionada = models.ForeignKey(Pregunta, on_delete=models.CASCADE, related_name='respuestas')
+    # estudiante = models.ForeignKey(User, on_delete=models.CASCADE)  # Supongamos que usas el modelo User de Django para los estudiantes
     respuesta_estudiante = models.CharField(max_length=255)
     hint_utilizado = models.BooleanField(default=False)
     respondida_correctamente = models.BooleanField(default=False)
-    # Otros campos que puedas necesitar, como el estudiante que respondió, la fecha y hora, etc.
-
+    fecha_hora_respuesta = models.DateTimeField(auto_now_add=True)
+    
     def __str__(self):
-        return f'Respuesta a la pregunta {self.pregunta_id} por el estudiante {self.estudiante_id}'
+        return f'Respuesta #{self.id} a la pregunta {self.pregunta_relacionada_id} por el estudiante {self.estudiante_id}'
     
 
 

@@ -98,4 +98,15 @@ class RegistrarRespuesta(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class ListaRespuestas(generics.ListAPIView):
+    queryset = Respuesta.objects.all()
+    serializer_class = RespuestaSerializer
 
+class EliminarTodasLasRespuestas(APIView):
+    def delete(self, request, *args, **kwargs):
+        try:
+            # Elimina todas las respuestas de la base de datos
+            Respuesta.objects.all().delete()
+            return Response({"mensaje": "Todas las respuestas han sido eliminadas"}, status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            return Response({"mensaje": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
