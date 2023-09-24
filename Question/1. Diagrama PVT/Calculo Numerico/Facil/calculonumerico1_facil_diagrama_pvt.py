@@ -1,44 +1,55 @@
 import svgwrite
+import cairo 
+import random
 
-def generar_pregunta_calculo_numerico_stp():
+def generar_pregunta_calculo_numerico_trabajo_isobarico():
     # Especifica la ruta completa del archivo SVG junto con su nombre de archivo.
     ruta_archivo_svg = 'Question/SVG_tmp/tmp.svg'
-
     # Crea un lienzo SVG con la ruta del archivo
     dwg = svgwrite.Drawing(ruta_archivo_svg, profile='tiny', size=('600px', '200px'))
 
-    # Valores estándar de temperatura y presión (STP)
-    temperatura_stp_kelvin = 273.15  # 0 grados Celsius en Kelvin
-    presion_stp_atm = 1.00  # 1 atmósfera
+    surface = cairo.SVGS
 
-    # Constante de los gases
-    constante_de_los_gases = 0.0821  # Constante de los gases en (L * atm) / (mol * K)
+    # Genera valores aleatorios para la presión (entre 1 y 10 atmósferas) y el cambio de volumen (entre 5 y 20 litros)
+    presion_atm = random.uniform(1, 10)
+    cambio_de_volumen_litros = random.uniform(5, 20)
 
-    # Calcula el volumen ocupado por un mol de gas ideal a STP
-    volumen_litros_stp = (constante_de_los_gases * temperatura_stp_kelvin) / presion_stp_atm
+    # Calcula el trabajo realizado en una expansión isobárica: trabajo = presión * cambio de volumen
+    trabajo_atm_litros = presion_atm * cambio_de_volumen_litros
 
     # Enunciado de la pregunta
-    enunciado = "¿Cuál es el volumen ocupado por un mol de gas ideal a condiciones estándar de \n temperatura y presión (STP)?"
+    enunciado = f"¿Cuál es el trabajo realizado por un gas en una expansión isobárica si la presión \n es de {presion_atm:.2f} atm y el cambio de volumen es de {cambio_de_volumen_litros:.2f} litros?"
 
     # Respuesta de la pregunta
-    respuesta = f"Respuesta: {volumen_litros_stp:.2f} litros"
-    
+    respuesta = f"Respuesta: {trabajo_atm_litros:.2f} atm·L"
+
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
     espacio_entre_lineas = 18
-    y_pos = 50
+    y_pos = 600
 
     for linea in lineas_enunciado:
         dwg.add(dwg.text(linea, insert=(20, y_pos), fill='black', font_size='14px', text_anchor='start'))
         y_pos += espacio_entre_lineas
 
+    radio_punto = 2
+
+    num_puntos = 1000
+    width, height = 600, 500
+    for _ in range(num_puntos):
+        x = random.uniform(0, width)
+        y = random.uniform(0, height)
+        dwg.add(dwg.circle(center=(x, y), r=radio_punto, fill='blue'))
+
     # # Agrega la respuesta como texto
-    # dwg.add(dwg.text(respuesta, insert=(20, (y_pos)*1.5), fill='black', font_size='14px', text_anchor='start'))
+    # dwg.add(dwg.text(respuesta, insert=(20, 90), fill='black', font_size='14px', text_anchor='start'))
 
     # Guarda el SVG generado en el archivo especificado
     dwg.save()
 
     return(respuesta)
 
-# Generar la pregunta de cálculo numérico para STP y guardar en el archivo especificado
-generar_pregunta_calculo_numerico_stp()
+# Generar la pregunta de cálculo numérico para trabajo en expansión isobárica y guardar en el archivo especificado
+generar_pregunta_calculo_numerico_trabajo_isobarico()
+
+
