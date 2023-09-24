@@ -146,11 +146,23 @@ class SeleccionarPrimeraPregunta(APIView):
         if nivel_estudiante is None or tema is None:
             return Response({"mensaje": "Nivel del estudiante y tema son campos requeridos"}, status=status.HTTP_400_BAD_REQUEST)
 
+        
+
+        # Calcula el nivel de dificultad
+        if nivel_estudiante <= 3:
+            nivel = 'baja'
+        elif 3 < nivel_estudiante <= 7:
+            nivel = 'media'
+        else:
+            nivel = 'alta'
+
         # Filtra las preguntas disponibles basadas en el nivel del estudiante y el tema
         preguntas_disponibles = Pregunta.objects.filter(
-            nivel_dificultad__lte=nivel_estudiante,
+            nivel_dificultad__lte=nivel,
             tema=tema
         )
+
+        print(preguntas_disponibles)
 
         if not preguntas_disponibles.exists():
             return Response({"mensaje": "No hay preguntas disponibles para este nivel y tema"}, status=status.HTTP_404_NOT_FOUND)
