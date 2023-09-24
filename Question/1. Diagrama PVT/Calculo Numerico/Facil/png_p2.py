@@ -1,6 +1,6 @@
 import cairo 
 import random 
-from calculonumerico1_facil_diagrama_pvt import presion_atm, cambio_de_volumen_litros 
+from calculonumerico2_facil_diagrama_pvt import presion_atm, cambio_de_volumen_litros 
 
 # Create an SVG surface
 surface = cairo.SVGSurface("gas_expansion.svg", 600, 650)

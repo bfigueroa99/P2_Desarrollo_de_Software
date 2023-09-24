@@ -47,9 +47,10 @@ def generar_pregunta_calculo_numerico_trabajo_isobarico():
     # Guarda el SVG generado en el archivo especificado
     dwg.save()
 
-    return(respuesta)
+    return(presion_atm,cambio_de_volumen_litros,respuesta)
 
 # Generar la pregunta de cálculo numérico para trabajo en expansión isobárica y guardar en el archivo especificado
-generar_pregunta_calculo_numerico_trabajo_isobarico()
+presion_atm, cambio_de_volumen_litros, respuesta = generar_pregunta_calculo_numerico_trabajo_isobarico()
+
 
 

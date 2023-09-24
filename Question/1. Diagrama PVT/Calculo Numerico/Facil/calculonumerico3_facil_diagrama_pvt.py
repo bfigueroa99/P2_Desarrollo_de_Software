@@ -40,7 +40,7 @@ def generar_pregunta_calculo_numerico_gases_ideales():
     # Guarda el SVG generado en el archivo especificado
     dwg.save()
 
-    return(respuesta)
+    return(presion_atm, temperatura_kelvin, respuesta)
 
 # Generar la pregunta de cálculo numérico para la ley de los gases ideales y guardar en el archivo especificado
-generar_pregunta_calculo_numerico_gases_ideales()
+presion_atm, temperatura_kelvin, respuesta = generar_pregunta_calculo_numerico_gases_ideales()
