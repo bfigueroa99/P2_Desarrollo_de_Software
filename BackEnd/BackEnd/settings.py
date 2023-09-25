@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-n10&l+ef4n7v)a*r)!$6o(hyc#oia&my7y3z_5i274u-2el41=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app']
 
 
 # Application definition
@@ -131,9 +131,17 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
-# Configuración para archivos estáticos (CSS, JavaScript, etc.)
+# settings.py
+
+# Configuración de archivos estáticos
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# Directorio donde se almacenarán los archivos estáticos recopilados
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+
 
 # Configuración para archivos multimedia (imágenes, archivos subidos)
 MEDIA_URL = '/media/'
