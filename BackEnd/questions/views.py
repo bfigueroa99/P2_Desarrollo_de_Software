@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import generics, status
 from .models import Pregunta, Respuesta
 from .serializers import PreguntaSerializer, RespuestaSerializer
-from sympy import simplify
+# from sympy import simplify
 # from .features.inner_loop import inner_loop
 
 
