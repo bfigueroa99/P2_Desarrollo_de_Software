@@ -95,7 +95,7 @@ def select_next_question(request):
     # Lista de preguntas disponibles
     preguntas_disponibles = Pregunta.objects.all().exclude(id__in = [p.get('pregunta_relacionada') for p in preguntas_respondidas])
 
-    if count_alternativas != 5:
+    if count_alternativas != 3:
         # Filtra preguntas de tipo "alternativas" del mismo tema y nivel de dificultad
         preguntas = preguntas_disponibles.filter(
             tema=preguntas_respondidas[-1]['tema'],
