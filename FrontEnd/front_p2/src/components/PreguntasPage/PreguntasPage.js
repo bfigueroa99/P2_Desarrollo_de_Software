@@ -46,13 +46,15 @@ function PreguntasPage() {
         uso_hint: false,
         respondida_correctamente: false, // Inicialmente asumimos que la respuesta es incorrecta
         tipo_pregunta: question.tipo,
-        tema: "Calidad de mezclas"
+        tema: "Diagramas de PVT"
       })
       .then((response) => {
         // Actualizar el estado según la respuesta del servidor (respondida_correctamente)
         if (response.data.respondida_correctamente) {
+          
           setRespuestasCorrectas(respuestasCorrectas + 1);
         } else {
+          
           setRespuestasIncorrectas(respuestasIncorrectas + 1);
           setPreguntasIncorrectas([...preguntasIncorrectas, question]);
         }
@@ -93,12 +95,34 @@ function PreguntasPage() {
   const handleSeleccionarAlternativa = (alternativa) => {
     if (preguntaActual) {
       const question = preguntaActual;
-
-      if (alternativa === question.respuesta) {
-        // Respuesta correcta: actualizar la respuesta del estudiante y el contador de respuestas correctas
+  
+      // Mapear el número de alternativa a la respuesta correspondiente
+      let respuestaCorrecta = '';
+      switch (alternativa) {
+        case '1':
+          respuestaCorrecta = question.alternativa1;
+          break;
+        case '2':
+          
+          respuestaCorrecta = question.alternativa2;
+          break;
+        case '3':
+          
+          respuestaCorrecta = question.alternativa3;
+          break;
+        case '4':
+          
+          respuestaCorrecta = question.alternativa4;
+          break;
+        default:
+          break;
+      }
+  
+      if (respuestaCorrecta === question.respuesta) {
+        // Respuesta correcta: actualizar el estado y el contador de respuestas correctas
         setRespuestaUsuario('');
         setRespuestasCorrectas(respuestasCorrectas + 1);
-
+  
         // Comprobar si se han respondido todas las preguntas
         if (segundaOportunidad || preguntasIncorrectas.length === 0) {
           setJuegoFinalizado(true);
@@ -114,6 +138,8 @@ function PreguntasPage() {
       }
     }
   };
+  
+  
 
   return (
     <div className="questions-page">
