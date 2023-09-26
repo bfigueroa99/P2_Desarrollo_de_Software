@@ -282,3 +282,7 @@ class PreguntaEditar(generics.UpdateAPIView):
 class PreguntaEliminar(generics.DestroyAPIView):
     queryset = Pregunta.objects.all()
     serializer_class = PreguntaSerializer
+
+class PreguntaCrear(generics.CreateAPIView):
+    queryset = Pregunta.objects.all()
+    serializer_class = PreguntaSerializer
