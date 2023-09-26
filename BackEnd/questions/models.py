@@ -76,17 +76,16 @@ class Respuesta(models.Model):
     
 
 class UserProfile(AbstractUser):
-
+    # Otros campos y campos personalizados aquí
     is_student = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
     nivel = models.FloatField(default=1.0)
     nombre = models.CharField(max_length=100)
-    # Otros campos como nombre y otros detalles
 
-     # Cambia los nombres de los campos relacionados
-    user_groups = models.ManyToManyField(Group, related_name='user_profiles')
-
-    def __str__(self):
-        return self.username
-
-
+    # Agrega el atributo related_name para evitar conflictos
+    groups = models.ManyToManyField(
+        Group, related_name='user_profiles', blank=True
+    )
+    user_permissions = models.ManyToManyField(
+        Permission, related_name='user_profiles', blank=True
+    )

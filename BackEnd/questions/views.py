@@ -1,13 +1,26 @@
 import random
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics, status
 from .models import Pregunta, Respuesta
 from .serializers import PreguntaSerializer, RespuestaSerializer
-# from sympy import simplify
-# from .features.inner_loop import inner_loop
+from django.contrib.auth import login, authenticate
+from .forms import UserRegistrationForm
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            raw_password = form.cleaned_data.get('password')
+            user = authenticate(username=user.username, password=raw_password)
+            login(request, user)
+            return redirect('dashboard')  # Cambia 'dashboard' a la página a la que deseas redirigir después del registro
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'registration/register.html', {'form': form})
 
 
 def get_random_question(request):
