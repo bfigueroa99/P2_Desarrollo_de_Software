@@ -75,7 +75,7 @@ class Respuesta(models.Model):
         return f'Respuesta #{self.id} a la pregunta {self.pregunta_relacionada_id} por el estudiante {self.estudiante_id}'
     
 
-class UserProfile(AbstractUser):
+class CustomUser(AbstractUser):
     # Otros campos y campos personalizados aquí
     is_student = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
