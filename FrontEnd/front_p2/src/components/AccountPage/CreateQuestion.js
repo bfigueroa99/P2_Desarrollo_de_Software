@@ -1,35 +1,33 @@
-// CreateQuestion.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+
 function CreateQuestion() {
-  const navigate =useNavigate()
-  // Estado para almacenar los detalles de la nueva pregunta
-  const [newQuestion, setNewQuestion] = useState({
-    // Inicializa los campos de la pregunta (puedes establecer valores iniciales aquí)
+  const [newPregunta, setNewPregunta] = useState({
     enunciado: '',
-    nivel_dificultad: '',
-    tipo: '',
-    // Otros campos de pregunta
+    alternativa1: '',
+    alternativa2: '',
+    alternativa3: '',
+    alternativa4: '',
+    respuesta: '',
+    hint: '',
   });
 
-  // Función para manejar cambios en los campos del formulario
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setNewQuestion({
-      ...newQuestion,
+    setNewPregunta({
+      ...newPregunta,
       [name]: value,
     });
   };
 
-  // Función para enviar la solicitud de creación al servidor (usar axios.post)
-  const crearPregunta = () => {
-    // Realiza la solicitud POST a la API de Django para crear una nueva pregunta con los datos en 'newQuestion'
-    axios.post('http://143.198.98.190:8000/preguntas/', newQuestion)
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    // Realiza una solicitud HTTP POST para crear una nueva pregunta
+    axios.post('http://143.198.98.190:8000/preguntas/crear', newPregunta)
       .then((response) => {
-        console.log('Pregunta creada con éxito:', response.data);
-        // Puedes redirigir al usuario a la página de lista de preguntas después de la creación
-        navigate.push('/preguntas');
+        // Maneja la respuesta, por ejemplo, muestra un mensaje de éxito
+        console.log('Pregunta creada con éxito.');
       })
       .catch((error) => {
         console.error('Error al crear la pregunta:', error);
@@ -38,18 +36,79 @@ function CreateQuestion() {
 
   return (
     <div>
-      <h1>Crear Nueva Pregunta</h1>
-      <form>
-        {/* Campos de creación de pregunta */}
-        <input
-          type="text"
-          name="enunciado"
-          value={newQuestion.enunciado}
-          onChange={handleInputChange}
-          placeholder="Enunciado"
-        />
-        {/* Otros campos de creación */}
-        <button type="button" onClick={crearPregunta}>Crear Pregunta</button>
+      <h1>Crear Pregunta</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="enunciado">Enunciado</label>
+          <input
+            type="text"
+            id="enunciado"
+            name="enunciado"
+            value={newPregunta.enunciado}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="alternativa1">Alternativa 1</label>
+          <input
+            type="text"
+            id="alternativa1"
+            name="alternativa1"
+            value={newPregunta.alternativa1}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="alternativa2">Alternativa 2</label>
+          <input
+            type="text"
+            id="alternativa2"
+            name="alternativa2"
+            value={newPregunta.alternativa2}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="alternativa3">Alternativa 3</label>
+          <input
+            type="text"
+            id="alternativa3"
+            name="alternativa3"
+            value={newPregunta.alternativa3}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="alternativa4">Alternativa 4</label>
+          <input
+            type="text"
+            id="alternativa4"
+            name="alternativa4"
+            value={newPregunta.alternativa4}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="respuesta">Respuesta</label>
+          <input
+            type="text"
+            id="respuesta"
+            name="respuesta"
+            value={newPregunta.respuesta}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="hint">Hint</label>
+          <input
+            type="text"
+            id="hint"
+            name="hint"
+            value={newPregunta.hint}
+            onChange={handleInputChange}
+          />
+        </div>
+        <button type="submit">Crear Pregunta</button>
       </form>
     </div>
   );
