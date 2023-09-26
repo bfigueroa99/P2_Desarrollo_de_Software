@@ -30,9 +30,9 @@ function App() {
         <Route path="/start" element={<StartPage />} />
         <Route path="/questions" element={<PreguntasPage />} />
         <Route path="/questionsAlt" element={<PreguntasAltPage />} />
-        <Route path="/:id/edit/" component={EditQuestion} />
-        <Route path="/create" component={CreateQuestion} />
-        <Route path="/:id/view" component={ViewQuestion} />
+        <Route path="/edit/:id/" element={<EditQuestion/>} />
+        <Route path="/create" element={<CreateQuestion/>} />
+        <Route path="/view/:id/" element={<ViewQuestion/>} />
       </Routes>
       <Footer />
     </div>

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './AccountPage.css';
-import { useAuth } from '../../auth/AuthProvider'; // Importa tu contexto de autenticación aquí
+import { useAuth } from '../../auth/AuthProvider';
 import { ref, get } from 'firebase/database';
 import { getDatabase } from 'firebase/database';
 import axios from 'axios';
-import {  useNavigate } from 'react-router-dom'; // Importa Link y usenavigate para la navegación
+import { useNavigate } from 'react-router-dom';
 
 function AccountPage() {
   const { user } = useAuth();
@@ -12,7 +12,7 @@ function AccountPage() {
   const [alumnos, setAlumnos] = useState([]);
   const [preguntas, setPreguntas] = useState([]);
   const [userProgress, setUserProgress] = useState({ nivel: 0, puntaje: 0 });
-  const navigate = useNavigate(); // Objeto de historial para redirigir
+  const navigate = useNavigate();
 
   useEffect(() => {
     const db = getDatabase();
@@ -23,7 +23,7 @@ function AccountPage() {
         .then((snapshot) => {
           if (snapshot.exists()) {
             setUserRole(snapshot.val().rol);
-            setUserProgress(snapshot.val()); // Actualizar el progreso del usuario
+            setUserProgress(snapshot.val());
           } else {
             console.log('El usuario no tiene datos de rol en la base de datos.');
           }
@@ -32,13 +32,11 @@ function AccountPage() {
           console.error('Error al obtener datos de rol:', error);
         });
 
-      // Consultar la lista de alumnos si el usuario es profesor
       if (userRole === 'profesor') {
         const alumnosRef = ref(db, 'usuarios');
         get(alumnosRef)
           .then((snapshot) => {
             if (snapshot.exists()) {
-              // Filtrar solo a los alumnos (rol: 'alumno')
               const alumnosList = [];
               snapshot.forEach((childSnapshot) => {
                 const userData = childSnapshot.val();
@@ -55,7 +53,6 @@ function AccountPage() {
             console.error('Error al obtener datos de alumnos:', error);
           });
 
-        // Consultar las preguntas a tu API de Django
         axios.get('http://143.198.98.190:8000/preguntas/')
           .then((response) => {
             setPreguntas(response.data);
@@ -67,12 +64,9 @@ function AccountPage() {
     }
   }, [user, userRole]);
 
-  // Función para eliminar una pregunta
   const eliminarPregunta = (preguntaId) => {
-    // Realizar la solicitud DELETE a la API de Django para eliminar la pregunta
     axios.delete(`http://143.198.98.190:8000/preguntas/${preguntaId}/`)
       .then(() => {
-        // Actualizar el estado 'preguntas' eliminando la pregunta con el ID correspondiente
         setPreguntas((prevPreguntas) => prevPreguntas.filter((pregunta) => pregunta.id !== preguntaId));
         console.log('Pregunta eliminada con éxito.');
       })
@@ -81,20 +75,19 @@ function AccountPage() {
       });
   };
 
-  // Redirigir a la vista de edición de pregunta
-  const editarPregunta = (preguntaId) => {
-    // Redirige a la página de edición de pregunta pasando el ID de la pregunta en la URL
-    navigate(`/${preguntaId}/edit`);
+  const editarPregunta = (id) => {
+    navigate(`/edit/${id}`);
   };
 
-  // Función para crear una nueva pregunta
   const crearPregunta = () => {
-    // Redirige a la página de creación de pregunta
     navigate('/create');
   };
-  const verPregunta = (PreguntaId) => {
-    navigate(`/${PreguntaId}/view`);
+
+  const verPregunta = (id) => {
+    // Redirige al usuario a la vista de pregunta específica
+    navigate(`/view/${id}`); // Asegúrate de que la URL sea correcta según tu API de Django
   };
+
   return (
     <div className="account-page">
       <h1 className="account-title">Mi Cuenta</h1>

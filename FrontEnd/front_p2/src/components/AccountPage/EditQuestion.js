@@ -27,7 +27,7 @@ function EditQuestion() {
   // Función para cargar los detalles de la pregunta desde la API cuando el componente se monta
   useEffect(() => {
     // Realiza una solicitud GET para obtener los detalles de la pregunta con el ID proporcionado
-    axios.get(`http://143.198.98.190:8000/preguntas/${id}/editar`)
+    axios.get(`http://143.198.98.190:8000/preguntas/${id}/editar/`)
       .then((response) => {
         // Actualiza el estado 'questionDetails' con los detalles de la pregunta
         setQuestionDetails(response.data);
