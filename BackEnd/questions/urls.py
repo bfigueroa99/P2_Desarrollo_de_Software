@@ -12,4 +12,7 @@ urlpatterns = [
     path('eliminar-todas-las-respuestas/', views.EliminarTodasLasRespuestas.as_view(), name='eliminar_todas_las_respuestas'),
     path('siguiente_pregunta/', views.SiguientePregunta.as_view(), name='siguiente_pregunta'),
     path('seleccionar_primera_pregunta/', views.SeleccionarPrimeraPregunta.as_view(), name='seleccionar_primera_pregunta'),
+
+    # Rutas de la API para cargar imágenes
+    path('api/cargar_imagen/', views.ImageViewSet.as_view(), name='cargar_imagen'),
 ]

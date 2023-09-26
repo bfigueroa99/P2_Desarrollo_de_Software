@@ -61,6 +61,6 @@ class Respuesta(models.Model):
     def __str__(self):
         return f'Respuesta #{self.id} a la pregunta {self.pregunta_relacionada_id} por el estudiante {self.estudiante_id}'
     
-
-
-
+class Image(models.Model):
+    image = models.ImageField(upload_to='BackEnd/media')
+    # uploaded_at = models.DateTimeField(auto_now_add=True)

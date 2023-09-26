@@ -3,9 +3,12 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import generics, status
-from .models import Pregunta, Respuesta
-from .serializers import PreguntaSerializer, RespuestaSerializer
+from rest_framework import generics, status, viewsets
+from .models import Pregunta, Respuesta, Image
+from .serializers import PreguntaSerializer, RespuestaSerializer, ImageSerializer
+from random import shuffle
+from rest_framework.parsers import FileUploadParser
+
 # from sympy import simplify
 # from .features.inner_loop import inner_loop
 
@@ -37,9 +40,6 @@ def get_random_question(request):
     
     return JsonResponse(data, safe=False)
 
-from django.http import JsonResponse
-from random import shuffle
-from .models import Pregunta
 
 def select_next_question(request):
     # Obtén las preguntas respondidas del cuerpo de la solicitud
@@ -275,4 +275,14 @@ class EliminarTodasLasRespuestas(APIView):
             return Response({"mensaje": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
+class ImageViewSet(APIView):
+    parser_classes = (FileUploadParser,)
 
+    def post(self, request, *args, **kwargs):
+        file_serializer = ImageSerializer(data=request.data)
+
+        if file_serializer.is_valid():
+            file_serializer.save()
+            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
