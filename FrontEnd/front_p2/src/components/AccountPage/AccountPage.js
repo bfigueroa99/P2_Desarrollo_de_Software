@@ -122,23 +122,37 @@ function AccountPage() {
       )}
 
       {/* Mostrar las preguntas si el usuario es profesor */}
-      {userRole === 'profesor' && (
-        <div>
-          <h2>Lista de Preguntas</h2>
-          <ul>
+    {userRole === 'profesor' && (
+      <div>
+        <h2>Lista de Preguntas</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nivel de Dificultad</th>
+              <th>Tipo</th>
+              <th>Enunciado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
             {preguntas.map((pregunta) => (
-              <li key={pregunta.id}>
-                {pregunta.texto}
-                <button onClick={() => editarPregunta(pregunta.id)}>Editar</button>
-                <button onClick={() => eliminarPregunta(pregunta.id)}>Eliminar</button>
-              </li>
+              <tr key={pregunta.id}>
+                <td>{pregunta.id}</td>
+                <td>{pregunta.nivel_dificultad}</td>
+                <td>{pregunta.tipo}</td>
+                <td>{pregunta.enunciado}</td>
+                <td>
+                  <button onClick={() => editarPregunta(pregunta.id)}>Editar</button>
+                  <button onClick={() => eliminarPregunta(pregunta.id)}>Eliminar</button>
+                </td>
+              </tr>
             ))}
-          </ul>
-          <button onClick={crearPregunta}>Crear Pregunta</button>
-        </div>
-      )}
-    </div>
-  );
-}
-
+          </tbody>
+        </table>
+        <button onClick={crearPregunta}>Crear Pregunta</button>
+      </div>
+    )}
+  </div>
+);}
 export default AccountPage;
