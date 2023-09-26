@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+
 
 class Pregunta(models.Model):
     TIPOS_PREGUNTA = (
@@ -39,6 +41,16 @@ class Pregunta(models.Model):
     def __str__(self):
         return self.enunciado
 
+# class Student(models.Model):
+#     user_id = models.CharField(max_length=100, unique=True)
+#     name = models.CharField(max_length=100)
+#     level = models.FloatField(default=0.0)
+#     role =  models.CharField(max_length=100)
+#     mail = models.CharField(max_length=100)
+
+#     def __str__(self):
+#         return self.name
+
 class Respuesta(models.Model):
 
     TEMAS = (
@@ -48,7 +60,7 @@ class Respuesta(models.Model):
         ('Calor latente', 'Calor latente'),
         ('Tabla de saturación', 'Tabla de saturación'),
     )
-    
+    # student = models.ForeignKey(Student, on_delete=models.CASCADE)
     pregunta_relacionada = models.ForeignKey(Pregunta, on_delete=models.CASCADE, related_name='respuestas')
     # estudiante = models.ForeignKey(User, on_delete=models.CASCADE)  # Supongamos que usas el modelo User de Django para los estudiantes
     respuesta_estudiante = models.CharField(max_length=255)
@@ -61,6 +73,7 @@ class Respuesta(models.Model):
     def __str__(self):
         return f'Respuesta #{self.id} a la pregunta {self.pregunta_relacionada_id} por el estudiante {self.estudiante_id}'
     
+
 
 
 
