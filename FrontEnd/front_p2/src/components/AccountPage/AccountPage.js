@@ -31,38 +31,41 @@ function AccountPage() {
         .catch((error) => {
           console.error('Error al obtener datos de rol:', error);
         });
-
-      if (userRole === 'profesor') {
-        const alumnosRef = ref(db, 'usuarios');
-        get(alumnosRef)
-          .then((snapshot) => {
-            if (snapshot.exists()) {
-              const alumnosList = [];
-              snapshot.forEach((childSnapshot) => {
-                const userData = childSnapshot.val();
-                if (userData.rol === 'alumno') {
-                  alumnosList.push(userData);
-                }
-              });
-              setAlumnos(alumnosList);
-            } else {
-              console.log('No hay datos de alumnos en la base de datos.');
-            }
-          })
-          .catch((error) => {
-            console.error('Error al obtener datos de alumnos:', error);
-          });
-
-        axios.get('http://143.198.98.190:8000/preguntas/')
-          .then((response) => {
-            setPreguntas(response.data);
-          })
-          .catch((error) => {
-            console.error('Error al obtener preguntas:', error);
-          });
-      }
     }
-  }, [user, userRole]);
+  }, [user]);
+
+  useEffect(() => {
+    if (userRole === 'profesor') {
+      const db = getDatabase();
+      const alumnosRef = ref(db, 'usuarios');
+      get(alumnosRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            const alumnosList = [];
+            snapshot.forEach((childSnapshot) => {
+              const userData = childSnapshot.val();
+              if (userData.rol === 'alumno') {
+                alumnosList.push(userData);
+              }
+            });
+            setAlumnos(alumnosList);
+          } else {
+            console.log('No hay datos de alumnos en la base de datos.');
+          }
+        })
+        .catch((error) => {
+          console.error('Error al obtener datos de alumnos:', error);
+        });
+
+      axios.get('http://143.198.98.190:8000/preguntas/')
+        .then((response) => {
+          setPreguntas(response.data);
+        })
+        .catch((error) => {
+          console.error('Error al obtener preguntas:', error);
+        });
+    }
+  }, [userRole]);
 
   const eliminarPregunta = (preguntaId) => {
     axios.delete(`http://143.198.98.190:8000/preguntas/${preguntaId}/`)

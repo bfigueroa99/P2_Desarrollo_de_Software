@@ -1,70 +1,151 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom'; // Importa 'useParams' para obtener el ID de la pregunta desde la URL
+import { useParams } from 'react-router-dom';
 
 function EditQuestion() {
-  const navigate = useNavigate();
-  const { id } = useParams(); // Obtiene el ID de la pregunta desde la URL
-
-  // Estado para almacenar los detalles de la pregunta que se está editando
-  const [questionDetails, setQuestionDetails] = useState({
-    id: '', // Puedes inicializar otros campos aquí
-    enunciado: '',
-    nivel_dificultad: '',
+  const { id } = useParams();
+  const [pregunta, setPregunta] = useState({
+    id: null,
+    imagen_svg: null,
+    tema: '',
     tipo: '',
-    // Otros campos de pregunta
+    nivel_dificultad: '',
+    enunciado: '',
+    alternativa1: null,
+    alternativa2: null,
+    alternativa3: null,
+    alternativa4: null,
+    respuesta: '',
+    hint: '',
   });
 
-  // Función para manejar cambios en los campos del formulario
+  const [editedPregunta, setEditedPregunta] = useState({
+    enunciado: '',
+    alternativa1: '',
+    alternativa2: '',
+    alternativa3: '',
+    alternativa4: '',
+    respuesta: '',
+    hint: '',
+  });
+
+  useEffect(() => {
+    // Realiza una solicitud para obtener los detalles de la pregunta a editar
+    axios.get(`http://143.198.98.190:8000/preguntas/${id}/`)
+      .then((response) => {
+        setPregunta(response.data);
+        setEditedPregunta({
+          enunciado: response.data.enunciado,
+          alternativa1: response.data.alternativa1 || '',
+          alternativa2: response.data.alternativa2 || '',
+          alternativa3: response.data.alternativa3 || '',
+          alternativa4: response.data.alternativa4 || '',
+          respuesta: response.data.respuesta,
+          hint: response.data.hint || '',
+        });
+      })
+      .catch((error) => {
+        console.error('Error al obtener la pregunta:', error);
+      });
+  }, [id]);
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setQuestionDetails({
-      ...questionDetails,
+    setEditedPregunta({
+      ...editedPregunta,
       [name]: value,
     });
   };
 
-  // Función para cargar los detalles de la pregunta desde la API cuando el componente se monta
-  useEffect(() => {
-    // Realiza una solicitud GET para obtener los detalles de la pregunta con el ID proporcionado
-    axios.get(`http://143.198.98.190:8000/preguntas/${id}/editar/`)
-      .then((response) => {
-        // Actualiza el estado 'questionDetails' con los detalles de la pregunta
-        setQuestionDetails(response.data);
-      })
-      .catch((error) => {
-        console.error('Error al cargar los detalles de la pregunta:', error);
-      });
-  }, [id]); // Ejecuta esta solicitud cuando 'id' cambia
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-  // Función para enviar la solicitud de edición al servidor (usar axios.put)
-  const editarPregunta = () => {
-    // Realiza la solicitud PUT a la API de Django para editar la pregunta con los datos en 'questionDetails'
-    axios.put(`http://143.198.98.190:8000/preguntas/${id}/editar/`, questionDetails)
+    // Realiza una solicitud HTTP PUT para actualizar la pregunta
+    axios.put(`http://143.198.98.190:8000/preguntas/${id}/editar`, editedPregunta)
       .then((response) => {
-        console.log('Pregunta editada con éxito:', response.data);
-        // Redirige al usuario a la vista de detalles de la pregunta después de la edición
-        navigate(`/preguntas/${id}/view`);
+        // Maneja la respuesta, por ejemplo, muestra un mensaje de éxito
+        console.log('Pregunta actualizada con éxito.');
       })
       .catch((error) => {
-        console.error('Error al editar la pregunta:', error);
+        console.error('Error al actualizar la pregunta:', error);
       });
   };
 
   return (
     <div>
       <h1>Editar Pregunta</h1>
-      <form>
-        {/* Campos de edición de pregunta */}
-        <input
-          type="text"
-          name="enunciado"
-          value={questionDetails.enunciado}
-          onChange={handleInputChange}
-          placeholder="Enunciado"
-        />
-        {/* Otros campos de edición */}
-        <button type="button" onClick={editarPregunta}>Guardar Cambios</button>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="enunciado">Enunciado</label>
+          <input
+            type="text"
+            id="enunciado"
+            name="enunciado"
+            value={editedPregunta.enunciado}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="alternativa1">Alternativa 1</label>
+          <input
+            type="text"
+            id="alternativa1"
+            name="alternativa1"
+            value={editedPregunta.alternativa1}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="alternativa2">Alternativa 2</label>
+          <input
+            type="text"
+            id="alternativa2"
+            name="alternativa2"
+            value={editedPregunta.alternativa2}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="alternativa3">Alternativa 3</label>
+          <input
+            type="text"
+            id="alternativa3"
+            name="alternativa3"
+            value={editedPregunta.alternativa3}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="alternativa4">Alternativa 4</label>
+          <input
+            type="text"
+            id="alternativa4"
+            name="alternativa4"
+            value={editedPregunta.alternativa4}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="respuesta">Respuesta</label>
+          <input
+            type="text"
+            id="respuesta"
+            name="respuesta"
+            value={editedPregunta.respuesta}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="hint">Hint</label>
+          <input
+            type="text"
+            id="hint"
+            name="hint"
+            value={editedPregunta.hint}
+            onChange={handleInputChange}
+          />
+        </div>
+        <button type="submit">Guardar Cambios</button>
       </form>
     </div>
   );
