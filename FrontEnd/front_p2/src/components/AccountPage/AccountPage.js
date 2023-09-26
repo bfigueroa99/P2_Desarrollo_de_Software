@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './AccountPage.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAuth } from '../../auth/AuthProvider'; // Importa tu contexto de autenticación aquí
+import { ref, get, database } from 'firebase/database';
+import { getDatabase } from 'firebase/database';
 
 function AccountPage() {
-  const { user } = useAuth(); // Obtén el usuario actual del contexto de autenticación
+  const { user } = useAuth();
 
   // Simulación de datos de progreso del curso
   const courseProgress = [
@@ -14,6 +15,26 @@ function AccountPage() {
     { unit: 'Unidad 4', progress: 75 },
     { unit: 'Unidad 5', progress: 50 },
   ];
+
+  // Obtener el nivel y puntaje del usuario desde Firebase Realtime Database
+  const [userProgress, setUserProgress] = useState({ nivel: 0, puntaje: 0 });
+
+  useEffect(() => {
+    const db = getDatabase();
+    if (user) {
+      const userRef = ref(db, 'usuarios/' + user.uid);
+      
+      get(userRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          setUserProgress(snapshot.val());
+        } else {
+          console.log('El usuario no tiene datos de progreso en la base de datos.');
+        }
+      }).catch((error) => {
+        console.error('Error al obtener datos de progreso:', error);
+      });
+    }
+  }, [user]);
 
   return (
     <div className="account-page">
@@ -27,28 +48,21 @@ function AccountPage() {
             <>
               <h2 className="user-name">{user.displayName}</h2>
               <p className="user-email">{user.email}</p>
+              <p className="user-nivel">Nivel: {userProgress.nivel}</p>
+              <p className="user-puntaje">Puntaje: {userProgress.puntaje}</p>
             </>
           ) : (
             <>
               <h2 className="user-name">Usuario no autenticado</h2>
               <p className="user-email">N/A</p>
+              <p className="user-nivel">Nivel: N/A</p>
+              <p className="user-puntaje">Puntaje: N/A</p>
             </>
           )}
         </div>
       </div>
 
-      <h2 className="progress-title">Progreso del Curso</h2>
-      <div className="course-progress">
-        {courseProgress.map((item, index) => (
-          <div className="progress-item" key={index}>
-            <p className="unit-name">{item.unit}</p>
-            <div className="progress-bar">
-              <div className="progress-fill" style={{ width: `${item.progress}%` }}></div>
-            </div>
-            <p className="progress-value">{item.progress}%</p>
-          </div>
-        ))}
-      </div>
+      {/* Resto del componente */}
     </div>
   );
 }
