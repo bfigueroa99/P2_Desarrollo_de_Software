@@ -9,8 +9,8 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-import firebase_admin
-from firebase_admin import credentials
+# import firebase_admin
+# from firebase_admin import credentials
 from pathlib import Path
 import os
 
@@ -149,10 +149,10 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-# Ruta al archivo JSON de credenciales de Firebase
-# Asegúrate de que esta ruta sea la correcta
-firebase_cred_path = 'BackEnd/auth/pdsp2-dc1e0-firebase-adminsdk-2zbcj-db01d47e45.json'
+# # Ruta al archivo JSON de credenciales de Firebase
+# # Asegúrate de que esta ruta sea la correcta
+# firebase_cred_path = 'BackEnd/auth/pdsp2-dc1e0-firebase-adminsdk-2zbcj-db01d47e45.json'
 
-# Inicializa Firebase usando las credenciales
-cred = credentials.Certificate(firebase_cred_path)
-firebase_app = firebase_admin.initialize_app(cred)
+# # Inicializa Firebase usando las credenciales
+# cred = credentials.Certificate(firebase_cred_path)
+# firebase_app = firebase_admin.initialize_app(cred)
