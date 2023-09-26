@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser, Group, Permission
+
 
 
 class Pregunta(models.Model):
@@ -74,6 +75,18 @@ class Respuesta(models.Model):
         return f'Respuesta #{self.id} a la pregunta {self.pregunta_relacionada_id} por el estudiante {self.estudiante_id}'
     
 
+class UserProfile(AbstractUser):
 
+    is_student = models.BooleanField(default=False)
+    is_teacher = models.BooleanField(default=False)
+    nivel = models.FloatField(default=1.0)
+    nombre = models.CharField(max_length=100)
+    # Otros campos como nombre y otros detalles
+
+     # Cambia los nombres de los campos relacionados
+    user_groups = models.ManyToManyField(Group, related_name='user_profiles')
+
+    def __str__(self):
+        return self.username
 
 
