@@ -275,4 +275,10 @@ class EliminarTodasLasRespuestas(APIView):
             return Response({"mensaje": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
+class PreguntaEditar(generics.UpdateAPIView):
+    queryset = Pregunta.objects.all()
+    serializer_class = PreguntaSerializer
 
+class PreguntaEliminar(generics.DestroyAPIView):
+    queryset = Pregunta.objects.all()
+    serializer_class = PreguntaSerializer
