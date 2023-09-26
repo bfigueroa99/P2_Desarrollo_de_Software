@@ -15,4 +15,6 @@ urlpatterns = [
     path('preguntas/<int:pk>/editar/', views.PreguntaEditar.as_view(), name='pregunta-editar'),
     path('preguntas/<int:pk>/eliminar/', views.PreguntaEliminar.as_view(), name='pregunta-eliminar'),
     path('preguntas/crear/', views.PreguntaCrear.as_view(), name='pregunta-crear'),
+    path('register/', views.register, name='register'),  # URL para el registro
+    path('login/', views.login, name='login'),  # URL para la autenticación
 ]
