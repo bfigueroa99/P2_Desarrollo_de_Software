@@ -1,19 +1,92 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './AccountPage.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useAuth } from '../../auth/AuthProvider'; // Importa tu contexto de autenticación aquí
+import { useAuth } from '../../auth/AuthProvider';
+import { ref, get } from 'firebase/database';
+import { getDatabase } from 'firebase/database';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function AccountPage() {
-  const { user } = useAuth(); // Obtén el usuario actual del contexto de autenticación
+  const { user } = useAuth();
+  const [userRole, setUserRole] = useState(null);
+  const [alumnos, setAlumnos] = useState([]);
+  const [preguntas, setPreguntas] = useState([]);
+  const [userProgress, setUserProgress] = useState({ nivel: 0, puntaje: 0 });
+  const navigate = useNavigate();
 
-  // Simulación de datos de progreso del curso
-  const courseProgress = [
-    { unit: 'Unidad 1', progress: 80 },
-    { unit: 'Unidad 2', progress: 60 },
-    { unit: 'Unidad 3', progress: 90 },
-    { unit: 'Unidad 4', progress: 75 },
-    { unit: 'Unidad 5', progress: 50 },
-  ];
+  useEffect(() => {
+    const db = getDatabase();
+    if (user) {
+      const userRef = ref(db, 'usuarios/' + user.uid);
+
+      get(userRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            setUserRole(snapshot.val().rol);
+            setUserProgress(snapshot.val());
+          } else {
+            console.log('El usuario no tiene datos de rol en la base de datos.');
+          }
+        })
+        .catch((error) => {
+          console.error('Error al obtener datos de rol:', error);
+        });
+
+      if (userRole === 'profesor') {
+        const alumnosRef = ref(db, 'usuarios');
+        get(alumnosRef)
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              const alumnosList = [];
+              snapshot.forEach((childSnapshot) => {
+                const userData = childSnapshot.val();
+                if (userData.rol === 'alumno') {
+                  alumnosList.push(userData);
+                }
+              });
+              setAlumnos(alumnosList);
+            } else {
+              console.log('No hay datos de alumnos en la base de datos.');
+            }
+          })
+          .catch((error) => {
+            console.error('Error al obtener datos de alumnos:', error);
+          });
+
+        axios.get('http://143.198.98.190:8000/preguntas/')
+          .then((response) => {
+            setPreguntas(response.data);
+          })
+          .catch((error) => {
+            console.error('Error al obtener preguntas:', error);
+          });
+      }
+    }
+  }, [user, userRole]);
+
+  const eliminarPregunta = (preguntaId) => {
+    axios.delete(`http://143.198.98.190:8000/preguntas/${preguntaId}/`)
+      .then(() => {
+        setPreguntas((prevPreguntas) => prevPreguntas.filter((pregunta) => pregunta.id !== preguntaId));
+        console.log('Pregunta eliminada con éxito.');
+      })
+      .catch((error) => {
+        console.error('Error al eliminar la pregunta:', error);
+      });
+  };
+
+  const editarPregunta = (id) => {
+    navigate(`/edit/${id}`);
+  };
+
+  const crearPregunta = () => {
+    navigate('/create');
+  };
+
+  const verPregunta = (id) => {
+    // Redirige al usuario a la vista de pregunta específica
+    navigate(`/view/${id}`); // Asegúrate de que la URL sea correcta según tu API de Django
+  };
 
   return (
     <div className="account-page">
@@ -27,28 +100,67 @@ function AccountPage() {
             <>
               <h2 className="user-name">{user.displayName}</h2>
               <p className="user-email">{user.email}</p>
+              <p className="user-nivel">Nivel: {userProgress.nivel}</p>
+              <p className="user-puntaje">Puntaje: {userProgress.puntaje}</p>
             </>
           ) : (
             <>
               <h2 className="user-name">Usuario no autenticado</h2>
               <p className="user-email">N/A</p>
+              <p className="user-nivel">Nivel: N/A</p>
+              <p className="user-puntaje">Puntaje: N/A</p>
             </>
           )}
         </div>
       </div>
 
-      <h2 className="progress-title">Progreso del Curso</h2>
-      <div className="course-progress">
-        {courseProgress.map((item, index) => (
-          <div className="progress-item" key={index}>
-            <p className="unit-name">{item.unit}</p>
-            <div className="progress-bar">
-              <div className="progress-fill" style={{ width: `${item.progress}%` }}></div>
-            </div>
-            <p className="progress-value">{item.progress}%</p>
-          </div>
-        ))}
-      </div>
+      {/* Mostrar la lista de alumnos si el usuario es profesor */}
+      {userRole === 'profesor' && (
+        <div>
+          <h2>Lista de Alumnos</h2>
+          <ul>
+            {alumnos.map((alumno) => (
+              <li key={alumno.uid}>
+                {alumno.nombre} - Nivel: {alumno.nivel}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Mostrar las preguntas si el usuario es profesor */}
+      {userRole === 'profesor' && (
+        <div>
+          <h2>Lista de Preguntas</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nivel de Dificultad</th>
+                <th>Tipo</th>
+                <th>Enunciado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {preguntas.map((pregunta) => (
+                <tr key={pregunta.id}>
+                  <td>{pregunta.id}</td>
+                  <td>{pregunta.nivel_dificultad}</td>
+                  <td>{pregunta.tipo}</td>
+                  <td>{pregunta.enunciado}</td>
+                  <td>
+                    <button onClick={() => editarPregunta(pregunta.id)}>Editar</button>
+                    <button onClick={() => eliminarPregunta(pregunta.id)}>Eliminar</button>
+                    <button onClick={() => verPregunta(pregunta.id)}>Ver</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <button onClick={crearPregunta}>Crear Pregunta</button>
+        </div>
+      )}
     </div>
   );
 }
