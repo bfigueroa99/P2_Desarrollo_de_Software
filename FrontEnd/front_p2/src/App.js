@@ -12,7 +12,9 @@ import StartPage from './components/StartPage/StartPage';
 import PreguntasPage from './components/PreguntasPage/PreguntasPage';
 import Footer from './components/Footer/Footer';
 import PreguntasAltPage from './components/PreguntasAltPage/PreguntasAltPage';
-
+import EditQuestion from './components/AccountPage/EditQuestion';
+import CreateQuestion from './components/AccountPage/CreateQuestion';
+import ViewQuestion from './components/AccountPage/ViewQuestion';
 function App() {
   return (
     <div>
@@ -28,6 +30,9 @@ function App() {
         <Route path="/start" element={<StartPage />} />
         <Route path="/questions" element={<PreguntasPage />} />
         <Route path="/questionsAlt" element={<PreguntasAltPage />} />
+        <Route path="/:id/edit/" component={EditQuestion} />
+        <Route path="/create" component={CreateQuestion} />
+        <Route path="/:id/view" component={ViewQuestion} />
       </Routes>
       <Footer />
     </div>

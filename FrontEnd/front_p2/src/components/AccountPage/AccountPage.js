@@ -4,6 +4,7 @@ import { useAuth } from '../../auth/AuthProvider'; // Importa tu contexto de aut
 import { ref, get } from 'firebase/database';
 import { getDatabase } from 'firebase/database';
 import axios from 'axios';
+import {  useNavigate } from 'react-router-dom'; // Importa Link y usenavigate para la navegación
 
 function AccountPage() {
   const { user } = useAuth();
@@ -11,22 +12,25 @@ function AccountPage() {
   const [alumnos, setAlumnos] = useState([]);
   const [preguntas, setPreguntas] = useState([]);
   const [userProgress, setUserProgress] = useState({ nivel: 0, puntaje: 0 });
+  const navigate = useNavigate(); // Objeto de historial para redirigir
 
   useEffect(() => {
     const db = getDatabase();
     if (user) {
       const userRef = ref(db, 'usuarios/' + user.uid);
-      
-      get(userRef).then((snapshot) => {
-        if (snapshot.exists()) {
-          setUserRole(snapshot.val().rol);
-          setUserProgress(snapshot.val()); // Actualizar el progreso del usuario
-        } else {
-          console.log('El usuario no tiene datos de rol en la base de datos.');
-        }
-      }).catch((error) => {
-        console.error('Error al obtener datos de rol:', error);
-      });
+
+      get(userRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            setUserRole(snapshot.val().rol);
+            setUserProgress(snapshot.val()); // Actualizar el progreso del usuario
+          } else {
+            console.log('El usuario no tiene datos de rol en la base de datos.');
+          }
+        })
+        .catch((error) => {
+          console.error('Error al obtener datos de rol:', error);
+        });
 
       // Consultar la lista de alumnos si el usuario es profesor
       if (userRole === 'profesor') {
@@ -63,23 +67,6 @@ function AccountPage() {
     }
   }, [user, userRole]);
 
-  // Función para editar una pregunta
-  const editarPregunta = (preguntaId) => {
-    // Obtener la pregunta que se va a editar del estado 'preguntas'
-    const preguntaParaEditar = preguntas.find((pregunta) => pregunta.id === preguntaId);
-
-    // Realizar la solicitud PUT a la API de Django para editar la pregunta
-    axios.put(`http://143.198.98.190:8000/preguntas/${preguntaId}/`, preguntaParaEditar)
-      .then((response) => {
-        // Actualizar el estado 'preguntas' con la pregunta editada desde la respuesta de la API si es necesario
-        // Luego, puedes volver a mostrar la lista actualizada de preguntas
-        console.log('Pregunta editada con éxito:', response.data);
-      })
-      .catch((error) => {
-        console.error('Error al editar la pregunta:', error);
-      });
-  };
-
   // Función para eliminar una pregunta
   const eliminarPregunta = (preguntaId) => {
     // Realizar la solicitud DELETE a la API de Django para eliminar la pregunta
@@ -94,12 +81,20 @@ function AccountPage() {
       });
   };
 
-  // Función para crear una nueva pregunta
-  const crearPregunta = () => {
-    // Implementa la lógica para crear una pregunta aquí, enviando una solicitud POST a tu API de Django
-    console.log('Crear nueva pregunta');
+  // Redirigir a la vista de edición de pregunta
+  const editarPregunta = (preguntaId) => {
+    // Redirige a la página de edición de pregunta pasando el ID de la pregunta en la URL
+    navigate(`/${preguntaId}/edit`);
   };
 
+  // Función para crear una nueva pregunta
+  const crearPregunta = () => {
+    // Redirige a la página de creación de pregunta
+    navigate('/create');
+  };
+  const verPregunta = (PreguntaId) => {
+    navigate(`/${PreguntaId}/view`);
+  };
   return (
     <div className="account-page">
       <h1 className="account-title">Mi Cuenta</h1>
@@ -164,6 +159,7 @@ function AccountPage() {
                   <td>
                     <button onClick={() => editarPregunta(pregunta.id)}>Editar</button>
                     <button onClick={() => eliminarPregunta(pregunta.id)}>Eliminar</button>
+                    <button onClick={() => verPregunta(pregunta.id)}>Ver</button>
                   </td>
                 </tr>
               ))}
