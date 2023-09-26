@@ -65,19 +65,38 @@ function AccountPage() {
 
   // Función para editar una pregunta
   const editarPregunta = (preguntaId) => {
-    // Implementa la lógica para editar una pregunta aquí
-    console.log('Editar pregunta con ID:', preguntaId);
+    // Obtener la pregunta que se va a editar del estado 'preguntas'
+    const preguntaParaEditar = preguntas.find((pregunta) => pregunta.id === preguntaId);
+
+    // Realizar la solicitud PUT a la API de Django para editar la pregunta
+    axios.put(`http://143.198.98.190:8000/preguntas/${preguntaId}/`, preguntaParaEditar)
+      .then((response) => {
+        // Actualizar el estado 'preguntas' con la pregunta editada desde la respuesta de la API si es necesario
+        // Luego, puedes volver a mostrar la lista actualizada de preguntas
+        console.log('Pregunta editada con éxito:', response.data);
+      })
+      .catch((error) => {
+        console.error('Error al editar la pregunta:', error);
+      });
   };
 
   // Función para eliminar una pregunta
   const eliminarPregunta = (preguntaId) => {
-    // Implementa la lógica para eliminar una pregunta aquí
-    console.log('Eliminar pregunta con ID:', preguntaId);
+    // Realizar la solicitud DELETE a la API de Django para eliminar la pregunta
+    axios.delete(`http://143.198.98.190:8000/preguntas/${preguntaId}/`)
+      .then(() => {
+        // Actualizar el estado 'preguntas' eliminando la pregunta con el ID correspondiente
+        setPreguntas((prevPreguntas) => prevPreguntas.filter((pregunta) => pregunta.id !== preguntaId));
+        console.log('Pregunta eliminada con éxito.');
+      })
+      .catch((error) => {
+        console.error('Error al eliminar la pregunta:', error);
+      });
   };
 
   // Función para crear una nueva pregunta
   const crearPregunta = () => {
-    // Implementa la lógica para crear una pregunta aquí
+    // Implementa la lógica para crear una pregunta aquí, enviando una solicitud POST a tu API de Django
     console.log('Crear nueva pregunta');
   };
 
@@ -122,37 +141,39 @@ function AccountPage() {
       )}
 
       {/* Mostrar las preguntas si el usuario es profesor */}
-    {userRole === 'profesor' && (
-      <div>
-        <h2>Lista de Preguntas</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nivel de Dificultad</th>
-              <th>Tipo</th>
-              <th>Enunciado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {preguntas.map((pregunta) => (
-              <tr key={pregunta.id}>
-                <td>{pregunta.id}</td>
-                <td>{pregunta.nivel_dificultad}</td>
-                <td>{pregunta.tipo}</td>
-                <td>{pregunta.enunciado}</td>
-                <td>
-                  <button onClick={() => editarPregunta(pregunta.id)}>Editar</button>
-                  <button onClick={() => eliminarPregunta(pregunta.id)}>Eliminar</button>
-                </td>
+      {userRole === 'profesor' && (
+        <div>
+          <h2>Lista de Preguntas</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nivel de Dificultad</th>
+                <th>Tipo</th>
+                <th>Enunciado</th>
+                <th>Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <button onClick={crearPregunta}>Crear Pregunta</button>
-      </div>
-    )}
-  </div>
-);}
+            </thead>
+            <tbody>
+              {preguntas.map((pregunta) => (
+                <tr key={pregunta.id}>
+                  <td>{pregunta.id}</td>
+                  <td>{pregunta.nivel_dificultad}</td>
+                  <td>{pregunta.tipo}</td>
+                  <td>{pregunta.enunciado}</td>
+                  <td>
+                    <button onClick={() => editarPregunta(pregunta.id)}>Editar</button>
+                    <button onClick={() => eliminarPregunta(pregunta.id)}>Eliminar</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <button onClick={crearPregunta}>Crear Pregunta</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default AccountPage;
