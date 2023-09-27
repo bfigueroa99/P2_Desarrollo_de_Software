@@ -16,8 +16,7 @@ function PreguntasPage() {
   useEffect(() => {
     // Paso 1: Obtener la primera pregunta
     axios.post('http://143.198.98.190:8000/seleccionar_primera_pregunta/', {
-      nivel_estudiante: 1,
-      tema: "Diagramas de PVT"
+      nivel_estudiante: 1
     })
     .then((response) => {
       setPreguntaActual(response.data);
