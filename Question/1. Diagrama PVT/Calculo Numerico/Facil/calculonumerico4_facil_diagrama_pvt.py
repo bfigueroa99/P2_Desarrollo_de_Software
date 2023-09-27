@@ -40,7 +40,7 @@ def generar_pregunta_calculo_numerico_moles_gases_ideales():
     # Guarda el SVG generado en el archivo especificado
     dwg.save()
 
-    return(respuesta)
+    return(volumen_litros, temperatura_kelvin, presion_atm, respuesta)
 
 # Generar la pregunta de cálculo numérico para la cantidad de moles en un gas ideal y guardar en el archivo especificado
-generar_pregunta_calculo_numerico_moles_gases_ideales()
+volumen_litros, temperatura_kelvin, presion_atm, respuesta = generar_pregunta_calculo_numerico_moles_gases_ideales()

@@ -36,7 +36,7 @@ def generar_pregunta_calculo_numerico_temperatura_kelvin():
     # Guarda el SVG generado en el archivo especificado
     dwg.save()
 
-    return(respuesta)
+    return(volumen_litros, temperatura_celsius, respuesta)
 
 # Generar la pregunta de cálculo numérico para la temperatura en Kelvin y guardar en el archivo especificado
-generar_pregunta_calculo_numerico_temperatura_kelvin()
+volumen_litros, temperatura_celsius = generar_pregunta_calculo_numerico_temperatura_kelvin()

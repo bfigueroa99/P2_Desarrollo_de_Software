@@ -29,13 +29,24 @@ def generar_pregunta_calculo_numerico_trabajo_isobarico():
         dwg.add(dwg.text(linea, insert=(20, y_pos), fill='black', font_size='14px', text_anchor='start'))
         y_pos += espacio_entre_lineas
 
+    radio_punto = 2
+
+    num_puntos = 300
+    width, height = 200, 100
+    for _ in range(num_puntos):
+        x = random.uniform(0, width)
+        y = random.uniform(0, height)
+        dwg.add(dwg.circle(center=(x, y), r=radio_punto, fill='blue'))
+
     # # Agrega la respuesta como texto
     # dwg.add(dwg.text(respuesta, insert=(20, 90), fill='black', font_size='14px', text_anchor='start'))
 
     # Guarda el SVG generado en el archivo especificado
     dwg.save()
 
-    return(respuesta)
+    return(presion_atm,cambio_de_volumen_litros,respuesta)
 
 # Generar la pregunta de cálculo numérico para trabajo en expansión isobárica y guardar en el archivo especificado
-generar_pregunta_calculo_numerico_trabajo_isobarico()
+presion_atm, cambio_de_volumen_litros, respuesta = generar_pregunta_calculo_numerico_trabajo_isobarico()
+
+

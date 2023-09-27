@@ -36,7 +36,7 @@ def generar_pregunta_fraccion_de_mezcla_agua():
     dwg.save()
 
     # Retorna la respuesta
-    return respuesta
+    return cantidad_agua_ml, cantidad_jugo_naranja_ml, respuesta
 
 # Llama a la función y guarda la respuesta
-respuesta = generar_pregunta_fraccion_de_mezcla_agua()
+cantidad_agua_ml, cantidad_jugo_naranja_ml, respuesta = generar_pregunta_fraccion_de_mezcla_agua()
