@@ -8,6 +8,7 @@ from .models import Pregunta, Respuesta
 from .serializers import PreguntaSerializer, RespuestaSerializer
 from django.contrib.auth import login, authenticate
 from .forms import UserRegistrationForm
+from random import shuffle
 
 def register(request):
     if request.method == 'POST':
@@ -50,16 +51,18 @@ def get_random_question(request):
     
     return JsonResponse(data, safe=False)
 
-from django.http import JsonResponse
-from random import shuffle
-from .models import Pregunta
+
 
 def select_next_question(request):
     # Obtén las preguntas respondidas del cuerpo de la solicitud
     preguntas_respondidas = request.data.get('preguntas_respondidas', [])
 
     # Obtén el nivel del alumno (puedes pasarlo en el cuerpo de la solicitud)
-    nivel_alumno = request.data.get('nivel_alumno', 5)
+    nivel_alumno = request.data.get('nivel_alumno', None)
+
+    if nivel_alumno is None:
+        return Response({"mensaje": "Nivel del estudiante es campo requerido"}, status=status.HTTP_400_BAD_REQUEST)
+    
 
     # Umbral y variables de racha
     umbral_racha_buenas = 2
@@ -97,13 +100,54 @@ def select_next_question(request):
 
     puntaje = ((nivel_alumno * 0.6) + (racha_buena * 0.4) - (count_hint * 0.1) - (racha_mala * 0.3))
 
+
+
     # Calcula el nivel de dificultad
-    if puntaje <= 3:
+    if puntaje <= 1:
         nivel_dificultad = 'baja'
-    elif 3 < puntaje <= 7:
+        tema = 'Diagramas de PVT'
+    elif 1 < puntaje <= 2:
         nivel_dificultad = 'media'
-    else:
+        tema = 'Diagramas de PVT'
+    elif 2 < puntaje <= 3:
         nivel_dificultad = 'alta'
+        tema = 'Diagramas de PVT'
+    elif 3 < puntaje <= 4:
+        nivel_dificultad = 'baja'
+        tema = 'Calidad de mezclas'
+    elif 4 < puntaje <= 5:
+        nivel_dificultad = 'media'
+        tema = 'Calidad de mezclas'
+    elif 5 < puntaje <= 6:
+        nivel_dificultad = 'alta'
+        tema = 'Calidad de mezclas'
+    elif 6 < puntaje <= 7:
+        nivel_dificultad = 'baja'
+        tema = 'Entalpía'
+    elif 7 < puntaje <= 8:
+        nivel_dificultad = 'media'
+        tema = 'Entalpía'
+    elif 8 < puntaje <= 9:
+        nivel_dificultad = 'alta'
+        tema = 'Entalpía'
+    elif 9 < puntaje <= 10:
+        nivel_dificultad = 'baja'
+        tema = 'Calor latente'
+    elif 10 < puntaje <= 11:
+        nivel_dificultad = 'media'
+        tema = 'Calor latente'
+    elif 11 < puntaje <= 12:
+        nivel_dificultad = 'alta'
+        tema = 'Calor latente'
+    elif 12 < puntaje <= 13:
+        nivel_dificultad = 'baja'
+        tema = 'Tabla de saturación'
+    elif 13 < puntaje <= 14:
+        nivel_dificultad = 'media'
+        tema = 'Tabla de saturación'
+    elif 14 < puntaje <= 15:
+        nivel_dificultad = 'alta'
+        tema = 'Tabla de saturación'
 
     # Lista de preguntas disponibles
     preguntas_disponibles = Pregunta.objects.all().exclude(id__in = [p.get('pregunta_relacionada') for p in preguntas_respondidas])
@@ -111,18 +155,18 @@ def select_next_question(request):
     if count_alternativas != 3:
         # Filtra preguntas de tipo "alternativas" del mismo tema y nivel de dificultad
         preguntas = preguntas_disponibles.filter(
-            tema=preguntas_respondidas[-1]['tema'],
+            tema=tema,
             nivel_dificultad=nivel_dificultad,
             tipo='alternativas'
         )
     if count_calculonumerico != 2:
         # Filtra preguntas de tipo "calculonumerico" del mismo tema
         preguntas = preguntas_disponibles.filter(
-            tema=preguntas_respondidas[-1]['tema'],
+            tema=tema,
             tipo='calculonumerico'
         )
     else:
-        return JsonResponse({"mensaje": "Ya se respondieron todas las preguntas"})
+        return nivel_dificultad
 
     # Baraja aleatoriamente las preguntas
     preguntas = list(preguntas)
@@ -146,7 +190,7 @@ def select_next_question(request):
             'alternativa4': pregunta.alternativa4,  
             'hint': pregunta.hint,
         }
-        return pregunta_data
+        return (pregunta_data,puntaje)
     else:
         return ("No hay preguntas disponibles")
 
@@ -154,24 +198,62 @@ class SeleccionarPrimeraPregunta(APIView):
     def post(self, request):
         # Obtén el nivel del estudiante y el tema del cuerpo de la solicitud
         nivel_estudiante = request.data.get('nivel_estudiante', None)
-        tema = request.data.get('tema', None)
 
-        if nivel_estudiante is None or tema is None:
-            return Response({"mensaje": "Nivel del estudiante y tema son campos requeridos"}, status=status.HTTP_400_BAD_REQUEST)
+        if nivel_estudiante is None:
+            return Response({"mensaje": "Nivel del estudiante es campo requerido"}, status=status.HTTP_400_BAD_REQUEST)
 
         
-
         # Calcula el nivel de dificultad
-        if nivel_estudiante <= 3:
-            nivel = 'baja'
-        elif 3 < nivel_estudiante <= 7:
-            nivel = 'media'
-        else:
-            nivel = 'alta'
+        if nivel_estudiante <= 1:
+            nivel_dificultad = 'baja'
+            tema = 'Diagramas de PVT'
+        elif 1 < nivel_estudiante <= 2:
+            nivel_dificultad = 'media'
+            tema = 'Diagramas de PVT'
+        elif 2 < nivel_estudiante <= 3:
+            nivel_dificultad = 'alta'
+            tema = 'Diagramas de PVT'
+        elif 3 < nivel_estudiante <= 4:
+            nivel_dificultad = 'baja'
+            tema = 'Calidad de mezclas'
+        elif 4 < nivel_estudiante <= 5:
+            nivel_dificultad = 'media'
+            tema = 'Calidad de mezclas'
+        elif 5 < nivel_estudiante <= 6:
+            nivel_dificultad = 'alta'
+            tema = 'Calidad de mezclas'
+        elif 6 < nivel_estudiante <= 7:
+            nivel_dificultad = 'baja'
+            tema = 'Entalpía'
+        elif 7 < nivel_estudiante <= 8:
+            nivel_dificultad = 'media'
+            tema = 'Entalpía'
+        elif 8 < nivel_estudiante <= 9:
+            nivel_dificultad = 'alta'
+            tema = 'Entalpía'
+        elif 9 < nivel_estudiante <= 10:
+            nivel_dificultad = 'baja'
+            tema = 'Calor latente'
+        elif 10 < nivel_estudiante <= 11:
+            nivel_dificultad = 'media'
+            tema = 'Calor latente'
+        elif 11 < nivel_estudiante <= 12:
+            nivel_dificultad = 'alta'
+            tema = 'Calor latente'
+        elif 12 < nivel_estudiante <= 13:
+            nivel_dificultad = 'baja'
+            tema = 'Tabla de saturación'
+        elif 13 < nivel_estudiante <= 14:
+            nivel_dificultad = 'media'
+            tema = 'Tabla de saturación'
+        elif 14 < nivel_estudiante <= 15:
+            nivel_dificultad = 'alta'
+            tema = 'Tabla de saturación'
+
 
         # Filtra las preguntas disponibles basadas en el nivel del estudiante y el tema
         preguntas_disponibles = Pregunta.objects.filter(
-            nivel_dificultad__lte=nivel,
+            nivel_dificultad__lte=nivel_dificultad,
             tema=tema
         )
 
@@ -197,7 +279,7 @@ class SiguientePregunta(APIView):
         preguntas_respondidas = request.data.get('preguntas_respondidas', [])
 
         # Obtén el nivel del alumno (puedes pasarlo en el cuerpo de la solicitud)
-        nivel_alumno = request.data.get('nivel_alumno', 5)
+        nivel_alumno = request.data.get('nivel_alumno',None)
 
         # Llama a la función para seleccionar la siguiente pregunta
         siguiente_pregunta = select_next_question(request)
