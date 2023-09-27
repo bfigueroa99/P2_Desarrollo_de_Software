@@ -167,9 +167,10 @@ function CreateQuestion() {
             value={newPregunta.nivel_dificultad}
             onChange={handleInputChange}
           >
-            <option value="Baja">Baja</option>
-            <option value="Media">Media</option>
-            <option value="Alta">Alta</option>
+            <option value="seleccionar">Seleccionar...</option>
+            <option value="baja">Baja</option>
+            <option value="media">Media</option>
+            <option value="alta">Alta</option>
           </select>
         </div>
         <div>
@@ -180,8 +181,9 @@ function CreateQuestion() {
             value={newPregunta.tipo}
             onChange={handleInputChange}
           >
+            <option value="sleccionar alternativas">Seleccionar...</option>
             <option value="alternativas">Alternativas</option>
-            <option value="otroTipo">Otro Tipo</option>
+            <option value="calculonumerico">calculonumerico</option>
           </select>
         </div>
         <button type="submit">Crear Pregunta</button>
