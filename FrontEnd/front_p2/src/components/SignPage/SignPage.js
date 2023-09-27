@@ -1,28 +1,40 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './SignPage.css';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'; // Importa la función de registro de Firebase
-import { auth } from '../../firebase';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { auth } from '../../firebase'; // Importa el módulo auth de tu configuración Firebase
 import { useNavigate } from 'react-router-dom';
+import { ref, set } from 'firebase/database';
+import { getDatabase } from 'firebase/database';
+
 function SignPage() {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Evita que el formulario se envíe automáticamente
+    e.preventDefault();
 
     try {
-      // Crea una cuenta de usuario en Firebase con correo y contraseña
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.email,
-        formData.password 
-        
+        formData.password
       );
 
-      // Actualiza el perfil del usuario con el nombre
       await updateProfile(userCredential.user, {
         displayName: formData.name,
+      });
+
+      // Crear un documento de usuario en Firebase Realtime Database
+      const db = getDatabase();
+      const userRef = ref(db, 'usuarios/' + userCredential.user.uid);
+      set(userRef, {
+        nombre: formData.name,
+        mail: formData.email,
+        nivel: 1,
+        puntaje: 0,
+        rol: 'alumno',
       });
 
       console.log('Creación de usuario exitosa!');
@@ -31,6 +43,7 @@ function SignPage() {
       setErrors({ ...errors, general: error.message });
     }
   };
+
 
   return (
     <div className="sign-up-page">

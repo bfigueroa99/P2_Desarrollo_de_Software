@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Pregunta
+from .models import Pregunta, Respuesta
 
 class PreguntaSerializer(serializers.ModelSerializer):
     imagen_svg = serializers.ImageField(required=False)  # Asegúrate de que se permita cargar la imagen
@@ -15,3 +15,9 @@ class PreguntaSerializer(serializers.ModelSerializer):
             data['alternativa4'] = instance.alternativa4
         return data
 
+class RespuestaSerializer(serializers.ModelSerializer):
+    pregunta_relacionada = serializers.PrimaryKeyRelatedField(queryset=Pregunta.objects.all())
+
+    class Meta:
+        model = Respuesta
+        fields = '__all__'

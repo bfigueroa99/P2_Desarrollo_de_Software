@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import firebase_admin
+from firebase_admin import credentials
 from pathlib import Path
 import os
 
@@ -26,7 +27,7 @@ SECRET_KEY = 'django-insecure-n10&l+ef4n7v)a*r)!$6o(hyc#oia&my7y3z_5i274u-2el41=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['143.198.98.190']
 
 
 # Application definition
@@ -131,10 +132,27 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
-# Configuración para archivos estáticos (CSS, JavaScript, etc.)
+# settings.py
+
+# Configuración de archivos estáticos
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# Directorio donde se almacenarán los archivos estáticos recopilados
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+
 
 # Configuración para archivos multimedia (imágenes, archivos subidos)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# Ruta al archivo JSON de credenciales de Firebase
+# Asegúrate de que esta ruta sea la correcta
+firebase_cred_path = 'BackEnd/auth/pdsp2-dc1e0-firebase-adminsdk-2zbcj-db01d47e45.json'
+
+# Inicializa Firebase usando las credenciales
+cred = credentials.Certificate(firebase_cred_path)
+firebase_app = firebase_admin.initialize_app(cred)
