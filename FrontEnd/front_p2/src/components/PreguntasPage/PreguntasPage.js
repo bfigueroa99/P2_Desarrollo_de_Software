@@ -103,7 +103,7 @@ function PreguntasPage() {
           respuestaCorrecta = question.alternativa1;
           break;
         case '2':
-          
+          console.log('correcta op2')
           respuestaCorrecta = question.alternativa2;
           break;
         case '3':

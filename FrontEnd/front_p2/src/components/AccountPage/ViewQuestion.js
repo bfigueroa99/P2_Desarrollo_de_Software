@@ -1,60 +1,59 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { getDatabase, ref, get } from 'firebase/database';
 
 function ViewQuestion() {
   const { id } = useParams();
-  const [pregunta, setPregunta] = useState({
-    id: null,
-    imagen_svg: null,
-    tema: '',
-    tipo: '',
-    nivel_dificultad: '',
-    enunciado: '',
-    alternativa1: null,
-    alternativa2: null,
-    alternativa3: null,
-    alternativa4: null,
-    respuesta: '',
-    hint: '',
-  });
+  const [pregunta, setPregunta] = useState(null);
 
   useEffect(() => {
-    // Realiza una solicitud para obtener los detalles de la pregunta a ver
-    axios.get(`http://143.198.98.190:8000/preguntas/${id}/`)
-      .then((response) => {
-        setPregunta(response.data);
+    const db = getDatabase();
+    const preguntaRef = ref(db, `preguntas/${id}`);
+
+    get(preguntaRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const preguntaData = snapshot.val();
+          setPregunta(preguntaData);
+        } else {
+          console.log('No se encontró la pregunta.');
+        }
       })
       .catch((error) => {
         console.error('Error al obtener la pregunta:', error);
+        
       });
   }, [id]);
 
   return (
     <div>
       <h1>Detalles de la Pregunta</h1>
-      <div>
-        <strong>Enunciado:</strong> {pregunta.enunciado}
-      </div>
-      <div>
-        <strong>Alternativa 1:</strong> {pregunta.alternativa1}
-      </div>
-      <div>
-        <strong>Alternativa 2:</strong> {pregunta.alternativa2}
-      </div>
-      <div>
-        <strong>Alternativa 3:</strong> {pregunta.alternativa3}
-      </div>
-      <div>
-        <strong>Alternativa 4:</strong> {pregunta.alternativa4}
-      </div>
-      <div>
-        <strong>Respuesta:</strong> {pregunta.respuesta}
-      </div>
-      <div>
-        <strong>Hint:</strong> {pregunta.hint}
-      </div>
-      {/* Puedes mostrar más detalles aquí si es necesario */}
+      {pregunta ? (
+        <div><strong>ID:</strong> {pregunta.id}
+        <br />
+        <strong>tema:</strong> {pregunta.tema}
+        <br />
+        <strong>Nivel de dificultad:</strong> {pregunta.nivel_dificultad}
+        <br />
+          <strong>Enunciado:</strong> {pregunta.enunciado}
+          <br />
+          <strong>Alternativa 1:</strong> {pregunta.alternativa1}
+          <br />
+          <strong>Alternativa 2:</strong> {pregunta.alternativa2}
+          <br />
+          <strong>Alternativa 3:</strong> {pregunta.alternativa3}
+          <br />
+          <strong>Alternativa 4:</strong> {pregunta.alternativa4}
+          <br />
+          <strong>Respuesta:</strong> {pregunta.respuesta}
+          <br />
+          <strong>Hint:</strong> {pregunta.hint}
+          {/* Puedes mostrar más detalles aquí si es necesario */}
+        </div>
+      ) : (
+        <p>Cargando pregunta...</p>
+      )}
     </div>
   );
 }

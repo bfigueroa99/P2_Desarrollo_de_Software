@@ -2,6 +2,8 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import { getDatabase, ref, set } from 'firebase/database'; // Agregamos las importaciones necesarias para Firebase Realtime Database
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -17,8 +19,15 @@ const firebaseConfig = {
     measurementId: "G-VTF3V05RK2"
 };
 
-
+// Inicializa Firebase
 const app = initializeApp(firebaseConfig);
+
+// Obtén las referencias a los servicios que necesitas
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+
+
+
+
 export { auth, db };

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './AccountPage.css';
 import { useAuth } from '../../auth/AuthProvider';
-import { ref, get } from 'firebase/database';
-import { getDatabase } from 'firebase/database';
-import axios from 'axios';
+import { getDatabase, ref, get, DataSnapshot, remove } from 'firebase/database'; // Importa las funciones necesarias para Firebase Realtime Database
+
 import { useNavigate } from 'react-router-dom';
 
 function AccountPage() {
@@ -57,18 +56,32 @@ function AccountPage() {
           console.error('Error al obtener datos de alumnos:', error);
         });
 
-      axios.get('http://143.198.98.190:8000/preguntas/')
-        .then((response) => {
-          setPreguntas(response.data);
+      const preguntasRef = ref(db, 'preguntas');
+      get(preguntasRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            const preguntasList = [];
+            snapshot.forEach((childSnapshot) => {
+              const preguntaData = childSnapshot.val();
+              preguntasList.push(preguntaData);
+            });
+            setPreguntas(preguntasList);
+          } else {
+            console.log('No hay datos de preguntas en la base de datos.');
+          }
         })
         .catch((error) => {
-          console.error('Error al obtener preguntas:', error);
+          console.error('Error al obtener datos de preguntas:', error);
         });
     }
   }, [userRole]);
 
   const eliminarPregunta = (preguntaId) => {
-    axios.delete(`http://143.198.98.190:8000/preguntas/${preguntaId}/`)
+    const db = getDatabase();
+    const preguntaRef = ref(db, `preguntas/${preguntaId}`);
+  
+    // Utiliza el método remove en la referencia para eliminar el nodo
+    remove(preguntaRef)
       .then(() => {
         setPreguntas((prevPreguntas) => prevPreguntas.filter((pregunta) => pregunta.id !== preguntaId));
         console.log('Pregunta eliminada con éxito.');
@@ -88,7 +101,7 @@ function AccountPage() {
 
   const verPregunta = (id) => {
     // Redirige al usuario a la vista de pregunta específica
-    navigate(`/view/${id}`); // Asegúrate de que la URL sea correcta según tu API de Django
+    navigate(`/view/${id}`); // Asegúrate de que la URL sea correcta según tu estructura de datos en Firebase Realtime Database
   };
 
   return (

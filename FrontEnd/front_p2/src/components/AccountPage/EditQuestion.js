@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { getDatabase, ref, set, get } from 'firebase/database'; 
 
 function EditQuestion() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [pregunta, setPregunta] = useState({
-    id: null,
-    imagen_svg: null,
-    tema: '',
-    tipo: '',
-    nivel_dificultad: '',
     enunciado: '',
-    alternativa1: null,
-    alternativa2: null,
-    alternativa3: null,
-    alternativa4: null,
+    alternativa1: '',
+    alternativa2: '',
+    alternativa3: '',
+    alternativa4: '',
     respuesta: '',
     hint: '',
+    tema: '',               // Agrega campo "tema"
+    id: '',                 // Agrega campo "id"
+    nivel_dificultad: '',   // Agrega campo "nivel_dificultad"
   });
 
   const [editedPregunta, setEditedPregunta] = useState({
@@ -27,22 +27,25 @@ function EditQuestion() {
     alternativa4: '',
     respuesta: '',
     hint: '',
+    tema: '',               // Agrega campo "tema"
+    id: '',                 // Agrega campo "id"
+    nivel_dificultad: '',   // Agrega campo "nivel_dificultad"
   });
 
   useEffect(() => {
-    // Realiza una solicitud para obtener los detalles de la pregunta a editar
-    axios.get(`http://143.198.98.190:8000/preguntas/${id}/`)
-      .then((response) => {
-        setPregunta(response.data);
-        setEditedPregunta({
-          enunciado: response.data.enunciado,
-          alternativa1: response.data.alternativa1 || '',
-          alternativa2: response.data.alternativa2 || '',
-          alternativa3: response.data.alternativa3 || '',
-          alternativa4: response.data.alternativa4 || '',
-          respuesta: response.data.respuesta,
-          hint: response.data.hint || '',
-        });
+    const db = getDatabase();
+    const preguntaRef = ref(db, `preguntas/${id}`);
+
+    // Obtiene los detalles de la pregunta a editar
+    get(preguntaRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const preguntaData = snapshot.val();
+          setPregunta(preguntaData);
+          setEditedPregunta(preguntaData);
+        } else {
+          console.log('No se encontró la pregunta.');
+        }
       })
       .catch((error) => {
         console.error('Error al obtener la pregunta:', error);
@@ -60,11 +63,16 @@ function EditQuestion() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Realiza una solicitud HTTP PUT para actualizar la pregunta
-    axios.put(`http://143.198.98.190:8000/preguntas/${id}/editar`, editedPregunta)
-      .then((response) => {
-        // Maneja la respuesta, por ejemplo, muestra un mensaje de éxito
+    const db = getDatabase();
+    const preguntaRef = ref(db, `preguntas/${id}`);
+
+    // Actualiza la pregunta en Firebase Realtime Database
+    set(preguntaRef, editedPregunta)
+      .then(() => {
         console.log('Pregunta actualizada con éxito.');
+
+        // Redirige al usuario a la vista de la pregunta actualizada
+        navigate(`/view/${id}`);
       })
       .catch((error) => {
         console.error('Error al actualizar la pregunta:', error);
@@ -142,6 +150,36 @@ function EditQuestion() {
             id="hint"
             name="hint"
             value={editedPregunta.hint}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="tema">Tema</label>
+          <input
+            type="text"
+            id="tema"
+            name="tema"
+            value={editedPregunta.tema}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="id">ID</label>
+          <input
+            type="text"
+            id="id"
+            name="id"
+            value={editedPregunta.id}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="nivel_dificultad">Nivel de Dificultad</label>
+          <input
+            type="text"
+            id="nivel_dificultad"
+            name="nivel_dificultad"
+            value={editedPregunta.nivel_dificultad}
             onChange={handleInputChange}
           />
         </div>
