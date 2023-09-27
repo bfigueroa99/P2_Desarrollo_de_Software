@@ -190,7 +190,7 @@ def select_next_question(request):
             'alternativa4': pregunta.alternativa4,  
             'hint': pregunta.hint,
         }
-        return (pregunta_data,puntaje)
+        return (pregunta_data)
     else:
         return ("No hay preguntas disponibles")
 
