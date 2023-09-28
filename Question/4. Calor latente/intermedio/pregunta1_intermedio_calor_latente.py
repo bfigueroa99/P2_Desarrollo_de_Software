@@ -1,7 +1,7 @@
 import svgwrite
 import random
 
-def generar_pregunta_calor_latente_facil_2():
+def generar_pregunta_calor_latente_intermedia_1():
     # Ruta simple para el archivo SVG
     ruta_archivo_svg = 'Question/SVG_tmp/tmp.svg'
 
@@ -9,10 +9,10 @@ def generar_pregunta_calor_latente_facil_2():
     dwg = svgwrite.Drawing(ruta_archivo_svg, profile='tiny', size=('600px', '200px'))
 
     # Valor aleatorio para el calor latente de vaporización del agua en J/g
-    calor_latente_vaporizacion = random.uniform(2000, 2500)  # Valor aleatorio en J/g
+    calor_latente_vaporizacion = random.uniform(2200, 2600)  # Valor aleatorio en J/g
 
     # Masa de agua a evaporar en gramos
-    masa_agua_gramos = random.uniform(80, 120)  # Valor aleatorio en gramos
+    masa_agua_gramos = random.uniform(120, 180)  # Valor aleatorio en gramos
 
     # Calcula el calor requerido para evaporar la cantidad especificada de agua
     calor_requerido = calor_latente_vaporizacion * masa_agua_gramos
@@ -42,5 +42,5 @@ def generar_pregunta_calor_latente_facil_2():
     return respuesta, hint
 
 # Llama a la función y guarda la respuesta y la pista
-respuesta, hint = generar_pregunta_calor_latente_facil_2()
+respuesta, hint = generar_pregunta_calor_latente_intermedia_1()
 

@@ -1,22 +1,24 @@
 import svgwrite
 import random
 
-def generar_pregunta_fraccion_de_mezcla_agua():
+def generar_pregunta_calor_latente_facil():
     # Ruta simple para el archivo SVG
     ruta_archivo_svg = 'Question/SVG_tmp/tmp.svg'
 
     # Crea un lienzo SVG con un tamaño ligeramente mayor
     dwg = svgwrite.Drawing(ruta_archivo_svg, profile='tiny', size=('600px', '200px'))
 
-    # Genera valores aleatorios para las cantidades de agua y jugo de naranja en mililitros
-    cantidad_agua_ml = random.uniform(100, 500)
-    cantidad_jugo_naranja_ml = random.uniform(100, 500)
+    # Valor aleatorio para el calor latente de fusión del hielo en J/g
+    calor_latente_fusion = random.uniform(300, 400)  # Valor aleatorio en J/g
 
-    # Calcula la fracción correspondiente al agua en la mezcla
-    fraccion_agua = cantidad_agua_ml / (cantidad_agua_ml + cantidad_jugo_naranja_ml)
+    # Masa de hielo a derretir en gramos
+    masa_hielo_gramos = random.uniform(50, 100)  # Valor aleatorio en gramos
+
+    # Calcula el calor requerido para derretir la cantidad especificada de hielo
+    calor_requerido = calor_latente_fusion * masa_hielo_gramos
 
     # Enunciado de la pregunta
-    enunciado = f"Tienes una mezcla de {cantidad_agua_ml:.2f} ml de agua y {cantidad_jugo_naranja_ml:.2f} ml de jugo de naranja. ¿Cuál es la fr-\nacción de la mezcla que corresponde al agua?"
+    enunciado = f"Si el calor latente de fusión del hielo es de {calor_latente_fusion:.2f} J/g y se derriten {masa_hielo_gramos:.2f} gramos de hielo, ¿cuánto calor se requiere?"
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
@@ -28,15 +30,17 @@ def generar_pregunta_fraccion_de_mezcla_agua():
         y_pos += espacio_entre_lineas
 
     # Calcula la respuesta
-    respuesta = f"Respuesta: {fraccion_agua:.2f}"
+    respuesta = f"Respuesta: {calor_requerido:.2f} J"
 
-    # No agrega la respuesta como texto
+    # Agrega una pista breve
+    hint = "Usa el calor latente de fusión para calcular el calor requerido."
 
     # Guarda el SVG generado en el archivo especificado
     dwg.save()
 
-    # Retorna la respuesta
-    return cantidad_agua_ml, cantidad_jugo_naranja_ml, respuesta
+    # Retorna la respuesta y la pista
+    return respuesta, hint
 
-# Llama a la función y guarda la respuesta
-cantidad_agua_ml, cantidad_jugo_naranja_ml, respuesta = generar_pregunta_fraccion_de_mezcla_agua()
+# Llama a la función y guarda la respuesta y la pista
+respuesta, hint = generar_pregunta_calor_latente_facil()
+

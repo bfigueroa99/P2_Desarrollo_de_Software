@@ -1,24 +1,24 @@
 import svgwrite
 import random
 
-def generar_pregunta_calor_latente_facil_2():
+def generar_pregunta_calor_latente_facil_3():
     # Ruta simple para el archivo SVG
     ruta_archivo_svg = 'Question/SVG_tmp/tmp.svg'
 
     # Crea un lienzo SVG con un tamaño ligeramente mayor
     dwg = svgwrite.Drawing(ruta_archivo_svg, profile='tiny', size=('600px', '200px'))
 
-    # Valor aleatorio para el calor latente de vaporización del agua en J/g
-    calor_latente_vaporizacion = random.uniform(2000, 2500)  # Valor aleatorio en J/g
+    # Valor aleatorio para el calor latente de fusión del hielo en J/g
+    calor_latente_fusion = random.uniform(300, 400)  # Valor aleatorio en J/g
 
-    # Masa de agua a evaporar en gramos
-    masa_agua_gramos = random.uniform(80, 120)  # Valor aleatorio en gramos
+    # Masa de hielo a derretir en gramos
+    masa_hielo_gramos = random.uniform(40, 80)  # Valor aleatorio en gramos
 
-    # Calcula el calor requerido para evaporar la cantidad especificada de agua
-    calor_requerido = calor_latente_vaporizacion * masa_agua_gramos
+    # Calcula el calor requerido para derretir la cantidad especificada de hielo
+    calor_requerido = calor_latente_fusion * masa_hielo_gramos
 
     # Enunciado de la pregunta
-    enunciado = f"Si el calor latente de vaporización del agua es de {calor_latente_vaporizacion:.2f} J/g y se evaporan {masa_agua_gramos:.2f} gramos de agua, ¿cuánto calor se requiere?"
+    enunciado = f"Si el calor latente de fusión del hielo es de {calor_latente_fusion:.2f} J/g y se derriten {masa_hielo_gramos:.2f} gramos de hielo, ¿cuánto calor se requiere?"
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
@@ -33,7 +33,7 @@ def generar_pregunta_calor_latente_facil_2():
     respuesta = f"Respuesta: {calor_requerido:.2f} J"
 
     # Agrega una pista breve
-    hint = "Utiliza el calor latente de vaporización para calcular el calor requerido."
+    hint = "Usa el calor latente de fusión para calcular el calor requerido."
 
     # Guarda el SVG generado en el archivo especificado
     dwg.save()
@@ -42,5 +42,4 @@ def generar_pregunta_calor_latente_facil_2():
     return respuesta, hint
 
 # Llama a la función y guarda la respuesta y la pista
-respuesta, hint = generar_pregunta_calor_latente_facil_2()
-
+respuesta, hint = generar_pregunta_calor_latente_facil_3()
