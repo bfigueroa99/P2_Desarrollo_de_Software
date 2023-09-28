@@ -151,15 +151,16 @@ def select_next_question(request):
 
     # Lista de preguntas disponibles
     preguntas_disponibles = Pregunta.objects.all().exclude(id__in = [p.get('pregunta_relacionada') for p in preguntas_respondidas])
+    print(preguntas_disponibles)
 
-    if count_alternativas != 3:
+    if count_alternativas <= 3:
         # Filtra preguntas de tipo "alternativas" del mismo tema y nivel de dificultad
         preguntas = preguntas_disponibles.filter(
             tema=tema,
             nivel_dificultad=nivel_dificultad,
             tipo='alternativas'
         )
-    if count_calculonumerico != 2:
+    elif count_calculonumerico <= 2:
         # Filtra preguntas de tipo "calculonumerico" del mismo tema
         preguntas = preguntas_disponibles.filter(
             tema=tema,

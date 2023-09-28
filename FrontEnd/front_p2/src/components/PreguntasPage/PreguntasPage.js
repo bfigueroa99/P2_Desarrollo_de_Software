@@ -12,8 +12,19 @@ function PreguntasPage() {
   const [respuestasIncorrectas, setRespuestasIncorrectas] = useState(0);
   const [preguntasIncorrectas, setPreguntasIncorrectas] = useState([]);
   const [segundaOportunidad, setSegundaOportunidad] = useState(false);
-
+  // Método DELETE
+  const handleEliminarTodasLasRespuestas = () => {
+    axios.delete('http://127.0.0.1:8000/eliminar-todas-las-respuestas/')
+      .then((response) => {
+        console.log('listeilor')
+        // Manejar la respuesta del servidor si es necesario
+      })
+      .catch((error) => {
+        console.error('Error al eliminar todas las respuestas:', error);
+      });
+  };
   useEffect(() => {
+    handleEliminarTodasLasRespuestas();
     // Paso 1: Obtener la primera pregunta
     axios.post('http://143.198.98.190:8000/seleccionar_primera_pregunta/', {
       nivel_estudiante: 1,
