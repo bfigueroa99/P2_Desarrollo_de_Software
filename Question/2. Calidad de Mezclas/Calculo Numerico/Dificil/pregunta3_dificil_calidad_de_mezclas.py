@@ -27,7 +27,8 @@ def generar_pregunta_calidad_mezclas_dificil_3():
 
     # Enunciado de la pregunta
     enunciado = f"Si se mezclan {volumen_inicial_litros:.2f} litros de una solución con concentración molar de {concentracion_inicial:.2f} mol/L y {volumen_otra_solucion_litros:.2f} litros de otra solución con concentración molar de {concentracion_otra_solucion:.2f} mol/L, ¿cuál será la concentración molar de la mezcla final?"
-
+    hint = "Esta pregunta no tiene hint."
+    
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
     espacio_entre_lineas = 18

@@ -23,6 +23,7 @@ def generar_pregunta_calculo_numerico_cambio_temperatura_expansion_volumen_const
 
     # Enunciado de la pregunta
     enunciado = f"Un gas ideal se encuentra a una presión de {presion_inicial_atm:.2f} atmósferas y una temperatura de \n{temperatura_inicial_kelvin:.2f} K. Si se realiza un trabajo de expansión a volumen constante en el gas, red-\nuciendo su presión a 1 atmósfera, ¿cuál será el cambio en la temperatura del gas?"
+    hint = "Puedes utilizar la ley de Charles para resolver este problema. La ley de Charles establece que, a presión constante, el volumen de un gas es directamente proporcional a su temperatura en kelvin: V1/T1 = V2/T2."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

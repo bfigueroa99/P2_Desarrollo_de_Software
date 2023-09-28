@@ -17,7 +17,8 @@ def generar_pregunta_calor_vaporizacion_sustancia():
 
     # Enunciado de la pregunta
     enunciado = f"Si una sustancia tiene una entalpía molar estándar de vaporización de {entalpia_vaporizacion_X:.2f} kJ/mol, ¿cuánto calor se requiere para vaporizar {cantidad_moles_Y:.2f} moles de esa sustancia?"
-
+    hint = "Esta pregunta no tiene hint."
+    
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
     espacio_entre_lineas = 18

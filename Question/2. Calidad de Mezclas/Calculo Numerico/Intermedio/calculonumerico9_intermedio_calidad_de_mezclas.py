@@ -25,7 +25,8 @@ def generar_pregunta_dilucion_solucion_azucar():
 
     # Enunciado de la pregunta
     enunciado = f"Tienes {volumen_inicial_litros} litros de una solución de azúcar al {concentracion_inicial}%. ¿Cuántos litros de esta solución nece-\nsitas diluir con agua para obtener {volumen_deseado_litros} litros de una solución al {concentracion_deseada}% de azúcar?"
-
+    hint = "Esta pregunta no tiene hint."
+    
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
     espacio_entre_lineas = 18

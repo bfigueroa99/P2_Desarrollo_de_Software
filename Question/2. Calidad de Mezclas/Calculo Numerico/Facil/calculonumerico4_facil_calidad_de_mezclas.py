@@ -17,6 +17,7 @@ def generar_pregunta_temperatura_final_mezcla_agua():
 
     # Enunciado de la pregunta
     enunciado = f"Si mezclas 2 litros de agua a {temperatura_agua1_celsius:.2f}°C con 1 litro de agua a {temperatura_agua2_celsius:.2f}°C, ¿cuál será la temper-\natura final de la mezcla?"
+    hint = "Puedes utilizar la ley de la conservación de la energía para resolver este problema. La temperatura final de la mezcla se calcula mediante la ecuación: m1 * c1 * (Tf - T1) = m2 * c2 * (T2 - Tf), donde m1 y m2 son las masas de los cuerpos, c1 y c2 son las capacidades caloríficas específicas y T1 y T2 son las temperaturas iniciales."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

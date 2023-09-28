@@ -17,6 +17,7 @@ def generar_pregunta_volumen_total_mezcla_alcohol_agua():
 
     # Enunciado de la pregunta
     enunciado = f"Si mezclas {volumen_alcohol_ml:.2f} ml de alcohol con {volumen_agua_ml:.2f} ml de agua, ¿cuál es el volumen total de\n la mezcla?"
+    hint = "El volumen total de la mezcla se obtiene simplemente sumando los volúmenes de alcohol y agua."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

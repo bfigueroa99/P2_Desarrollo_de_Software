@@ -23,7 +23,8 @@ def generar_pregunta_aumentar_concentracion_alcohol():
 
     # Enunciado de la pregunta
     enunciado = f"Tienes {volumen_mezcla_litros:.2f} litros de una mezcla de alcohol al {concentracion_inicial_alcohol:.2f}% y agua. Si deseas aumentar la\n concentración de alcohol al {concentracion_deseada_alcohol:.2f}%, ¿cuántos mililitros de alcohol puro debes agr-\negar a la mezcla?"
-
+    hint = "Esta pregunta no tiene hint."
+    
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
     espacio_entre_lineas = 18

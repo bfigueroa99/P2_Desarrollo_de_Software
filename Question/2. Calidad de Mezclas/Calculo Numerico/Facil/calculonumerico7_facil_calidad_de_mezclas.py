@@ -16,6 +16,7 @@ def generar_pregunta_cantidad_de_azucar_en_mezcla():
 
     # Enunciado de la pregunta
     enunciado = f"Tienes una mezcla de 4 partes de azúcar y 1 parte de sal. Si tienes {cantidad_mezcla_gramos:.2f} gramos de \nesta mezcla, ¿cuántos gramos de azúcar hay en total?"
+    hint = "Puedes calcular la cantidad de azúcar en la mezcla multiplicando la fracción correspondiente (4/5) por el peso total de la mezcla en gramos."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

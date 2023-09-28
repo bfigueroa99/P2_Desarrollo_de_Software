@@ -16,6 +16,7 @@ def generar_pregunta_cantidad_de_leche_en_mezcla():
 
     # Enunciado de la pregunta
     enunciado = f"Tienes una mezcla de 3 partes de leche y 1 parte de café. Si tienes {cantidad_mezcla_ml:.2f} ml de esta m-\nezcla, ¿cuántos ml de leche hay en total?"
+    hint = "Puedes calcular la cantidad de leche en la mezcla multiplicando la fracción correspondiente (3/4) por el volumen total de la mezcla."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

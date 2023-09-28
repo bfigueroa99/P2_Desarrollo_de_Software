@@ -17,6 +17,7 @@ def generar_pregunta_masa_total_mezcla_azucar_harina():
 
     # Enunciado de la pregunta
     enunciado = f"Si mezclas {masa_azucar_gramos:.2f} gramos de azúcar con {masa_harina_gramos:.2f} gramos de harina, ¿cuál es la masa total\n de la mezcla?"
+    hint = "La masa total de la mezcla se calcula sumando la masa del azúcar y la masa de la harina."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

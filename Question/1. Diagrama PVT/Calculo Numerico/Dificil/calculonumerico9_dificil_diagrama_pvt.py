@@ -19,6 +19,7 @@ def generar_pregunta_calculo_numerico_nueva_temperatura_expansion_adiabatica_tri
 
     # Enunciado de la pregunta
     enunciado = f"Un gas ideal se encuentra a una presión de 1 atmósfera y una temperatura de {temperatura_inicial_kelvin:.2f} K.\n Si se le permite expandirse adiabáticamente hasta que su volumen se triplique, ¿cuál \nserá la nueva temperatura del gas?"
+    hint = "Puedes utilizar la relación adiabática para resolver este problema. La relación adiabática entre la temperatura (T), la presión (P) y el volumen (V) en un proceso adiabático es P1 * V1^(γ-1) = P2 * V2^(γ-1), donde γ es el índice adiabático (para un gas ideal monoatómico, γ ≈ 5/3)."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

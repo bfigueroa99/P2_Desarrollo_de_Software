@@ -17,6 +17,7 @@ def generar_pregunta_volumen_total_mezcla_jugo_naranja_agua():
 
     # Enunciado de la pregunta
     enunciado = f"Si mezclas {volumen_jugo_naranja_litros:.2f} litros de jugo de naranja con {volumen_agua_litros:.2f} litros de agua, ¿cuál será el volumen\n total de la mezcla?"
+    hint = "El volumen total de la mezcla se obtiene simplemente sumando los volúmenes de jugo de naranja y agua."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

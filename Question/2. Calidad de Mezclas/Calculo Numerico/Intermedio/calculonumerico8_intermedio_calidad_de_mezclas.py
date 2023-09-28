@@ -21,6 +21,7 @@ def generar_pregunta_proporcion_nueces_almendras():
 
     # Enunciado de la pregunta
     enunciado = f"Tienes {cantidad_total_gramos} gramos de una mezcla de nueces y almendras en una proporción de {proporcion_nueces}:{proporcion_almendras}.\n ¿Cuántos gramos de nueces tienes en la mezcla?"
+    hint = "Esta pregunta no tiene hint."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

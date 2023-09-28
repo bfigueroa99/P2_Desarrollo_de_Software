@@ -20,6 +20,7 @@ def generar_pregunta_calculo_numerico_nuevo_volumen_enfriamiento():
 
     # Enunciado de la pregunta
     enunciado = f"Tienes un gas ideal en un recipiente de {volumen_inicial_litros:.2f} litros a una temperatura de {temperatura_inicial_kelvin:.2f} K. Si el\n gas se enfría a {temperatura_baja_kelvin:.2f} K mientras se mantiene a una presión constante, ¿cuál será el n-\nuevo volumen del gas?"
+    hint = "Puedes utilizar la ley de Charles para resolver este problema. La ley de Charles establece que, a presión constante, el volumen de un gas es directamente proporcional a su temperatura en kelvin: V1/T1 = V2/T2."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

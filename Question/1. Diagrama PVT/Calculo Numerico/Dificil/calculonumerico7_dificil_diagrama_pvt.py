@@ -19,6 +19,7 @@ def generar_pregunta_calculo_numerico_nueva_temperatura_cambio_presion_volumen()
 
     # Enunciado de la pregunta
     enunciado = f"Un recipiente contiene {moles:.2f} moles de gas ideal a una temperatura de {temperatura_inicial_kelvin:.2f} K y una p-\nresión de {presion_inicial_atm:.2f} atmósferas. Si se lleva el gas a un estado en el que su presión sea de 1 a-\ntmósfera y su volumen sea el doble del inicial, ¿cuál será la nueva temperatura del gas?"
+    hint = "Puedes utilizar la ley de los gases ideales para resolver este problema. La ley de los gases ideales establece que PV = nRT, donde P es la presión, V es el volumen, n es la cantidad de sustancia (moles), R es la constante de los gases ideales y T es la temperatura en kelvin."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

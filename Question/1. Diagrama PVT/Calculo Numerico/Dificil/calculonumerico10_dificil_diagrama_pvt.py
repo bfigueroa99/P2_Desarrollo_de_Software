@@ -18,6 +18,7 @@ def generar_pregunta_calculo_numerico_nueva_presion_compresion_isotermica():
 
     # Enunciado de la pregunta
     enunciado = f"Tienes un gas ideal a una temperatura de {temperatura_inicial_kelvin} K y un volumen de {volumen_inicial_litros} litros. Si se reali-\nza un trabajo de compresión isotérmica en el gas, reduciendo su volumen a la mitad,\n ¿cuál será la nueva presión del gas?"
+    hint = "Puedes utilizar la ley de Boyle-Mariotte para resolver este problema. La ley de Boyle-Mariotte establece que, a temperatura constante, la presión y el volumen de un gas son inversamente proporcionales: P1 * V1 = P2 * V2."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

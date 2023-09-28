@@ -27,6 +27,7 @@ def generar_pregunta_concentracion_grasa_en_mezcla():
 
     # Enunciado de la pregunta
     enunciado = f"Tienes una mezcla de {cantidad_leche_1_litros} litro de leche al {concentracion_grasa_leche_1}% de grasa y {cantidad_leche_2_litros} litro de leche al {concentracion_grasa_leche_2}% de grasa. \n¿Cuál es la concentración de grasa en la mezcla resultante?"
+    hint = "Esta pregunta no tiene hint."   
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

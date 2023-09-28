@@ -22,7 +22,8 @@ def generar_pregunta_obtener_lquido_de_mezcla():
 
     # Enunciado de la pregunta
     enunciado = f"Tienes una mezcla de dos líquidos A y B en una proporción de 4:1. Si tienes {cantidad_total_ml:.2f} ml\n de la mezcla y deseas obtener {cantidad_deseada_liquido_b_puro_ml:.2f} ml de líquido B puro, ¿cuántos mililitros de la m-\nezcla original debes tomar?"
-
+    hint = "Esta pregunta no tiene hint."
+    
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
     espacio_entre_lineas = 18

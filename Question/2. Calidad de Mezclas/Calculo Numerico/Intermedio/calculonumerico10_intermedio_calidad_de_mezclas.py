@@ -23,7 +23,8 @@ def generar_pregunta_proporcion_tres_liquidos():
 
     # Enunciado de la pregunta
     enunciado = f"Tienes {volumen_total_ml} ml de una mezcla de tres líquidos X, Y y Z en una proporción de {proporcion_x}:{proporcion_y}:{proporcion_z}. ¿Cu-\nántos mililitros de cada líquido tienes en la mezcla?"
-
+    hint = "Esta pregunta no tiene hint."
+    
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
     espacio_entre_lineas = 18

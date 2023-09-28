@@ -24,7 +24,8 @@ def generar_pregunta_proporcion_jugos():
 
     # Enunciado de la pregunta
     enunciado = f"Tienes una mezcla de {cantidad_jugo_naranja_ml} ml de jugo de naranja y {cantidad_jugo_manzana_ml} ml de jugo de manzana. Deseas \nobtener una mezcla con una proporción de {proporcion_deseada[0]}:{proporcion_deseada[1]} de jugo de naranja a jugo de manzana. \n¿Cuántos mililitros de cada jugo debes tomar?"
-
+    hint = "Esta pregunta no tiene hint."
+    
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
     espacio_entre_lineas = 18

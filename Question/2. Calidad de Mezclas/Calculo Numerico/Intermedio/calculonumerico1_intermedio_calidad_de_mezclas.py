@@ -21,6 +21,7 @@ def generar_pregunta_preparacion_solucion_diluida():
 
     # Enunciado de la pregunta
     enunciado = f"Tienes una solución de ácido clorhídrico con una concentración del {concentracion_original:.2f}%. Si necesi-\ntas preparar {volumen_deseado_ml:.2f} ml de una solución al {concentracion_deseada:.2f}%, ¿cuántos ml de la solución original\n debes usar y cuántos ml de agua necesitas agregar?"
+    hint = "Esta pregunta no tiene hint."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

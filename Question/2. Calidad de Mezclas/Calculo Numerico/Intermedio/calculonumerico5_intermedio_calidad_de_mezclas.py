@@ -25,7 +25,8 @@ def generar_pregunta_dilucion_solucion():
 
     # Enunciado de la pregunta
     enunciado = f"Tienes una solución de sal con una concentración del {concentracion_original}% y deseas preparar 400 ml \nde una solución al {concentracion_deseada}%. ¿Cuántos mililitros de agua necesitas agregar a la solución \noriginal?"
-
+    hint = "Esta pregunta no tiene hint."
+    
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
     espacio_entre_lineas = 18

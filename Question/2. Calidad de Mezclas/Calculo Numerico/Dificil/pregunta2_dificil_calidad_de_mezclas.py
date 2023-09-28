@@ -27,7 +27,8 @@ def generar_pregunta_calidad_mezclas_dificil_2():
 
     # Enunciado de la pregunta
     enunciado = f"Si se mezclan {volumen_solucion1_litros:.2f} litros de una solución con {porcentaje_azucar_solucion1:.2f}% de azúcar y {volumen_solucion2_litros:.2f} litros de otra solución con {porcentaje_azucar_solucion2:.2f}% de azúcar, ¿cuál será el porcentaje de azúcar en la mezcla final?"
-
+    hint = "Esta pregunta no tiene hint."
+    
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
     espacio_entre_lineas = 18

@@ -17,6 +17,7 @@ def generar_pregunta_proporcion_mezcla_harina_azucar():
 
     # Enunciado de la pregunta
     enunciado = f"Tienes {cantidad_total_gramos:.2f} gramos de una mezcla de harina y azúcar en una proporción de 3:2. \n¿Cuántos gramos de harina y cuántos gramos de azúcar tienes en la mezcla?"
+    hint = "Esta pregunta no tiene hint."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

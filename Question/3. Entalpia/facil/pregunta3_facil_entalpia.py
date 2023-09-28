@@ -19,7 +19,8 @@ def generar_pregunta_entalpia_final_sustancia():
 
     # Enunciado de la pregunta
     enunciado = f"Si la entalpía de una sustancia es de {entalpia_inicial:.2f} kJ y se le añaden {calor_anadido:.2f} kJ de calor, ¿cuál es la entalpía final de la sustancia?"
-
+    hint = "Esta pregunta no tiene hint."
+    
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
     espacio_entre_lineas = 18

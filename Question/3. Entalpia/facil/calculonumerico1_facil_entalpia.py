@@ -13,7 +13,8 @@ def generar_pregunta_cambio_entalpia_reaccion():
 
     # Enunciado de la pregunta
     enunciado = f"Si una reacción química libera {abs(cambio_entalpia)} kJ de calor, ¿cuál es el cambio de entalpía (ΔH) de la reacción?"
-
+    hint = "Esta pregunta no tiene hint."
+    
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
     espacio_entre_lineas = 18

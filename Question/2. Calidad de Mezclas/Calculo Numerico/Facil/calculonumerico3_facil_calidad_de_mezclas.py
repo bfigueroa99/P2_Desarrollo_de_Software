@@ -19,7 +19,8 @@ def generar_pregunta_cantidad_de_sal_en_solucion():
 
     # Enunciado de la pregunta
     enunciado = f"Tienes una solución de sal con una concentración del {concentracion_porcentaje}%." \
-                f" Si tienes \n{volumen_ml:.2f} ml de esta solución, ¿cuántos gramos de sal contiene?"
+            f" Si tienes \n{volumen_ml:.2f} ml de esta solución, ¿cuántos gramos de sal contiene?"
+    hint = "Para calcular la cantidad de sal en la solución, puedes multiplicar la concentración en porcentaje por el volumen de la solución en ml y luego dividir entre 100."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

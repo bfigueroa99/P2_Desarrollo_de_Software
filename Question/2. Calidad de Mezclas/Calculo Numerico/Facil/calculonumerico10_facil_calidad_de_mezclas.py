@@ -17,6 +17,7 @@ def generar_pregunta_masa_total_mezcla_aceite_vinagre():
 
     # Enunciado de la pregunta
     enunciado = f"Si mezclas {masa_aceite_gramos:.2f} gramos de aceite con {masa_vinagre_gramos:.2f} gramos de vinagre, ¿cuál es la masa total\n de la mezcla?"
+    hint = "La masa total de la mezcla se obtiene simplemente sumando las masas del aceite y el vinagre."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

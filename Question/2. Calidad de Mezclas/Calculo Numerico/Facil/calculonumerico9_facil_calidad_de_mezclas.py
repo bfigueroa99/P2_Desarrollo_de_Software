@@ -16,6 +16,7 @@ def generar_pregunta_cantidad_de_jugo_de_uva_en_mezcla():
 
     # Enunciado de la pregunta
     enunciado = f"Tienes una mezcla de 60% de jugo de manzana y 40% de jugo de uva. Si tienes {volumen_mezcla_ml:.2f}\n ml de esta mezcla, ¿cuántos ml de jugo de uva contiene?"
+    hint = "Puedes calcular la cantidad de jugo de uva en la mezcla multiplicando la fracción correspondiente (40/100) por el volumen total de la mezcla en ml."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

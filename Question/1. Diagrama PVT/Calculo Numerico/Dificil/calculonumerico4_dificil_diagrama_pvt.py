@@ -19,6 +19,7 @@ def generar_pregunta_calculo_numerico_nuevo_volumen_expansion_isotermica():
 
     # Enunciado de la pregunta
     enunciado = f"Un gas ideal se encuentra en un recipiente de {volumen_inicial_litros:.2f} litros a una temperatura de {temperatura_inicial_kelvin:.2f} K\n y una presión de {presion_inicial_atm:.2f} atmósferas. Si se permite que el gas se expanda isotérmicamente\n hasta que su presión alcance 1 atmósfera, ¿cuál será el nuevo volumen del gas?"
+    hint = "Puedes utilizar la ley de Boyle-Mariotte para resolver este problema. La ley de Boyle-Mariotte establece que, a temperatura constante, la presión y el volumen de un gas son inversamente proporcionales: P1 * V1 = P2 * V2."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
