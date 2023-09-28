@@ -34,7 +34,7 @@ def generar_pregunta_calor_vaporizacion_sustancia():
     dwg.save()
 
     # Retorna la respuesta
-    return respuesta
+    return entalpia_vaporizacion_X, respuesta
 
 # Llama a la función y guarda la respuesta
-respuesta = generar_pregunta_calor_vaporizacion_sustancia()
+entalpia_vaporizacion_X, respuesta = generar_pregunta_calor_vaporizacion_sustancia()
