@@ -25,6 +25,7 @@ def generar_pregunta_calculo_numerico_nueva_presion_agregar_moles():
 
     # Enunciado de la pregunta
     enunciado = f"Un gas ocupa un volumen de {volumen_inicial_litros:.2f} litros a una temperatura de {temperatura_kelvin:.2f} K y una presión \nde {presion_inicial_atm:.2f} atmósferas. Si se le agregan {moles_adicionales:.2f} moles de gas adicionales manteniendo la te-\nmperatura constante, ¿cuál será la nueva presión del sistema?"
+    hint = "Puedes utilizar la ley de los gases ideales para resolver este problema. Recuerda que, a temperatura constante, la relación entre la presión inicial (P1), el volumen inicial (V1) y la presión final (P2) y el volumen final (V2) es P1 * V1 = P2 * V2."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

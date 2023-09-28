@@ -16,7 +16,9 @@ def generar_pregunta_calculo_numerico_temperatura_kelvin():
     temperatura_kelvin = temperatura_celsius + 273.15
 
     # Enunciado de la pregunta
-    enunciado = f"Si tienes un gas ideal con un volumen de {volumen_litros:.2f} litros a {temperatura_celsius:.2f}°C, ¿cuál sería su tempera-\ntura en Kelvin?"
+    hint = "Para convertir la temperatura de grados Celsius a Kelvin, puedes utilizar la siguiente fórmula: Kelvin = Celsius + 273.15."
+    enunciado = f"Si tienes un gas ideal con un volumen de {volumen_litros:.2f} litros a {temperatura_celsius:.2f}°C, ¿cuál sería su temperatura en Kelvin?"
+
 
     # Respuesta de la pregunta
     respuesta = f"Respuesta: {temperatura_kelvin:.2f} K"

@@ -24,6 +24,7 @@ def generar_pregunta_calculo_numerico_nuevo_volumen_temperatura():
 
     # Enunciado de la pregunta
     enunciado = f"Tienes un gas a una presión de {presion_inicial_atm:.2f} atmósferas y una temperatura de {temperatura_inicial_kelvin:.2f} K. Si au-\nmentas la temperatura a {nueva_temperatura_kelvin:.2f} K, ¿cuál será el nuevo volumen del gas si cumple con\n la ley de los gases ideales?"
+    hint = "Puedes utilizar la ley de los gases ideales para resolver este problema. La ley de los gases ideales establece que PV = nRT, donde P es la presión, V es el volumen, n es la cantidad de sustancia (moles), R es la constante de los gases ideales y T es la temperatura en kelvin."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

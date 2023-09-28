@@ -18,6 +18,7 @@ def generar_pregunta_calculo_numerico_nueva_presion_duplicar_volumen():
 
     # Enunciado de la pregunta
     enunciado = f"Un gas ideal se encuentra a una temperatura de {temperatura_kelvin:.2f} K y una presión de {presion_atm:.2f} atmós-\nferas. Si su volumen se duplica mientras la temperatura se mantiene constante, ¿cuál\n será la nueva presión del gas?"
+    hint = "Puedes utilizar la ley de Boyle-Mariotte para resolver este problema. La ley de Boyle-Mariotte establece que, a temperatura constante, la presión y el volumen de un gas son inversamente proporcionales: P1 * V1 = P2 * V2."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

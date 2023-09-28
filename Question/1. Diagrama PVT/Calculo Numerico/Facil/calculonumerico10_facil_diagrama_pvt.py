@@ -21,6 +21,7 @@ def generar_pregunta_calculo_numerico_moles_gases_ideales():
 
     # Enunciado de la pregunta
     enunciado = f"Un gas ocupa un volumen de {volumen_litros:.2f} litros a una temperatura de {temperatura_kelvin:.2f} K y una presión \nde {presion_atm:.2f} atmósferas. ¿Cuántos moles de gas hay en el recipiente si se comporta como un\n gas ideal?"
+    hint = "Puedes utilizar la ley de los gases ideales: PV = nRT, donde P es la presión, V es el volumen, n es la cantidad de sustancia (moles), R es la constante de los gases ideales y T es la temperatura en kelvin."
 
     # Respuesta de la pregunta
     respuesta = f"Respuesta: {moles:.2f} moles"

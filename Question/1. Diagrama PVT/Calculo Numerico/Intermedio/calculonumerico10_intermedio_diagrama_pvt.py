@@ -21,6 +21,7 @@ def generar_pregunta_calculo_numerico_presion():
 
     # Enunciado de la pregunta
     enunciado = f"Si tienes {moles:.2f} moles de gas a una temperatura de {temperatura_kelvin:.2f} K y un volumen de {volumen_litros:.2f} litros,\n ¿cuál sería la presión del gas si cumple con la ley de los gases ideales?"
+    hint = "Puedes utilizar la ley de los gases ideales para resolver este problema. La ley de los gases ideales establece que PV = nRT, donde P es la presión, V es el volumen, n es la cantidad de sustancia (moles), R es la constante de los gases ideales y T es la temperatura en kelvin."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

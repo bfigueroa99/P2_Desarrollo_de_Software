@@ -23,6 +23,7 @@ def generar_pregunta_calculo_numerico_cantidad_moles():
 
     # Enunciado de la pregunta
     enunciado = f"Tienes un gas a una temperatura de {temperatura_kelvin:.2f} K y un volumen de {volumen_litros:.2f} litros. Si su presi-\nón se reduce a {nueva_presion_atm:.2f} atmósfera, ¿cuántos moles de gas hay en el recipiente si cumple \ncon la ley de los gases ideales?"
+    hint = "Puedes utilizar la ley de los gases ideales para resolver este problema. La ley de los gases ideales establece que PV = nRT, donde P es la presión, V es el volumen, n es la cantidad de sustancia (moles), R es la constante de los gases ideales y T es la temperatura en kelvin."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

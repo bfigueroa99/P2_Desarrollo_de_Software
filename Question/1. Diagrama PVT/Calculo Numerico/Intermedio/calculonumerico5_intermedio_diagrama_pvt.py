@@ -27,6 +27,7 @@ def generar_pregunta_calculo_numerico_nueva_temperatura_compresion():
 
     # Enunciado de la pregunta
     enunciado = f"Si tienes un gas ideal con un volumen de {volumen_inicial_litros:.2f} litros a {temperatura_inicial_celsius:.2f}°C y lo comprimes a una p-\nresión de {nueva_presion_atm:.2f} atmósferas, ¿cuál será la nueva temperatura en Kelvin?"
+    hint = "Puedes convertir la temperatura de grados Celsius a Kelvin utilizando la siguiente fórmula: Kelvin = Celsius + 273.15."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

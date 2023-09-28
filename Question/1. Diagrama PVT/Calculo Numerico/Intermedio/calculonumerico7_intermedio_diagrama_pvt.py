@@ -18,6 +18,7 @@ def generar_pregunta_calculo_numerico_nueva_presion_reduccion_volumen():
 
     # Enunciado de la pregunta
     enunciado = f"Un gas ideal se encuentra a una presión de {presion_inicial_atm:.2f} atmósfera y una temperatura de {temperatura_inicial_kelvin:.2f}\n K. Si su volumen se reduce a la mitad mientras la temperatura se mantiene constante, \n¿cuál será la nueva presión del gas?"
+    hint = "Puedes utilizar la ley de Boyle-Mariotte para resolver este problema. La ley de Boyle-Mariotte establece que, a temperatura constante, la presión y el volumen de un gas son inversamente proporcionales: P1 * V1 = P2 * V2."
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')

@@ -21,6 +21,7 @@ def generar_pregunta_calculo_numerico_volumen_gases_ideales():
 
     # Enunciado de la pregunta
     enunciado = f"Si tienes un gas a una presión de {presion_atm:.2f} atmósferas y una temperatura de {temperatura_kelvin:.2f} K, ¿cuál \nsería su volumen si cumple con la ley de los gases ideales?"
+    hint = "Puedes utilizar la ley de los gases ideales: PV = nRT, donde P es la presión, V es el volumen, n es la cantidad de sustancia (moles), R es la constante de los gases ideales y T es la temperatura en kelvin."
 
     # Respuesta de la pregunta
     respuesta = f"Respuesta: {volumen_litros:.2f} litros"

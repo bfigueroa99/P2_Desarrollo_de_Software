@@ -21,7 +21,9 @@ def generar_pregunta_calculo_numerico_presion_gases_ideales():
     presion_atm = (moles * constante_de_los_gases * temperatura_kelvin) / volumen_litros
 
     # Enunciado de la pregunta
-    enunciado = f"Si tienes {moles:.2f} moles de un gas a una temperatura de {temperatura_kelvin:.2f} K y un volumen de {volumen_litros:.2f} lit-\nros, ¿cuál sería su presión si cumple con la ley de los gases ideales?"
+    enunciado = f"Si tienes {moles:.2f} moles de un gas a una temperatura de {temperatura_kelvin:.2f} K y un volumen de {volumen_litros:.2f} litros, ¿cuál sería su presión si cumple con la ley de los gases ideales?"
+    hint = "Puedes utilizar la ley de los gases ideales: PV = nRT, donde P es la presión, V es el volumen, n es la cantidad de sustancia (moles), R es la constante de los gases ideales y T es la temperatura en kelvin."
+
 
     # Respuesta de la pregunta
     respuesta = f"Respuesta: {presion_atm:.2f} atmósferas"

@@ -15,6 +15,7 @@ def generar_pregunta_calculo_numerico_trabajo_isobarico():
     trabajo_atm_litros = presion_atm * cambio_de_volumen_litros
 
     # Enunciado de la pregunta
+    hint = "Recuerda que en una expansión isobárica, el trabajo se calcula con la fórmula W = P * ΔV."
     enunciado = f"¿Cuál es el trabajo realizado por un gas en una expansión isobárica si la presión \n es de {presion_atm:.2f} atm y el cambio de volumen es de {cambio_de_volumen_litros:.2f} litros?"
 
     # Respuesta de la pregunta
