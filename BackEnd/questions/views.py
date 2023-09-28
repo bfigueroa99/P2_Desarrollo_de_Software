@@ -100,74 +100,85 @@ def select_next_question(request):
 
     puntaje = ((nivel_alumno * 0.6) + (racha_buena * 0.4) - (count_hint * 0.1) - (racha_mala * 0.3))
 
+    preguntas = []
+    tmp = 0
+    count = 0
 
+    while preguntas == []:
+        count += 1
+       
+        if count > 50:
+            return ("No hay preguntas disponibles")
+        
+        # Calcula el nivel de dificultad
+        if (puntaje + tmp) <= 1:
+            nivel_dificultad = 'baja'
+            tema = 'Diagramas de PVT'
+        elif 1 < (puntaje + tmp) <= 2:
+            nivel_dificultad = 'media'
+            tema = 'Diagramas de PVT'
+        elif 2 < (puntaje + tmp) <= 3:
+            nivel_dificultad = 'alta'
+            tema = 'Diagramas de PVT'
+        elif 3 < (puntaje + tmp) <= 4:
+            nivel_dificultad = 'baja'
+            tema = 'Calidad de mezclas'
+        elif 4 < (puntaje + tmp) <= 5:
+            nivel_dificultad = 'media'
+            tema = 'Calidad de mezclas'
+        elif 5 < (puntaje + tmp) <= 6:
+            nivel_dificultad = 'alta'
+            tema = 'Calidad de mezclas'
+        elif 6 < (puntaje + tmp) <= 7:
+            nivel_dificultad = 'baja'
+            tema = 'Entalpía'
+        elif 7 < (puntaje + tmp) <= 8:
+            nivel_dificultad = 'media'
+            tema = 'Entalpía'
+        elif 8 < (puntaje + tmp) <= 9:
+            nivel_dificultad = 'alta'
+            tema = 'Entalpía'
+        elif 9 < (puntaje + tmp) <= 10:
+            nivel_dificultad = 'baja'
+            tema = 'Calor latente'
+        elif 10 < (puntaje + tmp) <= 11:
+            nivel_dificultad = 'media'
+            tema = 'Calor latente'
+        elif 11 < (puntaje + tmp) <= 12:
+            nivel_dificultad = 'alta'
+            tema = 'Calor latente'
+        elif 12 < (puntaje + tmp) <= 13:
+            nivel_dificultad = 'baja'
+            tema = 'Tabla de saturación'
+        elif 13 < (puntaje + tmp) <= 14:
+            nivel_dificultad = 'media'
+            tema = 'Tabla de saturación'
+        elif 14 < (puntaje + tmp) <= 15:
+            nivel_dificultad = 'alta'
+            tema = 'Tabla de saturación'
 
-    # Calcula el nivel de dificultad
-    if puntaje <= 1:
-        nivel_dificultad = 'baja'
-        tema = 'Diagramas de PVT'
-    elif 1 < puntaje <= 2:
-        nivel_dificultad = 'media'
-        tema = 'Diagramas de PVT'
-    elif 2 < puntaje <= 3:
-        nivel_dificultad = 'alta'
-        tema = 'Diagramas de PVT'
-    elif 3 < puntaje <= 4:
-        nivel_dificultad = 'baja'
-        tema = 'Calidad de mezclas'
-    elif 4 < puntaje <= 5:
-        nivel_dificultad = 'media'
-        tema = 'Calidad de mezclas'
-    elif 5 < puntaje <= 6:
-        nivel_dificultad = 'alta'
-        tema = 'Calidad de mezclas'
-    elif 6 < puntaje <= 7:
-        nivel_dificultad = 'baja'
-        tema = 'Entalpía'
-    elif 7 < puntaje <= 8:
-        nivel_dificultad = 'media'
-        tema = 'Entalpía'
-    elif 8 < puntaje <= 9:
-        nivel_dificultad = 'alta'
-        tema = 'Entalpía'
-    elif 9 < puntaje <= 10:
-        nivel_dificultad = 'baja'
-        tema = 'Calor latente'
-    elif 10 < puntaje <= 11:
-        nivel_dificultad = 'media'
-        tema = 'Calor latente'
-    elif 11 < puntaje <= 12:
-        nivel_dificultad = 'alta'
-        tema = 'Calor latente'
-    elif 12 < puntaje <= 13:
-        nivel_dificultad = 'baja'
-        tema = 'Tabla de saturación'
-    elif 13 < puntaje <= 14:
-        nivel_dificultad = 'media'
-        tema = 'Tabla de saturación'
-    elif 14 < puntaje <= 15:
-        nivel_dificultad = 'alta'
-        tema = 'Tabla de saturación'
+        # Lista de preguntas disponibles
+        preguntas_disponibles = Pregunta.objects.all().exclude(id__in = [p.get('pregunta_relacionada') for p in preguntas_respondidas])
+        print(preguntas_disponibles)
 
-    # Lista de preguntas disponibles
-    preguntas_disponibles = Pregunta.objects.all().exclude(id__in = [p.get('pregunta_relacionada') for p in preguntas_respondidas])
-    print(preguntas_disponibles)
-
-    if count_alternativas <= 3:
-        # Filtra preguntas de tipo "alternativas" del mismo tema y nivel de dificultad
-        preguntas = preguntas_disponibles.filter(
-            tema=tema,
-            nivel_dificultad=nivel_dificultad,
-            tipo='alternativas'
-        )
-    elif count_calculonumerico <= 2:
-        # Filtra preguntas de tipo "calculonumerico" del mismo tema
-        preguntas = preguntas_disponibles.filter(
-            tema=tema,
-            tipo='calculonumerico'
-        )
-    else:
-        return nivel_dificultad
+        if count_alternativas <= 3:
+            # Filtra preguntas de tipo "alternativas" del mismo tema y nivel de dificultad
+            preguntas = preguntas_disponibles.filter(
+                tema=tema,
+                nivel_dificultad=nivel_dificultad,
+                tipo='alternativas'
+            )
+        elif count_calculonumerico <= 2:
+            # Filtra preguntas de tipo "calculonumerico" del mismo tema
+            preguntas = preguntas_disponibles.filter(
+                tema=tema,
+                tipo='calculonumerico'
+            )
+        else:
+            return nivel_dificultad
+        
+        tmp = random.randint(-5,2)
+        
 
     # Baraja aleatoriamente las preguntas
     preguntas = list(preguntas)
@@ -203,65 +214,74 @@ class SeleccionarPrimeraPregunta(APIView):
         if nivel_estudiante is None:
             return Response({"mensaje": "Nivel del estudiante es campo requerido"}, status=status.HTTP_400_BAD_REQUEST)
 
+        preguntas_disponibles = []
+        tmp = 0
+        count = 0
         
-        # Calcula el nivel de dificultad
-        if nivel_estudiante <= 1:
-            nivel_dificultad = 'baja'
-            tema = 'Diagramas de PVT'
-        elif 1 < nivel_estudiante <= 2:
-            nivel_dificultad = 'media'
-            tema = 'Diagramas de PVT'
-        elif 2 < nivel_estudiante <= 3:
-            nivel_dificultad = 'alta'
-            tema = 'Diagramas de PVT'
-        elif 3 < nivel_estudiante <= 4:
-            nivel_dificultad = 'baja'
-            tema = 'Calidad de mezclas'
-        elif 4 < nivel_estudiante <= 5:
-            nivel_dificultad = 'media'
-            tema = 'Calidad de mezclas'
-        elif 5 < nivel_estudiante <= 6:
-            nivel_dificultad = 'alta'
-            tema = 'Calidad de mezclas'
-        elif 6 < nivel_estudiante <= 7:
-            nivel_dificultad = 'baja'
-            tema = 'Entalpía'
-        elif 7 < nivel_estudiante <= 8:
-            nivel_dificultad = 'media'
-            tema = 'Entalpía'
-        elif 8 < nivel_estudiante <= 9:
-            nivel_dificultad = 'alta'
-            tema = 'Entalpía'
-        elif 9 < nivel_estudiante <= 10:
-            nivel_dificultad = 'baja'
-            tema = 'Calor latente'
-        elif 10 < nivel_estudiante <= 11:
-            nivel_dificultad = 'media'
-            tema = 'Calor latente'
-        elif 11 < nivel_estudiante <= 12:
-            nivel_dificultad = 'alta'
-            tema = 'Calor latente'
-        elif 12 < nivel_estudiante <= 13:
-            nivel_dificultad = 'baja'
-            tema = 'Tabla de saturación'
-        elif 13 < nivel_estudiante <= 14:
-            nivel_dificultad = 'media'
-            tema = 'Tabla de saturación'
-        elif 14 < nivel_estudiante <= 15:
-            nivel_dificultad = 'alta'
-            tema = 'Tabla de saturación'
+        while preguntas_disponibles == []:
+
+            count += 1
+
+            if count > 50:
+                return Response({"mensaje": "No hay preguntas disponibles"}, status=status.HTTP_404_NOT_FOUND)
+
+            # Calcula el nivel de dificultad
+            if (nivel_estudiante + tmp) <= 1:
+                nivel_dificultad = 'baja'
+                tema = 'Diagramas de PVT'
+            elif 1 < (nivel_estudiante + tmp) <= 2:
+                nivel_dificultad = 'media'
+                tema = 'Diagramas de PVT'
+            elif 2 < (nivel_estudiante + tmp) <= 3:
+                nivel_dificultad = 'alta'
+                tema = 'Diagramas de PVT'
+            elif 3 < (nivel_estudiante + tmp) <= 4:
+                nivel_dificultad = 'baja'
+                tema = 'Calidad de mezclas'
+            elif 4 < (nivel_estudiante + tmp) <= 5:
+                nivel_dificultad = 'media'
+                tema = 'Calidad de mezclas'
+            elif 5 < (nivel_estudiante + tmp) <= 6:
+                nivel_dificultad = 'alta'
+                tema = 'Calidad de mezclas'
+            elif 6 < (nivel_estudiante + tmp) <= 7:
+                nivel_dificultad = 'baja'
+                tema = 'Entalpía'
+            elif 7 < (nivel_estudiante + tmp) <= 8:
+                nivel_dificultad = 'media'
+                tema = 'Entalpía'
+            elif 8 < (nivel_estudiante + tmp) <= 9:
+                nivel_dificultad = 'alta'
+                tema = 'Entalpía'
+            elif 9 < (nivel_estudiante + tmp) <= 10:
+                nivel_dificultad = 'baja'
+                tema = 'Calor latente'
+            elif 10 < (nivel_estudiante + tmp) <= 11:
+                nivel_dificultad = 'media'
+                tema = 'Calor latente'
+            elif 11 < (nivel_estudiante + tmp) <= 12:
+                nivel_dificultad = 'alta'
+                tema = 'Calor latente'
+            elif 12 < (nivel_estudiante + tmp) <= 13:
+                nivel_dificultad = 'baja'
+                tema = 'Tabla de saturación'
+            elif 13 < (nivel_estudiante + tmp) <= 14:
+                nivel_dificultad = 'media'
+                tema = 'Tabla de saturación'
+            elif 14 < (nivel_estudiante + tmp) <= 15:
+                nivel_dificultad = 'alta'
+                tema = 'Tabla de saturación'
 
 
-        # Filtra las preguntas disponibles basadas en el nivel del estudiante y el tema
-        preguntas_disponibles = Pregunta.objects.filter(
-            nivel_dificultad__lte=nivel_dificultad,
-            tema=tema
-        )
+            # Filtra las preguntas disponibles basadas en el nivel del estudiante y el tema
+            preguntas_disponibles = Pregunta.objects.filter(
+                nivel_dificultad__lte=nivel_dificultad,
+                tema=tema
+            )
+
+            tmp = random.randint(-5,2)
 
         print(preguntas_disponibles)
-
-        if not preguntas_disponibles.exists():
-            return Response({"mensaje": "No hay preguntas disponibles para este nivel y tema"}, status=status.HTTP_404_NOT_FOUND)
 
         # Baraja aleatoriamente las preguntas
         preguntas = list(preguntas_disponibles)

@@ -10,6 +10,9 @@ function CreateQuestion() {
     alternativa4: '',
     respuesta: '',
     hint: '',
+    tipo: 'alternativa', // Valor predeterminado para el campo tipo
+    nivel: 'baja', // Valor predeterminado para el campo nivel
+    // nivel_dificultad: 'baja', // Valor predeterminado para el campo nivel_dificultad
   });
 
   const handleInputChange = (event) => {
@@ -24,13 +27,13 @@ function CreateQuestion() {
     event.preventDefault();
 
     // Realiza una solicitud HTTP POST para crear una nueva pregunta
-    axios.post('http://143.198.98.190:8000/preguntas/crear', newPregunta)
+    axios.post('http://143.198.98.190:8000/preguntas/crear/', newPregunta)
       .then((response) => {
         // Maneja la respuesta, por ejemplo, muestra un mensaje de éxito
         console.log('Pregunta creada con éxito.');
       })
       .catch((error) => {
-        console.error('Error al crear la pregunta:', error);
+        console.error('Error al crear la pregunta:', error.response.data);
       });
   };
 
@@ -107,6 +110,19 @@ function CreateQuestion() {
             value={newPregunta.hint}
             onChange={handleInputChange}
           />
+        </div>
+        <div>
+          <label htmlFor="nivel">Nivel</label>
+          <select
+            id="nivel"
+            name="nivel"
+            value={newPregunta.nivel}
+            onChange={handleInputChange}
+          >
+            <option value="alta">Alta</option>
+            <option value="media">Media</option>
+            <option value="baja">Baja</option>
+          </select>
         </div>
         <button type="submit">Crear Pregunta</button>
       </form>

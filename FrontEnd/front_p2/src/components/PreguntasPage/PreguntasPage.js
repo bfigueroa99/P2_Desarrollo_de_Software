@@ -71,14 +71,14 @@ function PreguntasPage() {
         }
 
         // Paso 3: Obtener el registro de respuestas
-        axios.get('http://143.198.98.190:8000/respuestas')
+        axios.get('http://143.198.98.190:8000/respuestas/')
         .then((response) => {
           const respuestasRegistradas = response.data;
 
           // Paso 4: Obtener la siguiente pregunta
           axios.post('http://143.198.98.190:8000/siguiente_pregunta/', {
             preguntas_respondidas: respuestasRegistradas,
-            nivel_alumno: 5
+            nivel_alumno: 1
           })
           .then((response) => {
             const siguientePregunta = response.data;
