@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-n10&l+ef4n7v)a*r)!$6o(hyc#oia&my7y3z_5i274u-2el41=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['143.198.98.190','127.0.0.1']
+ALLOWED_HOSTS = ['143.198.98.190','127.0.0.1','localhost']
 
 
 # Application definition
@@ -156,3 +156,6 @@ firebase_cred_path = 'BackEnd/auth/pdsp2-dc1e0-firebase-adminsdk-2zbcj-db01d47e4
 # Inicializa Firebase usando las credenciales
 cred = credentials.Certificate(firebase_cred_path)
 firebase_app = firebase_admin.initialize_app(cred)
+
+APPEND_SLASH = False
+
