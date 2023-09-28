@@ -1,22 +1,22 @@
 import svgwrite
 import random
 
-def generar_pregunta_tabla_saturacion_facil_2():
+def generar_pregunta_tabla_saturacion_facil_3():
     # Ruta simple para el archivo SVG
     ruta_archivo_svg = 'Question/SVG_tmp/tmp.svg'
 
     # Crea un lienzo SVG con un tamaño ligeramente mayor
     dwg = svgwrite.Drawing(ruta_archivo_svg, profile='tiny', size=('600px', '200px'))
 
-    # Genera valores aleatorios para temperatura y cantidad de vapor
-    temperatura = random.randint(0, 100)
+    # Genera valores aleatorios para presión y cantidad de vapor
+    presion = random.uniform(1, 100)  # Valor ficticio en kPa
     cantidad_vapor = random.uniform(0, 10)  # Valor ficticio en g/m³
 
-    # Calcula la presión utilizando una tabla de saturación ficticia
-    presion = random.uniform(1, 100)  # Valor ficticio en kPa
+    # Calcula la temperatura utilizando una tabla de saturación ficticia
+    temperatura = random.randint(0, 100)
 
     # Enunciado de la pregunta
-    enunciado = f"A {temperatura}°C, la cantidad de vapor de agua saturado es de {cantidad_vapor:.2f} g/m³. ¿Cuál es la presión de saturación en kPa a esta temperatura?"
+    enunciado = f"A {presion:.2f} kPa, la cantidad de vapor de agua saturado es de {cantidad_vapor:.2f} g/m³. ¿Cuál es la temperatura de saturación en °C a esta presión?"
 
     # Divide el enunciado en líneas separadas por '\n' y ajusta la posición vertical
     lineas_enunciado = enunciado.split('\n')
@@ -28,10 +28,10 @@ def generar_pregunta_tabla_saturacion_facil_2():
         y_pos += espacio_entre_lineas
 
     # Calcula la respuesta
-    respuesta = f"Respuesta: {presion:.2f} kPa"
+    respuesta = f"Respuesta: {temperatura}°C"
 
     # Agrega una pista breve
-    hint = "Utiliza la cantidad de vapor de agua saturado a esa temperatura como referencia para calcular la presión de saturación."
+    hint = "Utiliza la cantidad de vapor de agua saturado a esa presión como referencia para calcular la temperatura de saturación."
 
     # Guarda el SVG generado en el archivo especificado
     dwg.save()
@@ -40,5 +40,5 @@ def generar_pregunta_tabla_saturacion_facil_2():
     return respuesta, hint
 
 # Llama a la función y guarda la respuesta y la pista
-respuesta, hint = generar_pregunta_tabla_saturacion_facil_2()
+respuesta, hint = generar_pregunta_tabla_saturacion_facil_3()
 
