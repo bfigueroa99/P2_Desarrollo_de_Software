@@ -123,7 +123,7 @@ function AccountPage() {
               <h2 className="user-name">{user.displayName}</h2>
               <p className="user-email">{user.email}</p>
               <p className="user-nivel">Nivel: {userProgress.nivel}</p>
-              <p className="user-puntaje">Puntaje: {userProgress.puntaje}</p>
+              <p className="user-puntaje">ID erroneos de ultima evaluacion: {userProgress.puntaje}</p>
             </>
           ) : (
             <>
