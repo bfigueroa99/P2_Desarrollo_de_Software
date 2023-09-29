@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './PreguntasPage.css';
+import { useAuth } from '../../auth/AuthProvider';
+import { getDatabase, ref, push } from 'firebase/database';
 
-function PreguntasPage() {
+const PreguntasPage = () => {
+  const { user } = useAuth();
   const [showHint, setShowHint] = useState(false);
   const [preguntas, setPreguntas] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -11,20 +14,38 @@ function PreguntasPage() {
   const [respuestasCorrectas, setRespuestasCorrectas] = useState(0);
   const [respuestasIncorrectas, setRespuestasIncorrectas] = useState(0);
   const [preguntasIncorrectas, setPreguntasIncorrectas] = useState([]);
-  const [segundaOportunidad, setSegundaOportunidad] = useState(false);
+  
+  const db = getDatabase();
 
   useEffect(() => {
-    // Realizar la solicitud HTTP para obtener la lista de preguntas al azar
+    // Realizar la solicitud HTTP para obtener todas las preguntas disponibles
     fetch('http://143.198.98.190:8000/preguntas/')
       .then((response) => response.json())
-      .then((data) => setPreguntas(data.slice(0, 5))) // Obtener solo las primeras 5 preguntas
+      .then((data) => {
+        // Seleccionar aleatoriamente 10 preguntas sin repetición
+        const randomQuestions = selectRandomQuestions(data, 10);
+        setPreguntas(randomQuestions);
+      })
       .catch((error) => {
         console.error('Error al obtener las preguntas:', error);
         setMensajeError('No se pudieron cargar las preguntas. Inténtalo de nuevo más tarde.');
       });
   }, []);
 
-  const currentQuestion = preguntas[currentQuestionIndex];
+  const selectRandomQuestions = (questions, count) => {
+    if (questions.length <= count) {
+      // Si hay menos o igual cantidad de preguntas disponibles que las requeridas, devolver todas
+      return questions;
+    } else {
+      // Usar algoritmo para seleccionar aleatoriamente sin repetición
+      const shuffledQuestions = questions.slice();
+      for (let i = shuffledQuestions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledQuestions[i], shuffledQuestions[j]] = [shuffledQuestions[j], shuffledQuestions[i]];
+      }
+      return shuffledQuestions.slice(0, count);
+    }
+  };
 
   const handleHintClick = () => {
     setShowHint(true);
@@ -34,54 +55,63 @@ function PreguntasPage() {
     setRespuestaUsuario(e.target.value);
   };
 
-  const handleVerificarRespuesta = () => {
+  const handleVerificarRespuesta = async () => {
     if (currentQuestionIndex < preguntas.length) {
-      const question = currentQuestion; // Utiliza la variable desestructurada
+      const question = preguntas[currentQuestionIndex];
 
-      // Comprobar si se han respondido todas las preguntas
-      if (currentQuestionIndex === preguntas.length - 1) {
-        if (segundaOportunidad || preguntasIncorrectas.length === 0) {
-          setJuegoFinalizado(true);
-        } else {
-          setSegundaOportunidad(true);
-          setCurrentQuestionIndex(0);
-          setRespuestaUsuario('');
-          setShowHint(false);
-          setMensajeError('');
-          setPreguntas(preguntasIncorrectas); // Cargar preguntas incorrectas para la segunda oportunidad
-          setPreguntasIncorrectas([]); // Limpiar la lista de preguntas incorrectas
-        }
-      }
-    }
-  };
-
-  const handleSeleccionarAlternativa = (alternativa) => {
-    if (currentQuestionIndex < preguntas.length) {
-      const question = currentQuestion; // Utiliza la variable desestructurada
-      if (alternativa === question.respuesta) {
-        // Respuesta correcta: avanza a la siguiente pregunta y aumenta el contador de respuestas correctas
+      if (respuestaUsuario === question.respuesta) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         setRespuestaUsuario('');
         setShowHint(false);
         setMensajeError('');
         setRespuestasCorrectas(respuestasCorrectas + 1);
 
-        // Comprobar si se han respondido todas las preguntas
+        const usuarioId = user.uid;
+        if (!usuarioId) {
+          console.error('ID de usuario no válido');
+          return;
+        }
+
+        const preguntasBuenasRef = ref(db, `usuarios/` + user.uid + `/preguntas_buenas`);
+        push(preguntasBuenasRef, question.id);
+      } else {
+        setPreguntasIncorrectas([...preguntasIncorrectas, question]);
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setRespuestaUsuario('');
+        setShowHint(false);
+        setMensajeError('');
+        setRespuestasIncorrectas(respuestasIncorrectas + 1);
+
+        const usuarioId = user.uid;
+        if (!usuarioId) {
+          console.error('ID de usuario no válido');
+          return;
+        }
+
+        const preguntasMalasRef = ref(db, `usuarios/${usuarioId}/preguntas_malas`);
+        push(preguntasMalasRef, question.id);
+      }
+
+      if (currentQuestionIndex === preguntas.length - 1) {
+        setJuegoFinalizado(true);
+      }
+    }
+  };
+
+  const handleSeleccionarAlternativa = (alternativa) => {
+    if (currentQuestionIndex < preguntas.length) {
+      const question = preguntas[currentQuestionIndex];
+      if (alternativa === question.respuesta) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setRespuestaUsuario('');
+        setShowHint(false);
+        setMensajeError('');
+        setRespuestasCorrectas(respuestasCorrectas + 1);
+
         if (currentQuestionIndex === preguntas.length - 1) {
-          if (segundaOportunidad || preguntasIncorrectas.length === 0) {
-            setJuegoFinalizado(true);
-          } else {
-            setSegundaOportunidad(true);
-            setCurrentQuestionIndex(0);
-            setRespuestaUsuario('');
-            setShowHint(false);
-            setMensajeError('');
-            setPreguntas(preguntasIncorrectas); // Cargar preguntas incorrectas para la segunda oportunidad
-            setPreguntasIncorrectas([]); // Limpiar la lista de preguntas incorrectas
-          }
+          setJuegoFinalizado(true);
         }
       } else {
-        // Respuesta incorrecta en la primera oportunidad: agrega la pregunta a la lista de preguntas incorrectas
         setPreguntasIncorrectas([...preguntasIncorrectas, question]);
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         setRespuestaUsuario('');
@@ -137,8 +167,6 @@ function PreguntasPage() {
       )}
     </div>
   );
-  
-  
-}
+};
 
 export default PreguntasPage;
