@@ -67,6 +67,25 @@ function AccountPage() {
     }
   }, [userRole]);
 
+  useEffect(() => {
+    if (userRole === 'alumno') {
+      const db = getDatabase();
+      const puntajeRef = ref(db, `usuarios/${user.uid}/puntaje`);
+      get(puntajeRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            setUserProgress((prevProgress) => ({
+              ...prevProgress,
+              puntaje: snapshot.val(),
+            }));
+          }
+        })
+        .catch((error) => {
+          console.error('Error al obtener el puntaje del usuario:', error);
+        });
+    }
+  }, [userRole, user.uid]);
+
   const eliminarPregunta = (preguntaId) => {
     axios.delete(`http://143.198.98.190:8000/preguntas/${preguntaId}/`)
       .then(() => {
@@ -124,7 +143,7 @@ function AccountPage() {
           <ul>
             {alumnos.map((alumno) => (
               <li key={alumno.uid}>
-                {alumno.nombre} - Nivel: {alumno.nivel}
+                {alumno.nombre} - Nivel: {alumno.nivel} - ID de preguntas incorrectas: {alumno.puntaje}
               </li>
             ))}
           </ul>
