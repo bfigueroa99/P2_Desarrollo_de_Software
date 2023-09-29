@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 function EditQuestion() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [pregunta, setPregunta] = useState({
     id: null,
     imagen_svg: null,
@@ -70,6 +71,7 @@ function EditQuestion() {
       .then((response) => {
         // Maneja la respuesta, por ejemplo, muestra un mensaje de éxito
         console.log('Pregunta actualizada con éxito.');
+        navigate('/account');
       })
       .catch((error) => {
         console.error('Error al actualizar la pregunta:', error);
