@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function CreateQuestion() {
+
+  const navigate = useNavigate();
   const [newPregunta, setNewPregunta] = useState({
     enunciado: '',
     alternativa1: '',
@@ -14,7 +17,7 @@ function CreateQuestion() {
     nivel_dificultad: 'baja', // Valor predeterminado para el campo nivel
     // nivel_dificultad: 'baja', // Valor predeterminado para el campo nivel_dificultad
   });
-
+  
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setNewPregunta({
@@ -31,6 +34,7 @@ function CreateQuestion() {
       .then((response) => {
         // Maneja la respuesta, por ejemplo, muestra un mensaje de éxito
         console.log('Pregunta creada con éxito.');
+        navigate('/account')
       })
       .catch((error) => {
         console.error('Error al crear la pregunta:', error.response.data);
@@ -133,8 +137,8 @@ function CreateQuestion() {
             onChange={handleInputChange}
           > 
 
-            <option value="alternativas">Alta</option>
-            <option value="calculonumerico">Media</option>
+            <option value="alternativas">alternativas</option>
+            <option value="calculonumerico">calculonumerico</option>
             
           </select>
         </div>

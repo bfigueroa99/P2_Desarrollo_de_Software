@@ -1,42 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import './PreguntasPage.css';
-import axios from 'axios';
+import { useAuth } from '../../auth/AuthProvider';
+import { getDatabase, ref, push } from 'firebase/database';
 
-function PreguntasPage() {
+const PreguntasPage = () => {
+  const { user } = useAuth();
   const [showHint, setShowHint] = useState(false);
-  const [preguntaActual, setPreguntaActual] = useState(null);
+  const [preguntas, setPreguntas] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [respuestaUsuario, setRespuestaUsuario] = useState('');
   const [mensajeError, setMensajeError] = useState('');
   const [juegoFinalizado, setJuegoFinalizado] = useState(false);
   const [respuestasCorrectas, setRespuestasCorrectas] = useState(0);
   const [respuestasIncorrectas, setRespuestasIncorrectas] = useState(0);
   const [preguntasIncorrectas, setPreguntasIncorrectas] = useState([]);
-  const [segundaOportunidad, setSegundaOportunidad] = useState(false);
-  // Método DELETE
-  const handleEliminarTodasLasRespuestas = () => {
-    axios.delete('http://127.0.0.1:8000/eliminar-todas-las-respuestas/')
-      .then((response) => {
-        console.log('listeilor')
-        // Manejar la respuesta del servidor si es necesario
+  
+  const db = getDatabase();
+
+  useEffect(() => {
+    // Realizar la solicitud HTTP para obtener todas las preguntas disponibles
+    fetch('http://143.198.98.190:8000/preguntas/')
+      .then((response) => response.json())
+      .then((data) => {
+        // Seleccionar aleatoriamente 10 preguntas sin repetición
+        const randomQuestions = selectRandomQuestions(data, 10);
+        setPreguntas(randomQuestions);
       })
       .catch((error) => {
-        console.error('Error al eliminar todas las respuestas:', error);
+        console.error('Error al obtener las preguntas:', error);
+        setMensajeError('No se pudieron cargar las preguntas. Inténtalo de nuevo más tarde.');
       });
-  };
-  useEffect(() => {
-    handleEliminarTodasLasRespuestas();
-    // Paso 1: Obtener la primera pregunta
-    axios.post('http://143.198.98.190:8000/seleccionar_primera_pregunta/', {
-      nivel_estudiante: 1,
-      tema: "Diagramas de PVT"
-    })
-    .then((response) => {
-      setPreguntaActual(response.data);
-    })
-    .catch((error) => {
-      console.error('Error al obtener la primera pregunta:', error);
-    });
   }, []);
+
+  const selectRandomQuestions = (questions, count) => {
+    if (questions.length <= count) {
+      // Si hay menos o igual cantidad de preguntas disponibles que las requeridas, devolver todas
+      return questions;
+    } else {
+      // Usar algoritmo para seleccionar aleatoriamente sin repetición
+      const shuffledQuestions = questions.slice();
+      for (let i = shuffledQuestions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledQuestions[i], shuffledQuestions[j]] = [shuffledQuestions[j], shuffledQuestions[i]];
+      }
+      return shuffledQuestions.slice(0, count);
+    }
+  };
 
   const handleHintClick = () => {
     setShowHint(true);
@@ -46,139 +55,90 @@ function PreguntasPage() {
     setRespuestaUsuario(e.target.value);
   };
 
-  const handleVerificarRespuesta = () => {
-    if (preguntaActual) {
-      const question = preguntaActual;
+  const handleVerificarRespuesta = async () => {
+    if (currentQuestionIndex < preguntas.length) {
+      const question = preguntas[currentQuestionIndex];
 
-      // Paso 2: Registrar la respuesta del estudiante
-      axios.post('http://143.198.98.190:8000/api/registrar_respuesta/', {
-        pregunta_relacionada: question.id,
-        respuesta_estudiante: respuestaUsuario,
-        uso_hint: false,
-        respondida_correctamente: false, // Inicialmente asumimos que la respuesta es incorrecta
-        tipo_pregunta: question.tipo,
-        tema: "Diagramas de PVT"
-      })
-      .then((response) => {
-        // Actualizar el estado según la respuesta del servidor (respondida_correctamente)
-        if (response.data.respondida_correctamente) {
-          
-          setRespuestasCorrectas(respuestasCorrectas + 1);
-        } else {
-          
-          setRespuestasIncorrectas(respuestasIncorrectas + 1);
-          setPreguntasIncorrectas([...preguntasIncorrectas, question]);
+      if (respuestaUsuario === question.respuesta) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setRespuestaUsuario('');
+        setShowHint(false);
+        setMensajeError('');
+        setRespuestasCorrectas(respuestasCorrectas + 1);
+
+        const usuarioId = user.uid;
+        if (!usuarioId) {
+          console.error('ID de usuario no válido');
+          return;
         }
 
-        // Paso 3: Obtener el registro de respuestas
-        axios.get('http://143.198.98.190:8000/respuestas/')
-        .then((response) => {
-          const respuestasRegistradas = response.data;
+        const preguntasBuenasRef = ref(db, `usuarios/` + user.uid + `/preguntas_buenas`);
+        push(preguntasBuenasRef, question.id);
+      } else {
+        setPreguntasIncorrectas([...preguntasIncorrectas, question]);
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setRespuestaUsuario('');
+        setShowHint(false);
+        setMensajeError('');
+        setRespuestasIncorrectas(respuestasIncorrectas + 1);
 
-          // Paso 4: Obtener la siguiente pregunta
-          axios.post('http://143.198.98.190:8000/siguiente_pregunta/', {
-            preguntas_respondidas: respuestasRegistradas,
-            nivel_alumno: 1
-          })
-          .then((response) => {
-            const siguientePregunta = response.data;
-            
-            if (siguientePregunta.error === "No hay más preguntas disponibles") {
-              setJuegoFinalizado(true);
-            } else {
-              setPreguntaActual(siguientePregunta);
-            }
-          })
-          .catch((error) => {
-            console.error('Error al obtener la siguiente pregunta:', error);
-          });
-        })
-        .catch((error) => {
-          console.error('Error al obtener el registro de respuestas:', error);
-        });
-      })
-      .catch((error) => {
-        console.error('Error al registrar la respuesta:', error);
-      });
+        const usuarioId = user.uid;
+        if (!usuarioId) {
+          console.error('ID de usuario no válido');
+          return;
+        }
+
+        const preguntasMalasRef = ref(db, `usuarios/${usuarioId}/preguntas_malas`);
+        push(preguntasMalasRef, question.id);
+      }
+
+      if (currentQuestionIndex === preguntas.length - 1) {
+        setJuegoFinalizado(true);
+      }
     }
   };
 
   const handleSeleccionarAlternativa = (alternativa) => {
-    if (preguntaActual) {
-      const question = preguntaActual;
-  
-      // Mapear el número de alternativa a la respuesta correspondiente
-      let respuestaCorrecta = '';
-      switch (alternativa) {
-        case '1':
-          respuestaCorrecta = question.alternativa1;
-          break;
-        case '2':
-          
-          respuestaCorrecta = question.alternativa2;
-          break;
-        case '3':
-          
-          respuestaCorrecta = question.alternativa3;
-          break;
-        case '4':
-          
-          respuestaCorrecta = question.alternativa4;
-          break;
-        default:
-          break;
-      }
-  
-      if (respuestaCorrecta === question.respuesta) {
-        // Respuesta correcta: actualizar el estado y el contador de respuestas correctas
+    if (currentQuestionIndex < preguntas.length) {
+      const question = preguntas[currentQuestionIndex];
+      if (alternativa === question.respuesta) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
         setRespuestaUsuario('');
+        setShowHint(false);
+        setMensajeError('');
         setRespuestasCorrectas(respuestasCorrectas + 1);
-  
-        // Comprobar si se han respondido todas las preguntas
-        if (segundaOportunidad || preguntasIncorrectas.length === 0) {
+
+        if (currentQuestionIndex === preguntas.length - 1) {
           setJuegoFinalizado(true);
-        } else {
-          setSegundaOportunidad(true);
-          setPreguntaActual(preguntasIncorrectas[0]); // Obtener la primera pregunta incorrecta
-          setPreguntasIncorrectas(preguntasIncorrectas.slice(1)); // Eliminar la primera pregunta incorrecta
         }
       } else {
-        // Respuesta incorrecta en la primera oportunidad: agregar la pregunta a la lista de preguntas incorrectas
         setPreguntasIncorrectas([...preguntasIncorrectas, question]);
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setRespuestaUsuario('');
+        setShowHint(false);
+        setMensajeError('');
         setRespuestasIncorrectas(respuestasIncorrectas + 1);
       }
     }
   };
-  
-  
 
   return (
     <div className="questions-page">
       <h1>Preguntas y Respuestas</h1>
-
-      {juegoFinalizado ? (
-        // Mostrar estadísticas y mensaje de juego finalizado
-        <div>
-          <p>Juego finalizado, has respondido todo.</p>
-          <p>Respuestas correctas: {respuestasCorrectas}</p>
-          <p>Respuestas incorrectas: {respuestasIncorrectas}</p>
-        </div>
-      ) : preguntaActual ? (
-        // Mostrar la pregunta actual
+  
+      {preguntas.length > 0 && currentQuestionIndex < preguntas.length ? (
         <div className="question-card">
-          <h2>Pregunta {preguntaActual.id}</h2>
-
-          <p>{preguntaActual.enunciado}</p>
-          {preguntaActual.tipo === 'alternativas' ? (
-            // Renderizar opciones de respuesta para preguntas de alternativas
+          <h2>Pregunta {preguntas[currentQuestionIndex].id}</h2>
+  
+          <p>{preguntas[currentQuestionIndex].enunciado}</p>
+          {preguntas[currentQuestionIndex].tipo === 'alternativas' ? (
             <div className="answer-options">
-              <button className="answer-button" onClick={() => handleSeleccionarAlternativa('1')}>1. {preguntaActual.alternativa1}</button>
-              <button className="answer-button" onClick={() => handleSeleccionarAlternativa('2')}>2. {preguntaActual.alternativa2}</button>
-              <button className="answer-button" onClick={() => handleSeleccionarAlternativa('3')}>3. {preguntaActual.alternativa3}</button>
-              <button className="answer-button" onClick={() => handleSeleccionarAlternativa('4')}>4. {preguntaActual.alternativa4}</button>
+              <button className="answer-button" onClick={() => handleSeleccionarAlternativa('1')}>1. {preguntas[currentQuestionIndex].alternativa1}</button>
+              <button className="answer-button" onClick={() => handleSeleccionarAlternativa('2')}>2. {preguntas[currentQuestionIndex].alternativa2}</button>
+              <button className="answer-button" onClick={() => handleSeleccionarAlternativa('3')}>3. {preguntas[currentQuestionIndex].alternativa3}</button>
+              <button className="answer-button" onClick={() => handleSeleccionarAlternativa('4')}>4. {preguntas[currentQuestionIndex].alternativa4}</button>
             </div>
           ) : (
-            // Renderizar entrada de respuesta para preguntas de desarrollo
             <div className="answer-input">
               <input
                 type="text"
@@ -194,16 +154,19 @@ function PreguntasPage() {
           )}
           <button className="hint-button" onClick={handleHintClick}>
             Hint
-            {showHint && <span className="hint-popup">{preguntaActual.hint}</span>}
+            {showHint && <span className="hint-popup">{preguntas[currentQuestionIndex].hint}</span>}
           </button>
           {mensajeError && <p className="error-message">{mensajeError}</p>}
         </div>
       ) : (
-        // Mostrar un mensaje de carga mientras se obtienen las preguntas
-        <p>Cargando preguntas...</p>
+        <div>
+          <p>Juego finalizado, has respondido todas las preguntas.</p>
+          <p>Respuestas correctas: {respuestasCorrectas}</p>
+          <p>Respuestas incorrectas: {respuestasIncorrectas}</p>
+        </div>
       )}
     </div>
   );
-}
+};
 
 export default PreguntasPage;
