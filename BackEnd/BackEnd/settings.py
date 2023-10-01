@@ -151,7 +151,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Ruta al archivo JSON de credenciales de Firebase
 # Asegúrate de que esta ruta sea la correcta
-firebase_cred_path = 'BackEnd/auth/pdsp2-dc1e0-firebase-adminsdk-2zbcj-db01d47e45.json'
+firebase_cred_path = 'myenv/auth/AuthProvider.js'
 
 # Inicializa Firebase usando las credenciales
 cred = credentials.Certificate(firebase_cred_path)

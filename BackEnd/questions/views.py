@@ -78,7 +78,7 @@ def select_next_question(request):
     count_calculonumerico = 0
 
     for p in preguntas_respondidas:
-        if p['respondida_correctamente']:
+        if p.get('respondida_correctamente', False):  # Usar False como valor predeterminado si no existe 'respondida_correctamente'
             cb_tmp += 1
             cm_tmp = 0
             if cb_tmp >= umbral_racha_buenas:
@@ -89,14 +89,15 @@ def select_next_question(request):
             if cm_tmp >= umbral_racha_mala:
                 racha_mala += 1
 
-        if p['uso_hint']:
+        if p.get('uso_hint', False):  # Usar False como valor predeterminado si no existe 'uso_hint'
             count_hint += 1
 
-        if p['tipo_pregunta'] == 'alternativas':
+        if p.get('tipo_pregunta') == 'alternativas':
             count_alternativas += 1
 
-        if p['tipo_pregunta'] == 'calculonumerico':
+        if p.get('tipo_pregunta') == 'calculonumerico':
             count_calculonumerico += 1
+
 
     puntaje = ((nivel_alumno * 0.6) + (racha_buena * 0.4) - (count_hint * 0.1) - (racha_mala * 0.3))
 
